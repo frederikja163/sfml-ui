@@ -11,6 +11,8 @@ namespace Button
             RenderWindow window = new RenderWindow(VideoMode.DesktopMode, "Button test");
             while (window.IsOpen)
             {
+                window.DispatchEvents();
+
                 window.Clear();
 
                 window.Display();

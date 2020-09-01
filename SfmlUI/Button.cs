@@ -8,15 +8,51 @@ namespace SfmlUI
 {
     public class Button : IUiElement
     {
-        public bool IsVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private bool _isVisible;
 
-        public Vector2f Position => throw new NotImplementedException();
+        public bool IsVisible 
+        { 
+            get 
+            { 
+                return _isVisible; 
+            } 
+            set 
+            { 
+                _isVisible = value; 
+            } 
+        }
 
-        public float Width => throw new NotImplementedException();
+        public Vector2f Position
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public float Height => throw new NotImplementedException();
+        public float Width
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public Drawable DrawableShape => throw new NotImplementedException();
+        public float Height
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Drawable DrawableShape
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public void Draw()
         {
