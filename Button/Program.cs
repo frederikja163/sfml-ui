@@ -1,4 +1,6 @@
 ﻿using System;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace Button
 {
@@ -6,7 +8,13 @@ namespace Button
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            RenderWindow window = new RenderWindow(VideoMode.DesktopMode, "Button test");
+            while (window.IsOpen)
+            {
+                window.Clear();
+
+                window.Display();
+            }
         }
     }
 }

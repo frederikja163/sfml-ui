@@ -1,0 +1,26 @@
+﻿using SFML.Graphics;
+using SFML.System;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SfmlUI
+{
+    public class Button : IUiElement
+    {
+        public bool IsVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public Vector2f Position => throw new NotImplementedException();
+
+        public float Width => throw new NotImplementedException();
+
+        public float Height => throw new NotImplementedException();
+
+        public Drawable DrawableShape => throw new NotImplementedException();
+
+        public void Draw()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
