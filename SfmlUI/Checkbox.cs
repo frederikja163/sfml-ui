@@ -6,48 +6,28 @@ namespace SfmlUI
 {
     public class Checkbox : IUiElement
     {
-
-        private bool _isVisible;
-
-        public bool IsVisible 
-        { 
-            get 
-            { 
-                return _isVisible; 
-            } 
-            set 
-            { 
-                _isVisible = value; 
-            } 
-        }
-
-        public Vector2f Position
+        public Checkbox(Vector2f position, float width, float height, bool isChecked)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            Position = position;
+            Width = width;
+            Height = height;
+            IsChecked = isChecked;
         }
 
-        public float Width
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public float Height
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void Draw()
+        public bool IsChecked { get; set; }
+        
+        public bool IsVisible { get; set; }
+        public Vector2f Position { get; }
+        public float Width { get; }
+        public float Height { get; }
+        public void Draw() 
         {
             throw new NotImplementedException();
+        }
+
+        public void Toggle()
+        {
+            IsChecked = !IsChecked;
         }
     }
 }
