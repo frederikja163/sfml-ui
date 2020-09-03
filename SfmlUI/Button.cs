@@ -15,6 +15,7 @@ namespace SfmlUI
             get 
             { 
                 return _isVisible; 
+
             } 
             set 
             { 
@@ -39,14 +40,6 @@ namespace SfmlUI
         }
 
         public float Height
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public Drawable DrawableShape
         {
             get
             {
