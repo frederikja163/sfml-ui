@@ -15,7 +15,7 @@ namespace Dropdown
 
 
                 Window.Clear();
-                Window.Draw(new CircleShape(200, 360));
+
 
                 Window.Display();
             }
