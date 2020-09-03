@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SFML.Window;
+using SFML.Graphics;
+using SFML.System;
 
 namespace SfmlUI
 {
@@ -11,7 +14,6 @@ namespace SfmlUI
         private bool _active;
         private Vector2f _position;
         private Vector2f _size;
-        private Drawable _drawable;
         private Shape _shape;
         private List<Text> _list;
 
