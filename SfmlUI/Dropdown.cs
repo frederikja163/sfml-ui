@@ -28,35 +28,36 @@ namespace SfmlUI
 
         public float Height { get { return _size.Y; } }
 
+        // public ekstra metoder
+        public Shape Shape { get { return _shape; } set { _shape = value; } }
+
+
         // private ekstra metoder
         private float Right { get { return _position.X + _size.X; } }
         private float Left { get { return _position.Y; } }
         private float Top { get { return _position.X; } }
         private float Bottom { get { return _position.Y + _size.Y; } }
 
-
-
-        public Dropdown(RenderWindow window, Vector2f position, Vector2f size, Shape shape, params Text[] textList)
+        // konstruktøren
+        public Dropdown(RenderWindow window, Vector2f position, Vector2f size, params Text[] textList)
         {
             _window = window;
             _isVisible = true;
-
-            if (position == null) { _position = new Vector2f(0, 0); } // hvis ingen input sæt en default værdi
-            else { _position = position; }
-
-            if (size == null) { _size = new Vector2f(100, 20); } // hvis ingen input sæt en default værdi
-            else { _size = size; }
-
-            if (shape == null) { _shape = new RectangleShape(_size); } // hvis ingen input sæt en default værdi
-            else { _shape = shape; }
-
+            _position = position;
+            _size = size;
+            _shape = new RectangleShape(size);
+            _shape.Position = position;
             _active = false;
             foreach (Text item in textList)
             {
                 _list.Add(item);
             }
+
+            // sæt event handler for musen
+            _window.MouseButtonReleased += OnClick;
         }
 
+        // Tegn objectet
         public void Draw()
         {
             if (_isVisible)
@@ -76,7 +77,13 @@ namespace SfmlUI
         {
             if (_isVisible && e.Button == Mouse.Button.Left && IsInside(e))
             {
-                _active = true;
+                if (!_active)
+                {
+                    _active = true;
+                } else
+                {
+
+                }
             } else
             {
                 _active = false;
