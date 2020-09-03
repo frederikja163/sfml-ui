@@ -10,7 +10,6 @@ namespace SfmlUI
         Vector2f Position { get; }
         float Width { get;  }
         float Height { get; }
-        Drawable DrawableShape { get; }
        
         void Draw();
     }
