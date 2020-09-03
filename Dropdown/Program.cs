@@ -1,4 +1,6 @@
 ﻿using System;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace Dropdown
 {
@@ -6,7 +8,18 @@ namespace Dropdown
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            RenderWindow Window = new RenderWindow(VideoMode.DesktopMode, "Dropdown Sandbox", Styles.Titlebar | Styles.Close);
+            while (Window.IsOpen)
+            {
+                Window.DispatchEvents();
+
+
+                Window.Clear();
+                Window.Draw(new CircleShape(200, 360));
+
+                Window.Display();
+            }
+
         }
     }
 }
