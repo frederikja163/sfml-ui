@@ -46,14 +46,6 @@ namespace SfmlUI
             }
         }
 
-        public Drawable DrawableShape
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public void Draw()
         {
             throw new NotImplementedException();
