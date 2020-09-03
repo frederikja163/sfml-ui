@@ -15,6 +15,7 @@ namespace SfmlUI
             get 
             { 
                 return _isVisible; 
+
             } 
             set 
             { 
