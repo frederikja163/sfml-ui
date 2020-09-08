@@ -19,8 +19,8 @@ namespace SfmlUI
             Width = 25f;
             Height = 25f;
             FillColor = Color.White;
-            CrossColor = Color.Black;
-            CrossThickness = 5f;
+            CrossColor = Color.Red;
+            CrossThickness = 3f;
         }
 
         public float CrossThickness { get; set; }
@@ -48,35 +48,27 @@ namespace SfmlUI
 
                 if (IsChecked)
                 {
-                     RectangleShape cross1 = new RectangleShape();
-                     cross1.Size = new Vector2f(MathF.Sqrt(MathF.Pow(Width, 2)+MathF.Pow(Height, 2)), 1);
-                     cross1.Rotation = 45;
-                     cross1.Position = Position;
-                     cross1.FillColor = CrossColor;
-                     cross1.OutlineThickness = CrossThickness;
-                     cross1.OutlineColor = CrossColor;
+                    var offset = (MathF.Sqrt(2) * CrossThickness) / 2;
+                    VertexArray vertexArray1 = new VertexArray(PrimitiveType.TriangleFan, 6);
+                    vertexArray1[0] = new Vertex(new Vector2f(Position.X, Position.Y + Height - offset), CrossColor);
+                    vertexArray1[1] = new Vertex(new Vector2f(Position.X, Position.Y + Height), CrossColor);
+                    vertexArray1[2] = new Vertex(new Vector2f(Position.X + offset, Position.Y + Height), CrossColor);
                     
-                     RectangleShape cross2 = new RectangleShape();
-                     cross2.Size = new Vector2f(MathF.Sqrt(MathF.Pow(Width, 2)+MathF.Pow(Height, 2)), 1);
-                     cross2.Rotation = -45;
-                     cross2.Position = Position + new Vector2f(0, Height);
-                     cross2.FillColor = CrossColor;
-                     cross2.OutlineThickness = CrossThickness;
-                     cross2.OutlineColor = CrossColor;
+                    vertexArray1[3] = new Vertex(new Vector2f(Position.X + Width, Position.Y + offset), CrossColor);
+                    vertexArray1[4] = new Vertex(new Vector2f(Position.X + Width, Position.Y), CrossColor);
+                    vertexArray1[5] = new Vertex(new Vector2f(Position.X + Width - offset, Position.Y), CrossColor);
                     
-                    Window.Draw(cross1);
-                    Window.Draw(cross2);
-
-                    // VertexArray vertexArray1 = new VertexArray(PrimitiveType.Lines, 2);
-                    // vertexArray1[0] = new Vertex(new Vector2f(Position.X, Position.Y), CrossColor);
-                    // vertexArray1[1] = new Vertex(new Vector2f(Position.X + Width, Position.Y + Height), CrossColor);
-                    //
-                    // VertexArray vertexArray2 = new VertexArray(PrimitiveType.Lines, 2);
-                    // vertexArray2[0] = new Vertex(new Vector2f(Position.X, Position.Y + Height), CrossColor);
-                    // vertexArray2[1] = new Vertex(new Vector2f(Position.X + Width, Position.Y), CrossColor);
-                    //
-                    // Window.Draw(vertexArray1);
-                    // Window.Draw(vertexArray2);
+                    VertexArray vertexArray2 = new VertexArray(PrimitiveType.TriangleFan, 6);
+                    vertexArray2[0] = new Vertex(new Vector2f(Position.X, Position.Y + offset), CrossColor);
+                    vertexArray2[1] = new Vertex(new Vector2f(Position.X, Position.Y), CrossColor);
+                    vertexArray2[2] = new Vertex(new Vector2f(Position.X + offset, Position.Y), CrossColor);
+                    
+                    vertexArray2[3] = new Vertex(new Vector2f(Position.X + Width, Position.Y + Height - offset), CrossColor);
+                    vertexArray2[4] = new Vertex(new Vector2f(Position.X + Width, Position.Y + Height), CrossColor);
+                    vertexArray2[5] = new Vertex(new Vector2f(Position.X + Width - offset, Position.Y + Height), CrossColor);
+                    
+                    Window.Draw(vertexArray1);
+                    Window.Draw(vertexArray2);
                     
                 }
             }
@@ -84,15 +76,10 @@ namespace SfmlUI
 
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            // if (Position.X <= e.X && e.X <= Position.X + Width && Position.Y <= e.Y && e.Y <= Position.Y + Height)
-            // {
-            //     Console.WriteLine("Klik");
-            // }
-            //Console.WriteLine(Position.X <= e.X);
-            //Console.WriteLine(e.X <= Position.X);
-            Console.WriteLine(Position.X);
-            Console.WriteLine(e.X);
-            Console.WriteLine(Position.X + Width);
+            if (Position.X <= e.X && e.X <= Position.X + Width && Position.Y <= e.Y && e.Y <= Position.Y + Height)
+            {
+                Toggle();
+            }
         }
     }
 }
