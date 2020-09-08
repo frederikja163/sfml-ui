@@ -10,10 +10,18 @@ namespace CheckboxSandkasse
     {
         static void Main(string[] args)
         {
-            RenderWindow window = new RenderWindow(VideoMode.DesktopMode, "Checkbox test");
-            window.SetFramerateLimit(30);
-            Checkbox checkbox = new Checkbox(window, new Vector2f(50, 50), 50, 50);
+            RenderWindow window = new RenderWindow(VideoMode.DesktopMode, "Checkbox");
+            window.Size = new Vector2u(1280, 720);
+            window.SetFramerateLimit(60);
+            window.SetVerticalSyncEnabled(true);
             window.Closed += (_,__) => window.Close();
+            
+            Checkbox checkbox = new Checkbox(window);
+            checkbox.Position = new Vector2f(150, 150);
+            checkbox.Width = 250;
+            checkbox.Height = 250;
+            checkbox.CrossColor = Color.Green;
+
             while (window.IsOpen)
             {
                 window.DispatchEvents();
