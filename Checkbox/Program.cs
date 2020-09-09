@@ -20,6 +20,7 @@ namespace CheckboxSandkasse
             checkbox.Width = 250;
             checkbox.Height = 250;
             checkbox.CrossThickness = 20f;
+            checkbox.FillColor = Color.Red;
 
             while (window.IsOpen)
             {
