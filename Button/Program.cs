@@ -24,21 +24,37 @@ namespace Button1
             _button.Window = _window;
             _button.Height = 400f;
             _button.Width = 400f;
-            _button.Position = new Vector2f(_window.Size.X/2, _window.Size.Y/2);
-            
-
-
-
+            _button.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
+            _button.MousePressed += ButtonPressed;
+            _button.MouseRealeased += ButtonReleased;
+            _button.MouseHeld += ButtonHeld;
             while (_window.IsOpen)
             {
+                
                 _window.DispatchEvents();
                 _window.Clear();
-
-
                 _button.Draw();
                 _window.Display();
                 
+
             }
+        }
+        
+        static private void ButtonHeld()
+        {
+            Console.WriteLine("u are holding the button");
+            _button.Position = new Vector2f(_button.Position.X - 1f, _button.Position.Y -1f);
+        }
+        static private void ButtonPressed()
+        {
+            Console.WriteLine("u have pressed the button");
+            
+        }
+        static private void ButtonReleased()
+        {
+            _button.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
+
+            Console.WriteLine("u have released the button");
         }
 
         private static void WindowClosed(object sender, EventArgs e)
