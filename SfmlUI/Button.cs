@@ -60,16 +60,16 @@ namespace SfmlUI
                 _width = value;
             }
         }
-        private float _hight;
+        private float _height;
         public float Height
         {
             get
             {
-                return _hight;
+                return _height;
             }
             set
             {
-                _hight = value;
+                _height = value;
             }
         }
         public event Action MouseHeld;
@@ -78,6 +78,7 @@ namespace SfmlUI
             
             _window.MouseButtonReleased += OnMouseButtonRealeased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
+            _window.MouseMoved += OnMouseMoved;
             if(Pressed)
             {
                 MouseHeld?.Invoke();
@@ -96,16 +97,20 @@ namespace SfmlUI
             
         }
         public event Action MousePressed;
-        private void OnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
+        private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && e.X <=_position.X + _hight && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y)
+            if (!Pressed && e.X <=_position.X + _height && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y)
             {
                 Pressed = true;
                 MousePressed?.Invoke();
             }
+            
+        }
+        private void OnMouseMoved(Object? sender, MouseMoveEventArgs e)
+        {
             if (Pressed)
             {
-                if (!(e.X <= _position.X + _hight && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y))
+                if (!(e.X <= _position.X + _height && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y))
                 {
                     Pressed = false;
                 }
@@ -118,7 +123,7 @@ namespace SfmlUI
             Update();
             
 
-            var radio = new RectangleShape(new Vector2f(_hight, _width));
+            var radio = new RectangleShape(new Vector2f(_height, _width));
             radio.FillColor = new Color(100, 100, 100);
             radio.OutlineThickness = 10;
             radio.OutlineColor = new Color(0, 0, 0);
