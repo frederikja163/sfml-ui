@@ -116,9 +116,7 @@ namespace SfmlUI
         public void Draw()
         {
             Update();
-            var rect = new RectangleShape(new Vector2f(1000, 1000));
-            rect.FillColor = new Color(220, 220, 220);
-            rect.Position = new Vector2f(0, 0);
+            
 
             var radio = new RectangleShape(new Vector2f(_hight, _width));
             radio.FillColor = new Color(100, 100, 100);
@@ -129,7 +127,7 @@ namespace SfmlUI
 
             if (_isVisible == true)
             {
-                _window.Draw(rect);
+                
 
                 _window.Draw(radio);
                 
