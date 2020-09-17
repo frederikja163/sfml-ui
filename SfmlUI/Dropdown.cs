@@ -5,6 +5,7 @@ using SFML.Window;
 using SFML.Graphics;
 using SFML.System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace SfmlUI
 {
@@ -17,6 +18,7 @@ namespace SfmlUI
         private Vector2f _position;
         private Vector2f _size;
         private Shape _shape;
+        private Shape _activeShape;
         private uint _fontSize = 0;
         private List<Text> _list = new List<Text>();
 
@@ -31,35 +33,44 @@ namespace SfmlUI
 
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
+        public string ChosenItem { get { return _list[0].DisplayedString; } }
 
 
         // private ekstra metoder
-        private float Right { get { return _position.X + _size.X * _shape.Scale.X; } }
-        private float Left { get { return _position.Y; } }
-        private float Top { get { return _position.X; } }
-        private float Bottom { get { return _position.Y + _size.Y * _shape.Scale.Y; } }
+        private float Right { get { return _position.X + _size.X; } }
+        private float Left { get { return _position.X; } }
+        private float Top { get { return _position.Y; } }
+        private float Bottom { get { return _position.Y + _size.Y; } }
 
         // konstruktøren
-        public Dropdown(RenderWindow window, Vector2f position, float width, Font font, uint fontSize, params string[] textList)
+        public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
         {
             _fontSize = fontSize;
             foreach (string item in textList)
             {
                 _list.Add(new Text(item, font, fontSize));
             }
+            float maxWidth = 0;
             for (int i = 0; i < _list.Count; i++)
             {
-                _list[i].Position = new Vector2f(position.X, position.Y + fontSize * i);
+                _list[i].Position = new Vector2f(position.X + fontSize * 0.5f, position.Y + fontSize * i);
+                _list[i].FillColor = Color.Black;
+                if (_list[i].GetLocalBounds().Width > maxWidth) { maxWidth = _list[i].GetLocalBounds().Width; }
             }
             _window = window;
             _isVisible = true;
             _position = position;
-            _size = new Vector2f(width, fontSize);
-            _shape = new RectangleShape(new Vector2f(width, fontSize));
-            _shape.Position = position;
+            _size = new Vector2f(maxWidth + fontSize, fontSize + 0.2f * fontSize);
+            _shape = new RectangleShape(new Vector2f(maxWidth + fontSize, fontSize + 0.2f * fontSize));
             _shape.Scale = new Vector2f(1, 1);
             _shape.OutlineColor = Color.Black;
             _shape.OutlineThickness = 2;
+            _shape.Position = position + new Vector2f(_shape.OutlineThickness, _shape.OutlineThickness);
+            _activeShape = new RectangleShape(new Vector2f(maxWidth + fontSize, textList.Count() * fontSize + 0.2f * fontSize));
+            _activeShape.Scale = new Vector2f(1, 1);
+            _activeShape.OutlineColor = Color.Black;
+            _activeShape.OutlineThickness = 2;
+            _activeShape.Position = position + new Vector2f(_shape.OutlineThickness, _shape.OutlineThickness);
             _active = false;
 
             // sæt event handler for musen
@@ -73,18 +84,15 @@ namespace SfmlUI
             {
                 if (_active)
                 {
-                    _shape.Scale = new Vector2f(1, _list.Count);
-                    _size.Y = _fontSize * _list.Count;
-                    _window.Draw(_shape);
+                    _window.Draw(_activeShape);
                     foreach (Text item in _list)
                     {
                         _window.Draw(item);
                     }
                 } else
                 {
-                    _shape.Scale = new Vector2f(1, 1);
-                    _size.Y = _fontSize;
                     _window.Draw(_shape);
+                    _window.Draw(_list[0]);
                 }
             }
         }
