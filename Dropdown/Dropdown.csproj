@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="bin\Debug\netcoreapp3.1\ArialNova.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SfmlUI\SfmlUI.csproj" />
   </ItemGroup>
 

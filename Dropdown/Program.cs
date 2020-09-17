@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using SFML.Graphics;
 using SFML.Window;
 using SfmlUI;
@@ -12,7 +11,17 @@ namespace Dropdown
         {
             RenderWindow Window = new RenderWindow(VideoMode.DesktopMode, "Dropdown Sandbox", Styles.Titlebar | Styles.Close);
             Window.Closed += OnClose;
-            SfmlUI.Dropdown dropdown = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(0, 0), new SFML.System.Vector2f(100, 20));
+            SfmlUI.Dropdown dropdown = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(0, 0), 100, new Font("ArialNova.ttf"), 12,
+                    "Lorem Ipsum",
+                    "Electric boogaloo",
+                    "James",
+                    "Brown fox",
+                    "Doc",
+                    "Docile",
+                    "Pizza",
+                    "Hut Hut",
+                    "Last item"
+                );
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();

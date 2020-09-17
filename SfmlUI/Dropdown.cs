@@ -17,6 +17,7 @@ namespace SfmlUI
         private Vector2f _position;
         private Vector2f _size;
         private Shape _shape;
+        private uint _fontSize = 0;
         private List<Text> _list = new List<Text>();
 
         // nedarvede metoder
@@ -33,25 +34,33 @@ namespace SfmlUI
 
 
         // private ekstra metoder
-        private float Right { get { return _position.X + _size.X; } }
+        private float Right { get { return _position.X + _size.X * _shape.Scale.X; } }
         private float Left { get { return _position.Y; } }
         private float Top { get { return _position.X; } }
-        private float Bottom { get { return _position.Y + _size.Y; } }
+        private float Bottom { get { return _position.Y + _size.Y * _shape.Scale.Y; } }
 
         // konstruktøren
-        public Dropdown(RenderWindow window, Vector2f position, Vector2f size, params Text[] textList)
+        public Dropdown(RenderWindow window, Vector2f position, float width, Font font, uint fontSize, params string[] textList)
         {
+            _fontSize = fontSize;
+            foreach (string item in textList)
+            {
+                _list.Add(new Text(item, font, fontSize));
+            }
+            for (int i = 0; i < _list.Count; i++)
+            {
+                _list[i].Position = new Vector2f(position.X, position.Y + fontSize * i);
+            }
             _window = window;
             _isVisible = true;
             _position = position;
-            _size = size;
-            _shape = new RectangleShape(size);
+            _size = new Vector2f(width, fontSize);
+            _shape = new RectangleShape(new Vector2f(width, fontSize));
             _shape.Position = position;
+            _shape.Scale = new Vector2f(1, 1);
+            _shape.OutlineColor = Color.Black;
+            _shape.OutlineThickness = 2;
             _active = false;
-            foreach (Text item in textList)
-            {
-                _list.Add(item);
-            }
 
             // sæt event handler for musen
             _window.MouseButtonReleased += OnClick;
@@ -64,9 +73,17 @@ namespace SfmlUI
             {
                 if (_active)
                 {
-
+                    _shape.Scale = new Vector2f(1, _list.Count);
+                    _size.Y = _fontSize * _list.Count;
+                    _window.Draw(_shape);
+                    foreach (Text item in _list)
+                    {
+                        _window.Draw(item);
+                    }
                 } else
                 {
+                    _shape.Scale = new Vector2f(1, 1);
+                    _size.Y = _fontSize;
                     _window.Draw(_shape);
                 }
             }
@@ -93,13 +110,7 @@ namespace SfmlUI
         // Check om musen er indenfor feltet
         public bool IsInside(MouseButtonEventArgs e)
         {
-            if ((e.X <= Right && e.X >= Left) && (e.Y <= Bottom && e.Y >= Top))
-            {
-                return true;
-            } else
-            {
-                return false;
-            }
+            return (e.X <= Right && e.X >= Left) && (e.Y <= Bottom && e.Y >= Top);
         }
     }
 }
