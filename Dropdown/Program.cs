@@ -25,6 +25,21 @@ namespace Dropdown
                     "Hut Hut",
                     "Last item"
                 );
+            SfmlUI.Dropdown dropdown2 = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(700, 100), new Font("ArialNova.ttf"), 20,
+                    "Lorem Ipsum2",
+                    "Electric boogaloo2",
+                    "James2",
+                    "Brown fox2",
+                    "Doc2",
+                    "Docile2",
+                    "Pizza2",
+                    "Hut Hut2",
+                    "Last item2",
+                    "last last item",
+                    "last last last item",
+                    "last",
+                    "last last"
+                );
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -33,6 +48,7 @@ namespace Dropdown
                 Window.Draw(Background);
                 
                 dropdown.Draw();
+                dropdown2.Draw();
 
 
                 Window.Display();         
