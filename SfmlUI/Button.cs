@@ -2,6 +2,8 @@
 using SFML.System;
 using SFML.Window;
 using System;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
@@ -9,6 +11,7 @@ namespace SfmlUI
 {
     public class Button : IUiElement
     {
+        #region Constructer
         private static Allign_ _allign;
         public Allign_ Allign;
         
@@ -17,90 +20,15 @@ namespace SfmlUI
             _window = Window;
             _position = Position;
             _size = Size;
-            //HorizontalAlign = alignHorizontal.Left;
-            //VerticalAlign = alignVertical.Top;
-            _allign = new Allign_();
+            _allign = new Allign_(_position,_size);
             Allign = _allign;
 
             Update();
         }
-        public class Allign_
-        {
-            private static Horizontal_ _horizontal;
-            public Horizontal_ Horizontal;
-
-            private static Vertical_ _vertical;
-            public Vertical_ Vertical;
-            public Allign_() 
-            {
-                _horizontal = new Horizontal_();
-                Horizontal = _horizontal;
-                _vertical = new Vertical_();
-                Vertical = _vertical;
-            }
-            public class Horizontal_
-            {
-                public Horizontal_() { }
-                public void Left()
-                {
-
-                }
-                public void Center()
-                {
-
-                }
-                public void Right()
-                {
-
-                }
-            }
-            public class Vertical_
-            {
-                public Vertical_() { }
-                public void Top()
-                {
-
-                }
-                public void Center()
-                {
-
-                }
-                public void Buttom()
-                {
-
-                }
-            }
-        }
+        #endregion
+        #region variabels
         private static RenderWindow _window;
-        /*public enum alignHorizontal { Center, Left, Right };
-        private alignHorizontal _horizontalAlign = alignHorizontal.Left;
-        public alignHorizontal HorizontalAlign {
-            get
-            {
-                return HorizontalAlign;
-            }
-            set
-            {
-                
-            }
-        }
-        void VerticalAlign.Top()
-        {
-
-        }
-        public enum alignVertical { Top, Center, Buttom };
-        private alignVertical _verticalAlign = alignVertical.Top;
-        public alignVertical VerticalAlign
-        {
-            get
-            {
-                return VerticalAlign;
-            }
-            set
-            {
-
-            }
-        }*/
+       
         public RenderWindow Window
         {
             get
@@ -135,6 +63,9 @@ namespace SfmlUI
             set
             {
                 _position = value;
+                _allign.Horizontal.Update(_position.X, Size.X);
+                _allign.Vertical.Update(_position.Y, Size.Y);
+
             }
         }
        
@@ -148,6 +79,8 @@ namespace SfmlUI
             set
             {
                 _size = value;
+                _allign.Horizontal.Update(_position.X, Size.X);
+                _allign.Vertical.Update(_position.Y, Size.Y);
             }
         }
         public float Height
@@ -160,6 +93,7 @@ namespace SfmlUI
             set
             {
                 _size.X = value;
+                _allign.Vertical.Update(_position.Y, Size.Y);
             }
         }
         public float Width
@@ -172,8 +106,12 @@ namespace SfmlUI
             set
             {
                 _size.Y = value;
+                _allign.Horizontal.Update(_position.X, Size.X);
             }
         }
+        
+        #endregion
+        #region Actions
         public event Action MouseHeld;
         private void Update()
         {
@@ -196,7 +134,7 @@ namespace SfmlUI
         public event Action MousePressed;
         private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && e.X <=_position.X + _size.X && e.X >= _position.X && e.Y <= _position.Y + _size.Y && e.Y >= _position.Y)
+            if (!Pressed && e.X <=_allign.Horizontal.TruePosition + _size.X && e.X >= _allign.Vertical.TruePosition && e.Y <= _allign.Vertical.TruePosition + _size.Y && e.Y >= _allign.Vertical.TruePosition)
             {
                 Pressed = true;
                 MousePressed?.Invoke();
@@ -209,18 +147,18 @@ namespace SfmlUI
             MousePosition.X = e.X;
             MousePosition.Y = e.Y;
         }
-
-
+        #endregion
+        #region Draw
         public void Draw()
         {
             
-            
+
             //Update();
 
             if (Pressed)
             {
                 MouseHeld?.Invoke();
-                if (!(MousePosition.X <= _position.X + _size.X && MousePosition.X >= _position.X && MousePosition.Y <= _position.Y + _size.Y && MousePosition.Y >= _position.Y))
+                if (!(MousePosition.X <= _allign.Horizontal.TruePosition + _size.X && MousePosition.X >= _allign.Horizontal.TruePosition && MousePosition.Y <= _allign.Vertical.TruePosition + _size.Y && MousePosition.Y >= _allign.Vertical.TruePosition))
                 {
                     Pressed = false;
                 }
@@ -229,7 +167,7 @@ namespace SfmlUI
             radio.FillColor = new Color(100, 100, 100);
             radio.OutlineThickness = 10;
             radio.OutlineColor = new Color(0, 0, 0);
-            radio.Position = _position;
+            radio.Position = new Vector2f(_allign.Horizontal.TruePosition, _allign.Vertical.TruePosition);
 
             if (_isVisible == true)
             {
@@ -240,6 +178,103 @@ namespace SfmlUI
                 
             }
         }
-        //private void OnMouseReleased(object sender, keyE)
+        #endregion
+        #region Align
+        public class Allign_
+        {
+            private static Horizontal_ _horizontal;
+            public Horizontal_ Horizontal;
+
+            private static Vertical_ _vertical;
+            public Vertical_ Vertical;
+            public Allign_(Vector2f Position,Vector2f Size)
+            {
+                _horizontal = new Horizontal_(Position.X, Size.X);
+                Horizontal = _horizontal;
+                _vertical = new Vertical_(Position.Y, Size.Y);
+                Vertical = _vertical;
+            }
+            
+            
+            public class Horizontal_
+            {
+                private float _size;
+                private float _position;
+                public float TruePosition
+                {
+                    get
+                    {
+                        return _position + _displacement;
+                    }
+                    private set
+                    {
+
+                    }
+                }
+                private float _displacement;
+                public Horizontal_(float Position, float Size)
+                {
+                    _size = Size;
+                    _position = Position;
+                }
+                public void Update(float Position, float Size)
+                {
+                    _size = Size;
+                    _position = Position;
+                }
+                public void Left()
+                {
+                    _displacement = 0;
+                }
+                public void Center()
+                {
+                    _displacement = -_size / 2;
+                }
+                public void Right()
+                {
+                    _displacement = -_size;
+                }
+            }
+            public class Vertical_
+            {
+                private float _size;
+                private float _position;
+                public float TruePosition
+                {
+                    get
+                    {
+                        return _position + _displacement;
+                    }
+                    private set
+                    {
+
+                    }
+                }
+                private float _displacement;
+                public Vertical_(float Position, float Size)
+                {
+                    _size = Size;
+                    _position = Position;
+                }
+                public void Update(float Position, float Size)
+                {
+                    _size = Size;
+                    _position = Position;
+                }
+                public void Top()
+                {
+                    _displacement = 0;
+                }
+                public void Center()
+                {
+                    _displacement = -_size / 2;
+                }
+                public void Buttom()
+                {
+                    _displacement = -_size;
+                }
+            }
+        }
+        #endregion
     }
 }
