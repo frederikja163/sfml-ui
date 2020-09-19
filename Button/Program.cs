@@ -17,7 +17,7 @@ namespace Button1
             _window = new RenderWindow(new VideoMode(1000, 1000), "Button");
             _button = new Button(_window, new Vector2f(_window.Size.X / 2f, _window.Size.Y / 2f), new Vector2f(400f, 400f));
             _window.Closed += WindowClosed;
-
+            _button.Allign.Horizontal.Center();
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
             

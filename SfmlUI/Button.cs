@@ -9,7 +9,8 @@ namespace SfmlUI
 {
     public class Button : IUiElement
     {
-        
+        private static Allign_ _allign;
+        public Allign_ Allign;
         
         public Button(RenderWindow Window, Vector2f Position, Vector2f Size)
         {
@@ -18,12 +19,58 @@ namespace SfmlUI
             _size = Size;
             //HorizontalAlign = alignHorizontal.Left;
             //VerticalAlign = alignVertical.Top;
-
-
+            _allign = new Allign_();
+            Allign = _allign;
 
             Update();
         }
+        public class Allign_
+        {
+            private static Horizontal_ _horizontal;
+            public Horizontal_ Horizontal;
 
+            private static Vertical_ _vertical;
+            public Vertical_ Vertical;
+            public Allign_() 
+            {
+                _horizontal = new Horizontal_();
+                Horizontal = _horizontal;
+                _vertical = new Vertical_();
+                Vertical = _vertical;
+            }
+            public class Horizontal_
+            {
+                public Horizontal_() { }
+                public void Left()
+                {
+
+                }
+                public void Center()
+                {
+
+                }
+                public void Right()
+                {
+
+                }
+            }
+            public class Vertical_
+            {
+                public Vertical_() { }
+                public void Top()
+                {
+
+                }
+                public void Center()
+                {
+
+                }
+                public void Buttom()
+                {
+
+                }
+            }
+        }
         private static RenderWindow _window;
         /*public enum alignHorizontal { Center, Left, Right };
         private alignHorizontal _horizontalAlign = alignHorizontal.Left;
