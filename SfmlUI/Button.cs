@@ -2,16 +2,58 @@
 using SFML.System;
 using SFML.Window;
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SfmlUI
 {
     public class Button : IUiElement
     {
         
+        
+        public Button(RenderWindow Window, Vector2f Position, Vector2f Size)
+        {
+            _window = Window;
+            _position = Position;
+            _size = Size;
+            //HorizontalAlign = alignHorizontal.Left;
+            //VerticalAlign = alignVertical.Top;
+
+
+
+            Update();
+        }
+
         private static RenderWindow _window;
+        /*public enum alignHorizontal { Center, Left, Right };
+        private alignHorizontal _horizontalAlign = alignHorizontal.Left;
+        public alignHorizontal HorizontalAlign {
+            get
+            {
+                return HorizontalAlign;
+            }
+            set
+            {
+                
+            }
+        }
+        void VerticalAlign.Top()
+        {
+
+        }
+        public enum alignVertical { Top, Center, Buttom };
+        private alignVertical _verticalAlign = alignVertical.Top;
+        public alignVertical VerticalAlign
+        {
+            get
+            {
+                return VerticalAlign;
+            }
+            set
+            {
+
+            }
+        }*/
         public RenderWindow Window
         {
             get
@@ -23,7 +65,7 @@ namespace SfmlUI
                 _window = value;
             }
         }
-        private bool _isVisible;
+        private bool _isVisible = true;
         public bool IsVisible 
         { 
             get 
@@ -48,28 +90,41 @@ namespace SfmlUI
                 _position = value;
             }
         }
-        private float _width;
-        public float Width
+       
+        private Vector2f _size;
+        public Vector2f Size
         {
             get
             {
-                return _width;
+                return _size;
             }
             set
             {
-                _width = value;
+                _size = value;
             }
         }
-        private float _height;
         public float Height
         {
             get
             {
-                return _height;
+                return _size.X;
+
             }
             set
             {
-                _height = value;
+                _size.X = value;
+            }
+        }
+        public float Width
+        {
+            get
+            {
+                return _size.Y;
+
+            }
+            set
+            {
+                _size.Y = value;
             }
         }
         public event Action MouseHeld;
@@ -78,12 +133,7 @@ namespace SfmlUI
             
             _window.MouseButtonReleased += OnMouseButtonRealeased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
-            _window.MouseMoved += OnMouseMoved;
-            if(Pressed)
-            {
-                MouseHeld?.Invoke();
-            }
-            
+            _window.MouseMoved += OnMouseMoved;            
         }
         public event Action MouseRealeased;
         bool Pressed;
@@ -99,36 +149,40 @@ namespace SfmlUI
         public event Action MousePressed;
         private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && e.X <=_position.X + _height && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y)
+            if (!Pressed && e.X <=_position.X + _size.X && e.X >= _position.X && e.Y <= _position.Y + _size.Y && e.Y >= _position.Y)
             {
                 Pressed = true;
                 MousePressed?.Invoke();
             }
             
         }
+        private Vector2f MousePosition;
         private void OnMouseMoved(Object? sender, MouseMoveEventArgs e)
         {
-            if (Pressed)
-            {
-                if (!(e.X <= _position.X + _height && e.X >= _position.X && e.Y <= _position.Y + _width && e.Y >= _position.Y))
-                {
-                    Pressed = false;
-                }
-            }
+            MousePosition.X = e.X;
+            MousePosition.Y = e.Y;
         }
 
 
         public void Draw()
         {
-            Update();
             
+            
+            //Update();
 
-            var radio = new RectangleShape(new Vector2f(_height, _width));
+            if (Pressed)
+            {
+                MouseHeld?.Invoke();
+                if (!(MousePosition.X <= _position.X + _size.X && MousePosition.X >= _position.X && MousePosition.Y <= _position.Y + _size.Y && MousePosition.Y >= _position.Y))
+                {
+                    Pressed = false;
+                }
+            }
+            var radio = new RectangleShape(_size);
             radio.FillColor = new Color(100, 100, 100);
             radio.OutlineThickness = 10;
             radio.OutlineColor = new Color(0, 0, 0);
             radio.Position = _position;
-            
 
             if (_isVisible == true)
             {
