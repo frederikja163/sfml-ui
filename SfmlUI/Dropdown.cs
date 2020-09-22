@@ -21,6 +21,7 @@ namespace SfmlUI
         private Shape _activeShape;
         private uint _fontSize = 0;
         private List<Text> _list = new List<Text>();
+        private Text _primedText;
 
         // nedarvede metoder
         public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
@@ -34,13 +35,6 @@ namespace SfmlUI
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
         public string ChosenItem { get { return _list[0].DisplayedString; } }
-
-
-        // private ekstra metoder
-        private float Right { get { return _position.X + _size.X; } }
-        private float Left { get { return _position.X; } }
-        private float Top { get { return _position.Y; } }
-        private float Bottom { get { return _position.Y + _size.Y; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -75,6 +69,7 @@ namespace SfmlUI
 
             // sæt event handler for musen
             _window.MouseButtonReleased += OnClick;
+            _window.MouseMoved += OnMove;
         }
 
         // Tegn objectet
@@ -97,8 +92,8 @@ namespace SfmlUI
             }
         }
 
-        // Click event
-        public void OnClick( object sender, MouseButtonEventArgs e)
+        // Mouse click event
+        public void OnClick(object sender, MouseButtonEventArgs e)
         {
             if (_isVisible && e.Button == Mouse.Button.Left && IsInside(e))
             {
@@ -115,10 +110,31 @@ namespace SfmlUI
             }
         }
 
+        // Mouse move event
+        public void OnMove(object sender, MouseMoveEventArgs e)
+        {
+            if (_active)
+            {
+                foreach (Text item in _list)
+                {
+                    if (item.GetGlobalBounds().Contains(e.X, e.Y))
+                    {
+
+                    }
+                }
+            }
+        }
+
         // Check om musen er indenfor feltet
         public bool IsInside(MouseButtonEventArgs e)
         {
-            return (e.X <= Right && e.X >= Left) && (e.Y <= Bottom && e.Y >= Top);
+            if (!_active)
+            {
+                return _shape.GetGlobalBounds().Contains(e.X, e.Y);
+            } else
+            {
+                return _activeShape.GetGlobalBounds().Contains(e.X, e.Y);
+            }
         }
     }
 }

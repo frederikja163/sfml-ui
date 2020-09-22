@@ -12,7 +12,7 @@ namespace Dropdown
             RenderWindow Window = new RenderWindow(VideoMode.DesktopMode, "Dropdown Sandbox", Styles.Titlebar | Styles.Close);
             RectangleShape Background = new RectangleShape(new SFML.System.Vector2f(Window.Size.X, Window.Size.Y));
             Background.Position = new SFML.System.Vector2f(0, 0);
-            Background.FillColor = Color.Cyan;
+            Background.FillColor = new Color(122,122,122,255);
             Window.Closed += OnClose;
             SfmlUI.Dropdown dropdown = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
                     "Lorem Ipsum",
