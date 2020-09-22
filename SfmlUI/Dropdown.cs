@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using SFML.Window;
 using SFML.Graphics;
 using SFML.System;
-using System.ComponentModel;
 using System.Linq;
 
 namespace SfmlUI

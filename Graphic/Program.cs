@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using SfmlUI;
 
 namespace Graphic
 {

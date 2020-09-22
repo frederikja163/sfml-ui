@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SFML.Graphics;
 using SFML.System;
 using System.Diagnostics;
-using SFML.Window;
 
 namespace SfmlUI
 {
