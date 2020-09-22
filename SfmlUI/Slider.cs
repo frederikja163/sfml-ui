@@ -2,10 +2,7 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using SFML.Window;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace SfmlUI
 {
