@@ -9,41 +9,30 @@ namespace Button1
     
     class Program
     {
-        //private readonly SfmlUI.Button _button;
+        
         private static RenderWindow _window;
         private static Button _button;
-        private static Button _knap;
         static void Main(string[] args)
         {
             _window = new RenderWindow(new VideoMode(1000, 1000), "Button");
-            _button = new Button();
-            _knap = new Button();
+            _button = new Button(_window, new Vector2f(_window.Size.X / 2f, _window.Size.Y / 2f), new Vector2f(400f, 400f));
             _window.Closed += WindowClosed;
-
+            _button.Allign.Horizontal.Center();
+            _button.Allign.Vertical.Buttom();
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
-            _button.IsVisible = true;
-            _button.Window = _window;
-            _button.Height = 400f;
-            _button.Width = 400f;
-            _button.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
+            
             _button.MousePressed += ButtonPressed;
             _button.MouseRealeased += ButtonReleased;
             _button.MouseHeld += ButtonHeld;
-            _knap.IsVisible = true;
-            _knap.Position = new Vector2f(0, 0);
-            _knap.Height = 200;
-            _knap.Width = 400;
-            _knap.MouseHeld += KnapHeld;
-            _knap.MousePressed += KnapHeld;
-            _knap.MouseRealeased += KnapReleased;
+            //_button.VerticalAlign.Top();
             while (_window.IsOpen)
             {
                 
                 _window.DispatchEvents();
                 _window.Clear();
                 _button.Draw();
-                _knap.Draw();
+                //_knap.Draw();
                 _window.Display();
                 
 
