@@ -20,10 +20,10 @@ namespace SfmlUI
         private Sprite _sprite;
         private Vector2f _pictPos;
         private readonly Stopwatch _watch = new Stopwatch();
-        private long _tid;
-        private long _blinkTid = 1000;
-        private Boolean _blinkOn = false;
-        private Boolean _isBlinking = false;
+        private long _time;
+        private long _flashTime = 1000;
+        private Boolean _flashOn = false;
+        private Boolean _isFlashing = false;
 
         // Four different constructors, to set up an instance of the class with different properties
         public Graphic(RenderWindow window, string filename, Vector2f position) :
@@ -69,7 +69,7 @@ namespace SfmlUI
             _sprite.Position = position;
             // Starting the timer tom implement Blink behavior
             _watch.Start();
-            _tid = _watch.ElapsedMilliseconds;
+            _time = _watch.ElapsedMilliseconds;
         }
 
         // Implementation of get and set standards for visible and changeable properties
@@ -108,29 +108,29 @@ namespace SfmlUI
         }
 
         // Methods for interfacing blinking behavior
-        public void Blink(long tid)
+        public void StartFlashing(long time)
         {
-            _blinkTid = tid;
-            _isBlinking = true;
-            _tid = _watch.ElapsedMilliseconds;
+            _flashTime = time;
+            _isFlashing = true;
+            _time = _watch.ElapsedMilliseconds;
         }
-        public void NoBlink()
+        public void StopFlashing()
         {
-            _isBlinking = false;
+            _isFlashing = false;
         }
 
         // Draw method that implements the displaying of the picture, handling visibility and blinking
         public void Draw()
         {
             if (_isVisible) {
-                if (_isBlinking)
+                if (_isFlashing)
                 {
-                    if (_watch.ElapsedMilliseconds - _tid > _blinkTid)
+                    if (_watch.ElapsedMilliseconds - _time > _flashTime)
                     {
-                        _tid += _blinkTid;
-                        _blinkOn = !_blinkOn;
+                        _time += _flashTime;
+                        _flashOn = !_flashOn;
                     }
-                    if (_blinkOn)
+                    if (_flashOn)
                     {
                         _window.Draw(_sprite);
                     }
