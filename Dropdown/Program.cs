@@ -1,7 +1,6 @@
 ﻿using System;
 using SFML.Graphics;
 using SFML.Window;
-using SfmlUI;
 
 namespace Dropdown
 {

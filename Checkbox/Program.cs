@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Security;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using SfmlUI;
@@ -18,14 +15,12 @@ namespace CheckboxSandkasse
             window.SetVerticalSyncEnabled(true);
             window.Closed += (_,__) => window.Close();
             
-            Checkbox checkbox = new Checkbox(window);
-            checkbox.Position = new Vector2f(150, 150);
+            Checkbox checkbox = new Checkbox(window, new Vector2f(150, 150));
             checkbox.Width = 250;
             checkbox.Height = 250;
             checkbox.CrossThickness = 20f;
             
-            Checkbox checkbox2 = new Checkbox(window);
-            checkbox2.Position = checkbox.Position + new Vector2f(checkbox.Width + 50, 0);
+            Checkbox checkbox2 = new Checkbox(window, checkbox.Position + new Vector2f(checkbox.Width + 50, 0));
             checkbox2.Width = 150;
             checkbox2.Height = 400;
             checkbox2.CrossThickness = 10f;
@@ -33,8 +28,7 @@ namespace CheckboxSandkasse
             checkbox2.FillColor = Color.Magenta;
             checkbox2.IsChecked = true;
             
-            Checkbox checkbox3 = new Checkbox(window);
-            checkbox3.Position = checkbox2.Position + new Vector2f(checkbox2.Width + 50, 0);
+            Checkbox checkbox3 = new Checkbox(window, checkbox2.Position + new Vector2f(checkbox2.Width + 50, 0));
             checkbox3.Width = 500;
             checkbox3.Height = 100;
             checkbox3.CrossThickness = 10f;
@@ -42,8 +36,7 @@ namespace CheckboxSandkasse
             checkbox3.FillColor = Color.Blue;
             checkbox3.IsChecked = true;
 
-            Checkbox checkbox4 = new Checkbox(window);
-            checkbox4.Position = checkbox3.Position + new Vector2f(0, checkbox3.Height + 50);
+            Checkbox checkbox4 = new Checkbox(window, checkbox3.Position + new Vector2f(0, checkbox3.Height + 50));
             checkbox4.Width = 500;
             checkbox4.Height = 400;
             checkbox4.CrossThickness = 75f;
