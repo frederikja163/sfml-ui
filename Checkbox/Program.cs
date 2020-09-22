@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Security;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using SfmlUI;

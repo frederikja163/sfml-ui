@@ -2,10 +2,6 @@
 using SFML.System;
 using SFML.Window;
 using System;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 
 namespace SfmlUI
 {
