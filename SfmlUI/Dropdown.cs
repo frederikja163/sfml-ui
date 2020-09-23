@@ -106,6 +106,7 @@ namespace SfmlUI
                     int occurence = _list.IndexOf(_primedText);
                     _list[occurence] = tempHolder;
                     _list[0] = _primedText;
+                    _list[0].Color = _textColor;
 
                     // Adjusting positions of item
                     for (int i = 0; i < _list.Count(); i++)
