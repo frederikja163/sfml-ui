@@ -8,23 +8,68 @@ namespace SfmlUI
     public class Button : IUiElement
     {
         #region Constructer
-        private static Allign_ _allign;
-        public Allign_ Allign;
-        
+        public Origin Origin;
+
         public Button(RenderWindow Window, Vector2f Position, Vector2f Size)
         {
             _window = Window;
             _position = Position;
             _size = Size;
-            _allign = new Allign_(_position,_size);
-            Allign = _allign;
+            Origin = new Origin(_position, _size);
 
-            Update();
+            Actions();
         }
         #endregion
-        #region variabels
-        private static RenderWindow _window;
-       
+        #region Properties & Fields
+        private Color _innerColor = new Color(255, 0, 0);
+        public Color InnerColor
+        {
+            get
+            {
+                return _innerColor;
+            }
+            set
+            {
+                _innerColor = value;
+            }
+        }
+        private Color _outerColor = new Color(100, 100, 100);
+        public Color OuterColor
+        {
+            get
+            {
+                return _outerColor;
+            }
+            set
+            {
+                _outerColor = value;
+            }
+        }
+        private Color _outerOutlineColor = new Color(0, 0, 0);
+        public Color OuterOutlineColor
+        {
+            get
+            {
+                return _outerOutlineColor;
+            }
+            set
+            {
+                _outerOutlineColor = value;
+            }
+        }
+        private Color _centerOutlineColor = new Color(0, 0, 0);
+        public Color CenterOutlineColor
+        {
+            get
+            {
+                return _centerOutlineColor;
+            }
+            set
+            {
+                _centerOutlineColor = value;
+            }
+        }
+        private RenderWindow _window;
         public RenderWindow Window
         {
             get
@@ -37,17 +82,17 @@ namespace SfmlUI
             }
         }
         private bool _isVisible = true;
-        public bool IsVisible 
-        { 
-            get 
-            { 
-                return _isVisible; 
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
 
-            } 
-            set 
-            { 
+            }
+            set
+            {
                 _isVisible = value;
-            } 
+            }
         }
         private Vector2f _position;
         public Vector2f Position
@@ -59,12 +104,11 @@ namespace SfmlUI
             set
             {
                 _position = value;
-                _allign.Horizontal.Update(_position.X, Size.X);
-                _allign.Vertical.Update(_position.Y, Size.Y);
+                Origin.Position = value;
 
             }
         }
-       
+
         private Vector2f _size;
         public Vector2f Size
         {
@@ -75,8 +119,7 @@ namespace SfmlUI
             set
             {
                 _size = value;
-                _allign.Horizontal.Update(_position.X, Size.X);
-                _allign.Vertical.Update(_position.Y, Size.Y);
+                Origin.Size = value;
             }
         }
         public float Height
@@ -89,7 +132,6 @@ namespace SfmlUI
             set
             {
                 _size.X = value;
-                _allign.Vertical.Update(_position.Y, Size.Y);
             }
         }
         public float Width
@@ -102,40 +144,38 @@ namespace SfmlUI
             set
             {
                 _size.Y = value;
-                _allign.Horizontal.Update(_position.X, Size.X);
             }
         }
-        
         #endregion
         #region Actions
         public event Action MouseHeld;
-        private void Update()
+        private void Actions()
         {
-            
+
             _window.MouseButtonReleased += OnMouseButtonRealeased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
-            _window.MouseMoved += OnMouseMoved;            
+            _window.MouseMoved += OnMouseMoved;
         }
         public event Action MouseRealeased;
         bool Pressed;
         private void OnMouseButtonRealeased(Object? sender, MouseButtonEventArgs e)
         {
-            if(Pressed)
+            if (Pressed)
             {
                 Pressed = false;
                 MouseRealeased?.Invoke();
             }
-            
+
         }
         public event Action MousePressed;
         private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && e.X <=_allign.Horizontal.TruePosition + _size.X && e.X >= _allign.Vertical.TruePosition && e.Y <= _allign.Vertical.TruePosition + _size.Y && e.Y >= _allign.Vertical.TruePosition)
+            if (!Pressed && e.X <= Origin.Horizontal.TruePosition + _size.X && e.X >= Origin.Horizontal.TruePosition && e.Y <= Origin.Vertical.TruePosition + _size.Y && e.Y >= Origin.Vertical.TruePosition)
             {
                 Pressed = true;
                 MousePressed?.Invoke();
             }
-            
+
         }
         private Vector2f MousePosition;
         private void OnMouseMoved(Object? sender, MouseMoveEventArgs e)
@@ -147,130 +187,52 @@ namespace SfmlUI
         #region Draw
         public void Draw()
         {
-            
-
-            //Update();
-
             if (Pressed)
             {
                 MouseHeld?.Invoke();
-                if (!(MousePosition.X <= _allign.Horizontal.TruePosition + _size.X && MousePosition.X >= _allign.Horizontal.TruePosition && MousePosition.Y <= _allign.Vertical.TruePosition + _size.Y && MousePosition.Y >= _allign.Vertical.TruePosition))
+                if (!(MousePosition.X <= Origin.TruePosition.X + _size.X &&
+                    MousePosition.X >= Origin.TruePosition.X &&
+                    MousePosition.Y <= Origin.TruePosition.Y + _size.Y &&
+                    MousePosition.Y >= Origin.TruePosition.Y))
                 {
                     Pressed = false;
                 }
             }
-            var radio = new RectangleShape(_size);
-            radio.FillColor = new Color(100, 100, 100);
-            radio.OutlineThickness = 10;
-            radio.OutlineColor = new Color(0, 0, 0);
-            radio.Position = new Vector2f(_allign.Horizontal.TruePosition, _allign.Vertical.TruePosition);
+            var Outer = new RectangleShape(_size);
+            Outer.FillColor = _outerColor;
+            Outer.OutlineThickness = 1;
+            Outer.OutlineColor = _outerOutlineColor;
+            Outer.Position = Origin.TruePosition;
+
+
+            var Center = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
+            Center.FillColor = _innerColor;
+            Center.OutlineThickness = 3;
+            Center.OutlineColor = _centerOutlineColor;
+            Center.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                Origin.TruePosition.Y + 0.05f * _size.Y);
+
+            var CenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
+            CenterPressed.FillColor = _innerColor;
+            CenterPressed.OutlineThickness = 3;
+            CenterPressed.OutlineColor = _centerOutlineColor;
+            CenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                Origin.TruePosition.Y + 0.075f * _size.Y);
 
             if (_isVisible == true)
             {
-                
-
-                _window.Draw(radio);
-                
-                
-            }
-        }
-        #endregion
-        #region Align
-        public class Allign_
-        {
-            private static Horizontal_ _horizontal;
-            public Horizontal_ Horizontal;
-
-            private static Vertical_ _vertical;
-            public Vertical_ Vertical;
-            public Allign_(Vector2f Position,Vector2f Size)
-            {
-                _horizontal = new Horizontal_(Position.X, Size.X);
-                Horizontal = _horizontal;
-                _vertical = new Vertical_(Position.Y, Size.Y);
-                Vertical = _vertical;
-            }
-            
-            
-            public class Horizontal_
-            {
-                private float _size;
-                private float _position;
-                public float TruePosition
+                _window.Draw(Outer);
+                if (!Pressed)
                 {
-                    get
-                    {
-                        return _position + _displacement;
-                    }
-                    private set
-                    {
-
-                    }
+                    _window.Draw(Center);
                 }
-                private float _displacement;
-                public Horizontal_(float Position, float Size)
+                else
                 {
-                    _size = Size;
-                    _position = Position;
-                }
-                public void Update(float Position, float Size)
-                {
-                    _size = Size;
-                    _position = Position;
-                }
-                public void Left()
-                {
-                    _displacement = 0;
-                }
-                public void Center()
-                {
-                    _displacement = -_size / 2;
-                }
-                public void Right()
-                {
-                    _displacement = -_size;
-                }
-            }
-            public class Vertical_
-            {
-                private float _size;
-                private float _position;
-                public float TruePosition
-                {
-                    get
-                    {
-                        return _position + _displacement;
-                    }
-                    private set
-                    {
-
-                    }
-                }
-                private float _displacement;
-                public Vertical_(float Position, float Size)
-                {
-                    _size = Size;
-                    _position = Position;
-                }
-                public void Update(float Position, float Size)
-                {
-                    _size = Size;
-                    _position = Position;
-                }
-                public void Top()
-                {
-                    _displacement = 0;
-                }
-                public void Center()
-                {
-                    _displacement = -_size / 2;
-                }
-                public void Buttom()
-                {
-                    _displacement = -_size;
+                    _window.Draw(CenterPressed);
                 }
             }
         }
-        #endregion
     }
+
 }
+#endregion
