@@ -19,6 +19,8 @@ namespace SfmlUI
         private uint _fontSize = 0;
         private List<Text> _list = new List<Text>();
         private Text _primedText;
+        private Color _textColor = new Color(0, 0, 0, 255);
+        private Color _highlightColor = new Color(100, 100, 100, 100);
 
         // nedarvede metoder
         public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
@@ -31,7 +33,7 @@ namespace SfmlUI
 
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
-        public string ChosenItem { get { return _list[0].DisplayedString; } }
+        public string GetChosenItem { get { return _list[0].DisplayedString; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -99,6 +101,18 @@ namespace SfmlUI
                     _active = true;
                 } else
                 {
+                    // Selection of highlighted item
+                    Text tempHolder = _list[0];
+                    int occurence = _list.IndexOf(_primedText);
+                    _list[occurence] = tempHolder;
+                    _list[0] = _primedText;
+
+                    // Adjusting positions of items
+
+                    for (int i=0; i<_list.Count(); i++)
+                    {
+                        _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+                    }
 
                 }
             } else
@@ -114,9 +128,14 @@ namespace SfmlUI
             {
                 foreach (Text item in _list)
                 {
+                    // Highlighting of item
                     if (item.GetGlobalBounds().Contains(e.X, e.Y))
                     {
-
+                        _primedText = item;
+                        item.FillColor = _highlightColor;
+                    } else
+                    {
+                        item.FillColor = _textColor;
                     }
                 }
             }
