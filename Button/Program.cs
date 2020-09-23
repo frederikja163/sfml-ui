@@ -9,7 +9,8 @@ namespace Button1
 
     class Program
     {
-
+        
+        
         private static RenderWindow _window;
         private static Button _button;
 
@@ -17,8 +18,9 @@ namespace Button1
         {
             _window = new RenderWindow(new VideoMode(1000, 1000), "Button");
             _button = new Button(_window, new Vector2f(_window.Size.X / 2f, _window.Size.Y / 2f),
-                new Vector2f(200f, 400f));
+                new Vector2f(400f, 400f));
             _window.Closed += WindowClosed;
+            _button.Shape = Button.Shapes.Circle;
             _button.Origin.Horizontal.Center();
             _button.Origin.Vertical.Center();
             _window.SetFramerateLimit(60);
@@ -27,7 +29,6 @@ namespace Button1
             _button.MousePressed += ButtonPressed;
             _button.MouseRealeased += ButtonReleased;
             _button.MouseHeld += ButtonHeld;
-
             //_button.VerticalAlign.Top();
             while (_window.IsOpen)
             {
@@ -37,9 +38,7 @@ namespace Button1
                 _button.Draw();
                 _window.Display();
 
-                {
-
-                }
+                
 
             }
         }
@@ -60,6 +59,7 @@ namespace Button1
             //_button.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
 
             Console.WriteLine("u have released the button");
+            
         }
 
         private static void WindowClosed(object sender, EventArgs e)

@@ -9,6 +9,8 @@ namespace SfmlUI
     {
         #region Constructer
         public Origin Origin;
+        
+        
 
         public Button(RenderWindow Window, Vector2f Position, Vector2f Size)
         {
@@ -16,7 +18,7 @@ namespace SfmlUI
             _position = Position;
             _size = Size;
             Origin = new Origin(_position, _size);
-
+            _Size = Size;
             Actions();
         }
         #endregion
@@ -108,7 +110,7 @@ namespace SfmlUI
 
             }
         }
-
+       
         private Vector2f _size;
         public Vector2f Size
         {
@@ -118,8 +120,16 @@ namespace SfmlUI
             }
             set
             {
-                _size = value;
-                Origin.Size = value;
+                if (_shape == Shapes.Rectangle)
+                {
+                    _size = value;
+                    Origin.Size = new Vector2f(value.X, value.Y);
+                }
+                else
+                {
+                    Origin.Size = new Vector2f(value.X, value.X);
+                }
+                _Size = value;
             }
         }
         public float Height
@@ -144,6 +154,7 @@ namespace SfmlUI
             set
             {
                 _size.Y = value;
+                _Size.Y = value;
             }
         }
         #endregion
@@ -152,9 +163,12 @@ namespace SfmlUI
         private void Actions()
         {
 
+
             _window.MouseButtonReleased += OnMouseButtonRealeased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
             _window.MouseMoved += OnMouseMoved;
+
+            
         }
         public event Action MouseRealeased;
         bool Pressed;
@@ -170,7 +184,7 @@ namespace SfmlUI
         public event Action MousePressed;
         private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && e.X <= Origin.Horizontal.TruePosition + _size.X && e.X >= Origin.Horizontal.TruePosition && e.Y <= Origin.Vertical.TruePosition + _size.Y && e.Y >= Origin.Vertical.TruePosition)
+            if (!Pressed && IsInside(e.X,e.Y))
             {
                 Pressed = true;
                 MousePressed?.Invoke();
@@ -183,52 +197,132 @@ namespace SfmlUI
             MousePosition.X = e.X;
             MousePosition.Y = e.Y;
         }
+        public bool IsInside(float ex, float ey)
+        {
+            if(Shapes.Rectangle == _shape)
+            {
+                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
+            }
+            else
+            {
+                if (Math.Pow(ex - Origin.TruePosition.X - Size.X/2, 2) + Math.Pow(ey - Origin.TruePosition.Y - Size.X/2, 2) <=
+                    Math.Pow(Size.X/2, 2))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         #endregion
         #region Draw
+        private Vector2f _Size;
+        public enum Shapes
+        {
+            Rectangle = 0,
+            Circle = 1
+        }
+        private Shapes _shape;
+        public Shapes Shape
+        {
+            get
+            {
+                return _shape;
+            }
+            set
+            {
+                _shape = value;
+                if(value == Shapes.Circle)
+                {
+                    Size = new Vector2f(Size.X, Size.X);
+                }
+                _size = _Size;
+            }
+        }
+
+
+        private RectangleShape _rectangleOuter;
         public void Draw()
         {
+            var RectangleOuter = new RectangleShape(_size);
+            RectangleOuter.FillColor = _outerColor;
+            RectangleOuter.OutlineThickness = 1;
+            RectangleOuter.OutlineColor = _outerOutlineColor;
+            RectangleOuter.Position = Origin.TruePosition;
+            _rectangleOuter = RectangleOuter;
+
+
+            var RectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
+            RectangleCenter.FillColor = _innerColor;
+            RectangleCenter.OutlineThickness = 3;
+            RectangleCenter.OutlineColor = _centerOutlineColor;
+            RectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                Origin.TruePosition.Y + 0.05f * _size.Y);
+
+            var RectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
+            RectangleCenterPressed.FillColor = _innerColor;
+            RectangleCenterPressed.OutlineThickness = 3;
+            RectangleCenterPressed.OutlineColor = _centerOutlineColor;
+            RectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                Origin.TruePosition.Y + 0.075f * _size.Y);
+
+            var CircleOuter = new CircleShape(_size.X/2);
+            CircleOuter.FillColor = _outerColor;
+            CircleOuter.OutlineThickness = 1;
+            CircleOuter.OutlineColor = _outerOutlineColor;
+            CircleOuter.Position = Origin.TruePosition;
+
+            var CircleCenter = new CircleShape(_size.X * 0.9f/2);
+            CircleCenter.FillColor = _innerColor;
+            CircleCenter.OutlineThickness = 3;
+            CircleCenter.OutlineColor = _centerOutlineColor;
+            CircleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                Origin.TruePosition.Y + 0.05f * _size.X);
+
+            var CircleCenterPressed = new CircleShape(_size.X * 0.85f/2);
+            CircleCenterPressed.FillColor = _innerColor;
+            CircleCenterPressed.OutlineThickness = 3;
+            CircleCenterPressed.OutlineColor = _centerOutlineColor;
+            CircleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                Origin.TruePosition.Y + 0.075f * _size.X);
             if (Pressed)
             {
                 MouseHeld?.Invoke();
-                if (!(MousePosition.X <= Origin.TruePosition.X + _size.X &&
-                    MousePosition.X >= Origin.TruePosition.X &&
-                    MousePosition.Y <= Origin.TruePosition.Y + _size.Y &&
-                    MousePosition.Y >= Origin.TruePosition.Y))
+                if (!IsInside(MousePosition.X, MousePosition.Y))
                 {
                     Pressed = false;
                 }
             }
-            var Outer = new RectangleShape(_size);
-            Outer.FillColor = _outerColor;
-            Outer.OutlineThickness = 1;
-            Outer.OutlineColor = _outerOutlineColor;
-            Outer.Position = Origin.TruePosition;
-
-
-            var Center = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-            Center.FillColor = _innerColor;
-            Center.OutlineThickness = 3;
-            Center.OutlineColor = _centerOutlineColor;
-            Center.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                Origin.TruePosition.Y + 0.05f * _size.Y);
-
-            var CenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
-            CenterPressed.FillColor = _innerColor;
-            CenterPressed.OutlineThickness = 3;
-            CenterPressed.OutlineColor = _centerOutlineColor;
-            CenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-                Origin.TruePosition.Y + 0.075f * _size.Y);
+            
 
             if (_isVisible == true)
             {
-                _window.Draw(Outer);
-                if (!Pressed)
+                if (_shape == Shapes.Rectangle)
                 {
-                    _window.Draw(Center);
+                    _window.Draw(RectangleOuter);
+                    if (!Pressed)
+                    {
+                        _window.Draw(RectangleCenter);
+                    }
+                    else
+                    {
+                        _window.Draw(RectangleCenterPressed);
+                    }
                 }
                 else
                 {
-                    _window.Draw(CenterPressed);
+                    _window.Draw(CircleOuter);
+                    if (!Pressed)
+                    {
+                        _window.Draw(CircleCenter);
+                    }
+                    else
+                    {
+                        _window.Draw(CircleCenterPressed);
+                    }
                 }
             }
         }
@@ -236,3 +330,5 @@ namespace SfmlUI
 
 }
 #endregion
+
+
