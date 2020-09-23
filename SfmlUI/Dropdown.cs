@@ -106,9 +106,9 @@ namespace SfmlUI
                     int occurence = _list.IndexOf(_primedText);
                     _list[occurence] = tempHolder;
                     _list[0] = _primedText;
-                    _list[0].Color = _textColor;
+                    _list[0].FillColor = _textColor;
 
-                    // Adjusting positions of item
+                    // Adjusting position of items
                     for (int i = 0; i < _list.Count(); i++)
                     {
                         _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
@@ -154,5 +154,42 @@ namespace SfmlUI
                 return _activeShape.GetGlobalBounds().Contains(e.X, e.Y);
             }
         }
+
+        // Customization functions
+        private void setFontColor(Color color)
+        {
+            foreach (Text item in _list) { item.FillColor = color; }
+            _textColor = color;
+        }
+
+        private void setBackgroundColor(Color color)
+        {
+            _shape.FillColor = color;
+            _activeShape.FillColor = color;
+        }
+
+        private void setOutlineColor(Color color)
+        {
+            _shape.OutlineColor = color;
+            _activeShape.OutlineColor = color;
+        }
+
+        private void setOutlineThickness(float percent)
+        {
+            _shape.OutlineThickness = 2 * (percent / 100);
+            _activeShape.OutlineThickness = 2 * (percent / 100);
+        }
+
+        // public customization methods
+        public Color FontColor { get { return _textColor; } set { setFontColor(value); } }
+        public Color BackgroundColor { get { return _shape.FillColor; } set { setBackgroundColor(value); } }
+        public Color OutlineColor { get { return _shape.OutlineColor; } set { setOutlineColor(value); } }
+        public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
+        public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
+
+
+
+
+
     }
 }
