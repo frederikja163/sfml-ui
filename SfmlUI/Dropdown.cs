@@ -107,13 +107,14 @@ namespace SfmlUI
                     _list[occurence] = tempHolder;
                     _list[0] = _primedText;
 
-                    // Adjusting positions of items
-
-                    for (int i=0; i<_list.Count(); i++)
+                    // Adjusting positions of item
+                    for (int i = 0; i < _list.Count(); i++)
                     {
                         _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
                     }
 
+                    // deactivaing dropdown
+                    _active = false;
                 }
             } else
             {
