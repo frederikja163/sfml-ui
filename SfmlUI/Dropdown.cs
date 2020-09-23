@@ -25,11 +25,11 @@ namespace SfmlUI
         // nedarvede metoder
         public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
 
-        public Vector2f Position { get { return _position; } }
+        public Vector2f Position { get { return _position; } set { setPosition(value); } }
 
-        public float Width { get { return _size.X; } }
+        public float Width { get { return _shape.GetGlobalBounds().Width; } }
 
-        public float Height { get { return _size.Y; } }
+        public float Height { get { if (_active) { return _activeShape.GetGlobalBounds().Height; } else { return _shape.GetGlobalBounds().Height; } } }
 
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
@@ -130,7 +130,7 @@ namespace SfmlUI
             {
                 foreach (Text item in _list)
                 {
-                    // Highlighting of item
+                    // Check if mouse is on item and highlighting of item
                     if (item.GetGlobalBounds().Contains(e.X, e.Y))
                     {
                         _primedText = item;
@@ -143,7 +143,7 @@ namespace SfmlUI
             }
         }
 
-        // Check om musen er indenfor feltet
+        // Check if mouse is inside shape
         public bool IsInside(MouseButtonEventArgs e)
         {
             if (!_active)
@@ -187,9 +187,16 @@ namespace SfmlUI
         public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
         public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
 
-
-
-
-
+        // private positioning function
+        public void setPosition(Vector2f pos)
+        {
+            _position = pos;
+            _shape.Position = pos;
+            _activeShape.Position = pos;
+            for (int i = 0; i < _list.Count(); i++)
+            {
+                _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+            }
+        }
     }
 }
