@@ -8,16 +8,15 @@ namespace SfmlUI
     {
         private RenderWindow Window { get; }
 
-        public TextInput(RenderWindow window, Vector2f position, float width, float height, Font font, bool isVisible = true)
+        public TextInput(RenderWindow window, Vector2f position, float width, float height, Font font, string initialText = "")
         {
             Window = window;
-            IsVisible = isVisible;
             Position = position;
             Height = height;
             Width = width;
             _Font = font;
-            Text = "";
-            _Cursor = 0;
+            Text = initialText;
+            _Cursor = initialText.Length;
 
             _VerticalPadding = Height / 10;
             _HorizontalPadding = _VerticalPadding;
@@ -26,23 +25,23 @@ namespace SfmlUI
             window.MouseButtonReleased += OnMouseReleasedHandler;
         }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
         public Vector2f Position { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
 
         public string Text { get; private set; }
-        public Color BackgroundColor { get; set; }
-        public Color TextColor { get; set; }
+        public Color FieldColor { get; set; } = Color.White;
+        public Color TextColor { get; set; } = Color.Black;
+        public Color OutlineColor { get; set; } = new Color(194, 197, 204);
+
         private Font _Font { get; }
 
         private int _Cursor { get; set; }
-        private bool _CursorVisible { get; } = true;
         private bool _IsFocused { get; set; } = false;
 
         private float _HorizontalPadding { get; }
         private float _VerticalPadding { get; }
-
 
         private char[] _KeyMapper { get; } = {
             'A',
@@ -87,7 +86,7 @@ namespace SfmlUI
         {
             if (IsVisible)
             {
-                Text text = new Text(Text, _Font, (uint)((Height - 2 * _VerticalPadding))) { Position = Position + new Vector2f(_HorizontalPadding, 0), FillColor = Color.Black };
+                Text text = new Text(Text, _Font, (uint)((Height - 2 * _VerticalPadding))) { Position = Position + new Vector2f(_HorizontalPadding, 0), FillColor = TextColor };
 
 
                 var newCursor = _Cursor;
@@ -113,23 +112,23 @@ namespace SfmlUI
 
                 RectangleShape textField = new RectangleShape()
                 {
-                    FillColor = BackgroundColor,
+                    FillColor = FieldColor,
                     Position = Position,
                     Size = new Vector2f(Width, Height),
-                    OutlineColor = new Color(194, 197, 204),
+                    OutlineColor = OutlineColor,
                     OutlineThickness = _IsFocused ? _VerticalPadding : 0,
                 };
 
                 Window.Draw(textField);
                 Window.Draw(text);
 
-                if (_IsFocused && _CursorVisible)
+                if (_IsFocused)
                 {
                     var cursor = new RectangleShape()
                     {
                         Position = text.FindCharacterPos((uint)newCursor) + Position + new Vector2f(_HorizontalPadding, _VerticalPadding),
                         Size = new Vector2f(cursorWidth, Height - 2 * _VerticalPadding),
-                        FillColor = Color.Black
+                        FillColor = TextColor
                     };
 
                     Window.Draw(cursor);
@@ -146,8 +145,8 @@ namespace SfmlUI
 
         private void OnPressedHandler(object sender, KeyEventArgs e)
         {
-            System.Console.WriteLine("cursor: " + _Cursor.ToString());
-            System.Console.WriteLine("text: " + Text);
+            // System.Console.WriteLine("cursor: " + _Cursor.ToString());
+            // System.Console.WriteLine("text: " + Text);
 
             if (_IsFocused)
             {
@@ -179,7 +178,13 @@ namespace SfmlUI
                 }
             }
 
-            System.Console.WriteLine((int)e.Code);
+            // System.Console.WriteLine((int)e.Code);
+        }
+
+        public void SetText(string newText)
+        {
+            Text = newText;
+            _Cursor = newText.Length;
         }
 
         private void AddToText(string addtion)

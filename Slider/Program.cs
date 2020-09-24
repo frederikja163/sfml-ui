@@ -25,7 +25,6 @@ namespace Slider1
                 _window.DispatchEvents();
                 _window.Clear();
 
-
                 _slider.Draw();
                 _window.Display();
             }

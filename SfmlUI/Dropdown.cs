@@ -186,7 +186,7 @@ namespace SfmlUI
         }
 
         // public customization methods
-        public Color FontColor { get { return _textColor; } set { setFontColor(value); } }
+        public Color TextColor { get { return _textColor; } set { setFontColor(value); } }
         public Color BackgroundColor { get { return _shape.FillColor; } set { setBackgroundColor(value); } }
         public Color OutlineColor { get { return _shape.OutlineColor; } set { setOutlineColor(value); } }
         public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
