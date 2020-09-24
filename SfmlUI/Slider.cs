@@ -104,7 +104,7 @@ namespace SfmlUI
         {
             get
             {
-                return (_handlePos.X - Position.X) / _width;
+                return (_handlePos.X - Position.X-(_width/20)) / _width*22.22f/20f;
             }
         }
 
@@ -145,14 +145,12 @@ namespace SfmlUI
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(mousePos.X, _position.Y);
-                Console.WriteLine(Value);
                 return true;
             }
             else if (mousePos.X >= _position.X && mousePos.X <= _position.X + hwidth &&
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(_position.X + hwidth, _position.Y);
-                Console.WriteLine(Value);
                 return true;
             }
 
@@ -160,7 +158,6 @@ namespace SfmlUI
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(_position.X + _width - hwidth, _position.Y);
-                Console.WriteLine(Value);
                 return true;
             }
             return false;
