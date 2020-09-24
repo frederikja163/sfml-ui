@@ -90,6 +90,12 @@ namespace SfmlUI
             }
         }
 
+        // Toggle object visibility
+        public void Toggle()
+        {
+            if (_isVisible) { _isVisible = false; } else { _isVisible = true; }
+        }
+
         // Mouse click event
         public void OnClick(object sender, MouseButtonEventArgs e)
         {
