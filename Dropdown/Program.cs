@@ -88,6 +88,7 @@ namespace Dropdown
             dropdown4.FontColor = Color.Cyan;
             dropdown4.HighlightColor = Color.Red;
             dropdown4.BackgroundColor = Color.Black;
+            dropdown4.Position = new SFML.System.Vector2f(1000, 200);
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -99,7 +100,8 @@ namespace Dropdown
                 dropdown2.Draw();
                 dropdown3.Draw();
                 dropdown4.Draw();
-
+                Console.Write("dropdown 1: " + dropdown.ChosenItem + "     dropdown 2: " + dropdown2.ChosenItem);
+                Console.Write("     dropdown 3: " + dropdown3.ChosenItem + "     dropdown 4: " + dropdown4.ChosenItem + "\n");
 
                 Window.Display();         
             }

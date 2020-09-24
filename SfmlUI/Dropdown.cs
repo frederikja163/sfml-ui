@@ -32,8 +32,7 @@ namespace SfmlUI
         public float Height { get { if (_active) { return _activeShape.GetGlobalBounds().Height; } else { return _shape.GetGlobalBounds().Height; } } }
 
         // public ekstra metoder
-        public Shape Shape { get { return _shape; } set { _shape = value; } }
-        public string GetChosenItem { get { return _list[0].DisplayedString; } }
+        public string ChosenItem { get { return _list[0].DisplayedString; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -89,6 +88,12 @@ namespace SfmlUI
                     _window.Draw(_list[0]);
                 }
             }
+        }
+
+        // Toggle object visibility
+        public void Toggle()
+        {
+            if (_isVisible) { _isVisible = false; } else { _isVisible = true; }
         }
 
         // Mouse click event
@@ -155,7 +160,7 @@ namespace SfmlUI
             }
         }
 
-        // Customization functions
+        // Customization methods
         private void setFontColor(Color color)
         {
             foreach (Text item in _list) { item.FillColor = color; }
@@ -187,8 +192,8 @@ namespace SfmlUI
         public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
         public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
 
-        // private positioning function
-        public void setPosition(Vector2f pos)
+        // private positioning method
+        private void setPosition(Vector2f pos)
         {
             _position = pos;
             _shape.Position = pos;
