@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using SFML.Window;
 using SFML.Graphics;
 using SFML.System;
-using System.ComponentModel;
 using System.Linq;
 
 namespace SfmlUI
@@ -21,26 +18,22 @@ namespace SfmlUI
         private Shape _activeShape;
         private uint _fontSize = 0;
         private List<Text> _list = new List<Text>();
+        private Text _primedText;
+        private Color _textColor = new Color(0, 0, 0, 255);
+        private Color _highlightColor = new Color(100, 100, 100, 100);
 
         // nedarvede metoder
         public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
 
-        public Vector2f Position { get { return _position; } }
+        public Vector2f Position { get { return _position; } set { setPosition(value); } }
 
-        public float Width { get { return _size.X; } }
+        public float Width { get { return _shape.GetGlobalBounds().Width; } }
 
-        public float Height { get { return _size.Y; } }
+        public float Height { get { if (_active) { return _activeShape.GetGlobalBounds().Height; } else { return _shape.GetGlobalBounds().Height; } } }
 
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
-        public string ChosenItem { get { return _list[0].DisplayedString; } }
-
-
-        // private ekstra metoder
-        private float Right { get { return _position.X + _size.X; } }
-        private float Left { get { return _position.X; } }
-        private float Top { get { return _position.Y; } }
-        private float Bottom { get { return _position.Y + _size.Y; } }
+        public string GetChosenItem { get { return _list[0].DisplayedString; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -75,6 +68,7 @@ namespace SfmlUI
 
             // sæt event handler for musen
             _window.MouseButtonReleased += OnClick;
+            _window.MouseMoved += OnMove;
         }
 
         // Tegn objectet
@@ -97,8 +91,8 @@ namespace SfmlUI
             }
         }
 
-        // Click event
-        public void OnClick( object sender, MouseButtonEventArgs e)
+        // Mouse click event
+        public void OnClick(object sender, MouseButtonEventArgs e)
         {
             if (_isVisible && e.Button == Mouse.Button.Left && IsInside(e))
             {
@@ -107,7 +101,21 @@ namespace SfmlUI
                     _active = true;
                 } else
                 {
+                    // Selection of highlighted item
+                    Text tempHolder = _list[0];
+                    int occurence = _list.IndexOf(_primedText);
+                    _list[occurence] = tempHolder;
+                    _list[0] = _primedText;
+                    _list[0].FillColor = _textColor;
 
+                    // Adjusting position of items
+                    for (int i = 0; i < _list.Count(); i++)
+                    {
+                        _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+                    }
+
+                    // deactivaing dropdown
+                    _active = false;
                 }
             } else
             {
@@ -115,10 +123,80 @@ namespace SfmlUI
             }
         }
 
-        // Check om musen er indenfor feltet
+        // Mouse move event
+        public void OnMove(object sender, MouseMoveEventArgs e)
+        {
+            if (_active)
+            {
+                foreach (Text item in _list)
+                {
+                    // Check if mouse is on item and highlighting of item
+                    if (item.GetGlobalBounds().Contains(e.X, e.Y))
+                    {
+                        _primedText = item;
+                        item.FillColor = _highlightColor;
+                    } else
+                    {
+                        item.FillColor = _textColor;
+                    }
+                }
+            }
+        }
+
+        // Check if mouse is inside shape
         public bool IsInside(MouseButtonEventArgs e)
         {
-            return (e.X <= Right && e.X >= Left) && (e.Y <= Bottom && e.Y >= Top);
+            if (!_active)
+            {
+                return _shape.GetGlobalBounds().Contains(e.X, e.Y);
+            } else
+            {
+                return _activeShape.GetGlobalBounds().Contains(e.X, e.Y);
+            }
+        }
+
+        // Customization functions
+        private void setFontColor(Color color)
+        {
+            foreach (Text item in _list) { item.FillColor = color; }
+            _textColor = color;
+        }
+
+        private void setBackgroundColor(Color color)
+        {
+            _shape.FillColor = color;
+            _activeShape.FillColor = color;
+        }
+
+        private void setOutlineColor(Color color)
+        {
+            _shape.OutlineColor = color;
+            _activeShape.OutlineColor = color;
+        }
+
+        private void setOutlineThickness(float percent)
+        {
+            _shape.OutlineThickness = 2 * (percent / 100);
+            _activeShape.OutlineThickness = 2 * (percent / 100);
+        }
+
+        // public customization methods
+        public Color FontColor { get { return _textColor; } set { setFontColor(value); } }
+        public Color BackgroundColor { get { return _shape.FillColor; } set { setBackgroundColor(value); } }
+        public Color OutlineColor { get { return _shape.OutlineColor; } set { setOutlineColor(value); } }
+        public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
+        public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
+
+        // private positioning function
+        public void setPosition(Vector2f pos)
+        {
+            _position = pos;
+            _shape.Position = pos;
+            _activeShape.Position = pos;
+            for (int i = 0; i < _list.Count(); i++)
+            {
+                _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+            }
         }
     }
 }

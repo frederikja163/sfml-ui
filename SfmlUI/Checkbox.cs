@@ -9,13 +9,13 @@ namespace SfmlUI
     {
         private RenderWindow Window { get; }
 
-        public Checkbox(RenderWindow window)
+        public Checkbox(RenderWindow window, Vector2f position)
         {
             Window = window;
             Window.MouseButtonReleased += OnMouseButtonReleased;
             IsVisible = true;
             IsChecked = false;
-            Position = new Vector2f(0, 0);
+            Position = position;
             Width = 25f;
             Height = 25f;
             FillColor = Color.White;
