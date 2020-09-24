@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SFML.System;
-using SFML.Window;
 using SFML.Graphics;
 
 namespace SfmlUI
