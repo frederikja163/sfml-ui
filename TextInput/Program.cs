@@ -13,15 +13,41 @@ namespace TextInputSandbox
             window.SetFramerateLimit(60);
             window.Closed += (_, __) => window.Close();
 
-            TextInput textInput = new TextInput(window, new Vector2f(), 500f, 100f, new Font("Arial.ttf")) { BackgroundColor = Color.White, TextColor = Color.White };
+            TextInput textInput = new TextInput(
+                window,
+                new Vector2f(20, 20),
+                700f,
+                85f,
+                new Font("Arial.ttf")
+            );
+
+            TextInput textInput2 = new TextInput(window, new Vector2f(20, 250), 500f, 20f, new Font("Arial.ttf")) { FieldColor = Color.Black, TextColor = Color.White };
+
+            TextInput textInput3 = new TextInput(
+                window,
+                new Vector2f(20, 350),
+                500f,
+                20f,
+                new Font("Arial.ttf")
+            )
+            { FieldColor = Color.Black, TextColor = Color.White };
+
+            textInput3.SetText("Hello i'm setting text programmatically");
+            System.Console.WriteLine("And printing it to the console:");
+            System.Console.WriteLine(textInput3.Text);
+
 
             while (window.IsOpen)
             {
                 window.DispatchEvents();
 
-                window.Clear();
+                window.Clear(new Color(100, 100, 100));
 
                 textInput.Draw();
+
+                textInput2.Draw();
+
+                textInput3.Draw();
 
                 window.Display();
             }
