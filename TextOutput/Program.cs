@@ -1,4 +1,8 @@
 ﻿using System;
+using SfmlUI;
+using SFML.Graphics;
+using SFML.System;
+using SFML.Window;
 
 namespace TextOutput
 {
@@ -6,32 +10,30 @@ namespace TextOutput
     {
         static void Main(string[] args)
         {
-            //
-            //          private void InitializeComponent()
-            //{
-            //  this.label1 = new System.Windows.Forms.Label();
-            //  this.SuspendLayout();
-            // 
-            // label1
-            // 
-            // this.label1.AutoSize = true;
-            //  this.label1.Location = new System.Drawing.Point(88, 79);
-            //  this.label1.Name = "label1";
-            //   this.label1.Size = new System.Drawing.Size(89, 17);
-            //  this.label1.TabIndex = 0;
-            //  this.label1.Text = "hELLO world";
-            // 
-            // Form
-            // 
-            //   this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            //      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            //   this.ClientSize = new System.Drawing.Size(382, 353);
-            //       this.Controls.Add(this.label1);
-            //  this.Name = "Form";
-            //  this.Text = "Box";
-            //  this.ResumeLayout(false);
-            //      this.PerformLayout();
+            RenderWindow Window = new RenderWindow( new VideoMode(400,300), "JUst A box", Styles.Titlebar | Styles.Close);
+            Window.Closed += OnClose;
+            TextBox box = new TextBox(Window, new Vector2f(60, 20), 200f, 200f, new Font("Arial.ttf"), 20);
+            box.BackgroundColor = Color.White;
+            box.OutlineThickness = 1;
+            box.OutlineColor = Color.Cyan;
+            box.TextColor = Color.Black ;
+            box.Output("HELLo wOrld!");
+            while (Window.IsOpen)
+            {
+                Window.DispatchEvents();
+                Window.Clear();
+                
+                box.Draw();
 
+                Window.Display();
+            }
+
+            static void OnClose(object sender, EventArgs e)
+            {
+                RenderWindow Window = (RenderWindow)sender;
+                Window.Close();
+                Environment.Exit(0);
+            }
         }
     }
     }
