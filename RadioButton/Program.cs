@@ -2,9 +2,10 @@
 using SFML.System;
 using SFML.Window;
 using System;
+using SfmlUI;
 
 
-namespace RadioButton //Magnus
+namespace RadioButtonSandbox //Magnus
 {
     class Program
     {
@@ -12,39 +13,25 @@ namespace RadioButton //Magnus
 
         static void Main(string[] args)
         {
-            _window = new RenderWindow(new VideoMode(1000,1000), "RadioButton");
+            var selected = true;
+            _window = new RenderWindow(new VideoMode(1000, 1000), "RadioButton");
+
+            //RadioButton(RenderWindow = _window, startingPosition, globalRadius, lineSpacing, radioAmount, isSelected = false)
+            var radioButton = new RadioButton(_window, new Vector2f(200,200), 30, 100, 5);
 
             _window.Closed += WindowClosed;
 
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
 
-            var rect = new RectangleShape(new Vector2f(1000, 1000));
-            rect.FillColor = new Color(220, 220, 220);
-            rect.Position = new Vector2f(0, 0);
-
-            var radio = new CircleShape(30);
-            radio.FillColor = new Color(255, 255, 255);
-            radio.OutlineThickness = 10;
-            radio.OutlineColor = new Color(0, 0, 0);
-            radio.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
-
-            var radioSelected = new CircleShape(17.5f);
-            radioSelected.FillColor = new Color(0, 0, 255);
-            radioSelected.OutlineThickness = 10;
-            radioSelected.OutlineColor = new Color(0, 0, 160);
-            radioSelected.Position = new Vector2f(radio.Position.X+12, radio.Position.Y+12);
-
             while (_window.IsOpen)
             {
                 _window.DispatchEvents();
                 _window.Clear();
 
-                _window.Draw(rect);
+                radioButton.Clear();
 
-                _window.Draw(radio);
-
-                _window.Draw(radioSelected);
+                radioButton.Draw();
 
                 _window.Display();
             }
