@@ -104,7 +104,7 @@ namespace SfmlUI
         {
             get
             {
-                return (_handlePos.X - Position.X-(_width/20)) / _width*22.22f/20f;
+                return ((_handlePos.X - Position.X - (_width / 20)) / _width * 22.22f / 20f) * _max + _min;
             }
         }
 
