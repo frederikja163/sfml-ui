@@ -25,6 +25,7 @@ namespace SfmlUI
         private bool _isSelected { get; set; }
 
         private int _selected { get; set; }
+        private int _previouslySelected { get; set; }
 
         private RenderWindow _window { get; }
 
@@ -122,7 +123,11 @@ namespace SfmlUI
 
                 if (_selected == i)
                 {
-                    _window.Draw(radioSelected);
+                    if (_previouslySelected != _selected)
+                    {
+                        _window.Draw(radioSelected);
+                    }
+                    
                 }
             }
         }
@@ -132,6 +137,7 @@ namespace SfmlUI
             {
                 if (Math.Pow(e.X - _position.X - _radius, 2) + Math.Pow(e.Y - _position.Y * (i + 1) + i * lineSpacing - _radius, 2) <= Math.Pow(_radius, 2))
                 {
+                    _previouslySelected = _selected;
                     _selected = i;
                 }
             }
