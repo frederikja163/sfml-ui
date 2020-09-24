@@ -154,7 +154,7 @@ namespace SfmlUI
             }
         }
 
-        // Customization functions
+        // Customization methods
         private void setFontColor(Color color)
         {
             foreach (Text item in _list) { item.FillColor = color; }
@@ -186,7 +186,7 @@ namespace SfmlUI
         public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
         public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
 
-        // private positioning function
+        // private positioning method
         public void setPosition(Vector2f pos)
         {
             _position = pos;
