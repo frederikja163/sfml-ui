@@ -7,11 +7,10 @@ namespace SfmlUI
 {
     public class RadioButton : IUiElement
     {
-        public RadioButton(RenderWindow window, Vector2f position, float radius, float lineSpacing, int amount, bool isSelected = false)
+        public RadioButton(RenderWindow window, Vector2f position, float radius, float lineSpacing, int amount)
         {
             _window = window;
             _position = position;
-            _isSelected = isSelected;
             _radius = radius;
             _lineSpacing = lineSpacing;
             _amount = amount;
@@ -19,9 +18,8 @@ namespace SfmlUI
             _window.MouseButtonReleased += OnMouseButtonReleased;
         }
 
-        private bool _isSelected { get; set; }
-
         private int _selected { get; set; }
+
         private int _previouslySelected { get; set; }
 
         private RenderWindow _window { get; }
@@ -46,7 +44,6 @@ namespace SfmlUI
         }
 
         private float _radius;
-
         public float Radius
         {
             get 
@@ -60,7 +57,6 @@ namespace SfmlUI
         }
 
         private float _lineSpacing;
-
         public float lineSpacing
         {
             get
@@ -74,7 +70,6 @@ namespace SfmlUI
         }
 
         private int _amount;
-
         public int amount
         {
             get
@@ -85,11 +80,6 @@ namespace SfmlUI
             {
                 _amount = value;
             }
-        }
-
-        public void radioAmount()
-        { 
-        
         }
 
         public void Clear()

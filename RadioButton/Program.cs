@@ -13,10 +13,9 @@ namespace RadioButtonSandbox //Magnus
 
         static void Main(string[] args)
         {
-            var selected = true;
             _window = new RenderWindow(new VideoMode(1000, 1000), "RadioButton");
 
-            //RadioButton(RenderWindow = _window, startingPosition, globalRadius, lineSpacing, radioAmount, isSelected = false)
+            //RadioButton(RenderWindow = _window, startingPosition, globalRadius, lineSpacing, radioAmount)
             var radioButton = new RadioButton(_window, new Vector2f(200,200), 30, 100, 5);
 
             _window.Closed += WindowClosed;
