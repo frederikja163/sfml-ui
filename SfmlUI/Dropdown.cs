@@ -32,7 +32,6 @@ namespace SfmlUI
         public float Height { get { if (_active) { return _activeShape.GetGlobalBounds().Height; } else { return _shape.GetGlobalBounds().Height; } } }
 
         // public ekstra metoder
-        public Shape Shape { get { return _shape; } set { _shape = value; } }
         public string ChosenItem { get { return _list[0].DisplayedString; } }
 
         // konstruktøren
