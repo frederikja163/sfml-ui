@@ -1,21 +1,23 @@
 ﻿using System;
 using SFML.Graphics;
 using SFML.Window;
+using SFML.System;
+using SfmlUI;
 
-namespace Dropdown
+namespace Dropdown1
 {
     class Program
     {
         static void Main(string[] args)
         {
             RenderWindow Window = new RenderWindow(VideoMode.DesktopMode, "Dropdown Sandbox", Styles.Titlebar | Styles.Close);
-            RectangleShape Background = new RectangleShape(new SFML.System.Vector2f(Window.Size.X, Window.Size.Y));
-            Background.Position = new SFML.System.Vector2f(0, 0);
+            RectangleShape Background = new RectangleShape(new Vector2f(Window.Size.X, Window.Size.Y));
+            Background.Position = new Vector2f(0, 0);
             Background.FillColor = new Color(122,122,122,255);
             Window.Closed += OnClose;
 
             // dropdown 1
-            SfmlUI.Dropdown dropdown = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
                     "Lorem Ipsum",
                     "Electric boogaloo",
                     "James",
@@ -28,12 +30,12 @@ namespace Dropdown
                 );
             dropdown.OutlineColor = Color.Cyan;
             dropdown.OutlineThickness = 50;
-            dropdown.FontColor = Color.Blue;
+            dropdown.TextColor = Color.Blue;
             dropdown.HighlightColor = Color.Cyan;
             dropdown.BackgroundColor = Color.Yellow;
 
             // dropdown 2
-            SfmlUI.Dropdown dropdown2 = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(700, 100), new Font("ArialNova.ttf"), 20,
+            Dropdown dropdown2 = new Dropdown(Window, new Vector2f(700, 100), new Font("ArialNova.ttf"), 20,
                     "Lorem Ipsum2",
                     "Electric boogaloo2",
                     "James2",
@@ -50,12 +52,12 @@ namespace Dropdown
                 );
             dropdown2.OutlineColor = Color.Yellow;
             dropdown2.OutlineThickness = 100;
-            dropdown2.FontColor = Color.Cyan;
+            dropdown2.TextColor = Color.Cyan;
             dropdown2.HighlightColor = Color.Red;
             dropdown2.BackgroundColor = Color.Black;
 
             // dropdown 3
-            SfmlUI.Dropdown dropdown3 = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(700, 400), new Font("ArialNova.ttf"), 30,
+            Dropdown dropdown3 = new Dropdown(Window, new Vector2f(700, 400), new Font("ArialNova.ttf"), 30,
                     "Lorem Ipsum2",
                     "Electric boogaloo2",
                     "James2",
@@ -72,7 +74,7 @@ namespace Dropdown
                 );
 
             // dropdown 4
-            SfmlUI.Dropdown dropdown4 = new SfmlUI.Dropdown(Window, new SFML.System.Vector2f(800, 600), new Font("ArialNova.ttf"), 40,
+            Dropdown dropdown4 = new Dropdown(Window, new Vector2f(800, 600), new Font("ArialNova.ttf"), 40,
                     "Lorem Ipsum2",
                     "Electric boogaloo2",
                     "James2",
@@ -85,10 +87,10 @@ namespace Dropdown
                 );
             dropdown4.OutlineColor = Color.Yellow;
             dropdown4.OutlineThickness = 0;
-            dropdown4.FontColor = Color.Cyan;
+            dropdown4.TextColor = Color.Cyan;
             dropdown4.HighlightColor = Color.Red;
             dropdown4.BackgroundColor = Color.Black;
-            dropdown4.Position = new SFML.System.Vector2f(1000, 200);
+            dropdown4.Position = new Vector2f(1000, 200);
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
