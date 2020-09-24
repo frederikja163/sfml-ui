@@ -33,7 +33,7 @@ namespace SfmlUI
 
         // public ekstra metoder
         public Shape Shape { get { return _shape; } set { _shape = value; } }
-        public string GetChosenItem { get { return _list[0].DisplayedString; } }
+        public string ChosenItem { get { return _list[0].DisplayedString; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
