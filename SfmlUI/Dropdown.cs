@@ -187,7 +187,7 @@ namespace SfmlUI
         public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
 
         // private positioning method
-        public void setPosition(Vector2f pos)
+        private void setPosition(Vector2f pos)
         {
             _position = pos;
             _shape.Position = pos;
