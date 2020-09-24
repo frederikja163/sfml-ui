@@ -20,9 +20,9 @@ namespace Button1
             _button = new Button(_window, new Vector2f(_window.Size.X / 2f, _window.Size.Y / 2f),
                 new Vector2f(400f, 400f));
             _window.Closed += WindowClosed;
-            _button.Shape = Button.Shapes.Circle;
-            _button.Origin.Horizontal.Center();
-            _button.Origin.Vertical.Center();
+            _button.Shape = Button.Shapes.Elipse;
+            _button.Origin.Horizontal.Right();
+            _button.Origin.Vertical.Buttom();
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
 
