@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using System;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using SfmlUI;
@@ -16,36 +17,51 @@ namespace CheckboxSandkasse
             window.Closed += (_,__) => window.Close();
             
             Checkbox checkbox = new Checkbox(window, new Vector2f(150, 150));
-            checkbox.Width = 250;
-            checkbox.Height = 250;
+            checkbox.Width = 310;
+            checkbox.Height = 310;
             checkbox.CrossThickness = 20f;
             
-            Checkbox checkbox2 = new Checkbox(window, checkbox.Position + new Vector2f(checkbox.Width + 50, 0));
-            checkbox2.Width = 150;
-            checkbox2.Height = 400;
-            checkbox2.CrossThickness = 10f;
-            checkbox2.CrossColor = Color.Green;
-            checkbox2.FillColor = Color.Magenta;
-            checkbox2.IsChecked = true;
+            Button button = new Button(window, checkbox.Position + new Vector2f(checkbox.Width + 5, 0), new Vector2f(100, 100));
+            button.ButtonPressed += () =>
+            {
+                button.CenterColor = new Color((byte) new Random().Next(255), (byte) new Random().Next(255),
+                    (byte) new Random().Next(255));
+            };
+            button.CenterColor = Color.Blue;
+
+            Button button2 = new Button(window, button.Position + new Vector2f(0, button.Height + 5), button.Size);
+            button2.CenterColor = Color.Green;
             
-            Checkbox checkbox3 = new Checkbox(window, checkbox2.Position + new Vector2f(checkbox2.Width + 50, 0));
-            checkbox3.Width = 500;
-            checkbox3.Height = 100;
-            checkbox3.CrossThickness = 10f;
-            checkbox3.CrossColor = Color.Yellow;
-            checkbox3.FillColor = Color.Blue;
-            checkbox3.IsChecked = true;
+            Button button3 = new Button(window, button2.Position + new Vector2f(0, button2.Height + 5), button2.Size);
+            
+            
+            TextInput textInput = new TextInput(window, button.Position + new Vector2f(button.Width + 5, 0), 500, 100, new Font("Arial.ttf"));
 
-            Checkbox checkbox4 = new Checkbox(window, checkbox3.Position + new Vector2f(0, checkbox3.Height + 50));
-            checkbox4.Width = 500;
-            checkbox4.Height = 400;
-            checkbox4.CrossThickness = 75f;
-            checkbox4.CrossColor = Color.Black;
-            checkbox4.FillColor = Color.White;
-            checkbox4.BorderEnabled = true;
-            checkbox4.BorderColor = Color.Red;
-            checkbox4.IsChecked = true;
+            Slider slider = new Slider(window, textInput.Position + new Vector2f(0, textInput.Height + 5), 500, 100, 0, 100);
 
+            Dropdown dropdown = new Dropdown(window, checkbox.Position + new Vector2f(0, checkbox.Height + 5), new Font("Arial.ttf"), 35,
+                "Lorem Ipsum",
+                "Lorem Larum",
+                "Lorem Lurum",
+                "Lorem Durum"
+            );
+            
+            TextBox textBox = new TextBox(window, slider.Position + new Vector2f(0, slider.Height + 5), textInput.Width, textInput.Height, new Font("Arial.ttf"), (uint) Math.Round(textInput.Height * 0.75));
+            textBox.Output("DURUM");
+            textBox.TextColor = Color.Black;
+
+            Graphic graphic = new Graphic(window, "background.png", textBox.Position + new Vector2f(0, textBox.Height + 5), new Vector2f(0, 0), new Vector2f(textBox.Width, textBox.Height));
+
+            button2.ButtonPressed += () =>
+            {
+                graphic.StartFlashing(1 * 1000);
+            };
+
+            button3.ButtonPressed += () =>
+            {
+                graphic.StopFlashing();
+            };
+            
             while (window.IsOpen)
             {
                 window.DispatchEvents();
@@ -53,9 +69,15 @@ namespace CheckboxSandkasse
                 window.Clear();
                 
                 checkbox.Draw();
-                checkbox2.Draw();
-                checkbox3.Draw();
-                checkbox4.Draw();
+                button.Draw();
+                textInput.Draw();
+                slider.Draw();
+                textInput.SetText(slider.Value.ToString());
+                dropdown.Draw();
+                textBox.Draw();
+                graphic.Draw();
+                button2.Draw();
+                button3.Draw();
                 
                 window.Display();
             }
