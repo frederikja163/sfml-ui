@@ -39,7 +39,7 @@ namespace CheckboxSandkasse
 
             Slider slider = new Slider(window, textInput.Position + new Vector2f(0, textInput.Height + 5), 500, 100, 0, 100);
 
-            Dropdown dropdown = new Dropdown(window, checkbox.Position + new Vector2f(0, checkbox.Height + 5), new Font("Arial.ttf"), 35,
+            Dropdown dropdown = new Dropdown(window, checkbox.Position + new Vector2f(0, checkbox.Height + 5), new Font("Arial.ttf"), 59,
                 "Lorem Ipsum",
                 "Lorem Larum",
                 "Lorem Lurum",
@@ -62,6 +62,8 @@ namespace CheckboxSandkasse
                 graphic.StopFlashing();
             };
             
+            RadioButton radioButton = new RadioButton(window, textInput.Position + new Vector2f(textInput.Width + 25, 0), 50, 157, 3);
+            
             while (window.IsOpen)
             {
                 window.DispatchEvents();
@@ -78,6 +80,7 @@ namespace CheckboxSandkasse
                 graphic.Draw();
                 button2.Draw();
                 button3.Draw();
+                radioButton.Draw();
                 
                 window.Display();
             }
