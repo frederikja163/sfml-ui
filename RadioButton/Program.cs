@@ -28,8 +28,6 @@ namespace RadioButtonSandbox //Magnus
                 _window.DispatchEvents();
                 _window.Clear();
 
-                radioButton.Clear();
-
                 radioButton.Draw();
 
                 _window.Display();
