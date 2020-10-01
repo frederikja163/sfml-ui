@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <Version>1.0.0-pre.1</Version>
+	  <Authors>Programming B 2020-2021</Authors>
+	  <Company>UCHolstebro HTX</Company>
+	  <PackageTags>HTX</PackageTags>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

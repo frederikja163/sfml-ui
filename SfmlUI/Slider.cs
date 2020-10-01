@@ -12,7 +12,7 @@ namespace SfmlUI
         {
             _window = window;
             _position = Position;
-            _handlePos = Position;
+            _handlePos = Position + new Vector2f (Width/20f,0);
             _height = Height;
             _width = Width;
             _min = Min;
