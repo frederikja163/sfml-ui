@@ -19,7 +19,7 @@ namespace SfmlUI
             _size = Size;
             Origin = new Origin(_position, _size);
             Actions();
-
+            updateDraw();
             
             
         }
@@ -35,6 +35,7 @@ namespace SfmlUI
             set
             {
                 _centerColor = value;
+                updateDraw();
             }
         }
         private Color _outerColor = new Color(100, 100, 100);
@@ -47,6 +48,7 @@ namespace SfmlUI
             set
             {
                 _outerColor = value;
+                updateDraw();
             }
         }
         private Color _outerOutlineColor = new Color(0, 0, 0);
@@ -59,6 +61,7 @@ namespace SfmlUI
             set
             {
                 _outerOutlineColor = value;
+                updateDraw();
             }
         }
         private Color _centerOutlineColor = new Color(0, 0, 0);
@@ -71,6 +74,7 @@ namespace SfmlUI
             set
             {
                 _centerOutlineColor = value;
+                updateDraw();
             }
         }
         private RenderWindow _window;
@@ -109,7 +113,7 @@ namespace SfmlUI
             {
                 _position = value;
                 Origin.Position = value;
-
+                updateDraw();
             }
         }
 
@@ -124,6 +128,7 @@ namespace SfmlUI
             {
                 _size = value;
                 Origin.Size = new Vector2f(value.X, value.Y);
+                updateDraw();
             }
         }
         public float Height
@@ -194,8 +199,18 @@ namespace SfmlUI
         {
             if (Shapes.Rectangle == _shape)
             {
-                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
-            }
+                if (ex <= Size.X + Origin.TruePosition.X &&
+                    ex >= Origin.TruePosition.X &&
+                    ey <= Size.Y + Origin.TruePosition.Y &&
+                    ey >= Origin.TruePosition.Y)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }   
             else
             {
                 
@@ -282,7 +297,12 @@ namespace SfmlUI
 
 
         private RectangleShape _rectangleOuter;
-        public void Draw()
+        private RectangleShape _rectangleCenter;
+        private RectangleShape _rectangleCenterPressed;
+        private CircleShape _elipseOuter;
+        private CircleShape _elipseCenter;
+        private CircleShape _elipseCenterPressed;
+        private void updateDraw()
         {
             var RectangleOuter = new RectangleShape(_size);
             RectangleOuter.FillColor = _outerColor;
@@ -298,6 +318,7 @@ namespace SfmlUI
             RectangleCenter.OutlineColor = _centerOutlineColor;
             RectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
                 Origin.TruePosition.Y + 0.05f * _size.Y);
+            _rectangleCenter = RectangleCenter;
 
             var RectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
             RectangleCenterPressed.FillColor = _centerColor;
@@ -305,29 +326,37 @@ namespace SfmlUI
             RectangleCenterPressed.OutlineColor = _centerOutlineColor;
             RectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
                 Origin.TruePosition.Y + 0.075f * _size.Y);
+            _rectangleCenterPressed = RectangleCenterPressed;
 
-            var ElipseOuter = new CircleShape(_size.X/2);
+            var ElipseOuter = new CircleShape(_size.X / 2);
             ElipseOuter.FillColor = _outerColor;
             ElipseOuter.OutlineThickness = 1;
             ElipseOuter.OutlineColor = _outerOutlineColor;
             ElipseOuter.Position = Origin.TruePosition;
-            ElipseOuter.Scale = new Vector2f(1f, _size.Y/_size.X);
+            ElipseOuter.Scale = new Vector2f(1f, _size.Y / _size.X);
+            _elipseOuter = ElipseOuter;
 
-            var ElipseCenter = new CircleShape(_size.X * 0.9f/2);
+            var ElipseCenter = new CircleShape(_size.X * 0.9f / 2);
             ElipseCenter.FillColor = _centerColor;
             ElipseCenter.OutlineThickness = 3;
             ElipseCenter.OutlineColor = _centerOutlineColor;
             ElipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
                 Origin.TruePosition.Y + 0.05f * _size.Y);
             ElipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
+            _elipseCenter = ElipseCenter;
 
-            var ElipseCenterPressed = new CircleShape(_size.X * 0.85f/2);
+            var ElipseCenterPressed = new CircleShape(_size.X * 0.85f / 2);
             ElipseCenterPressed.FillColor = _centerColor;
             ElipseCenterPressed.OutlineThickness = 3;
             ElipseCenterPressed.OutlineColor = _centerOutlineColor;
             ElipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
             Origin.TruePosition.Y + 0.075f * _size.Y);
             ElipseCenterPressed.Scale = new Vector2f(1f, _size.Y / _size.X);
+            _elipseCenterPressed = ElipseCenterPressed;
+        }
+        public void Draw()
+        {
+            
 
             if (Pressed)
             {
@@ -343,26 +372,26 @@ namespace SfmlUI
             {
                 if (_shape == Shapes.Rectangle)
                 {
-                    _window.Draw(RectangleOuter);
+                    _window.Draw(_rectangleOuter);
                     if (!Pressed)
                     {
-                        _window.Draw(RectangleCenter);
+                        _window.Draw(_rectangleCenter);
                     }
                     else
                     {
-                        _window.Draw(RectangleCenterPressed);
+                        _window.Draw(_rectangleCenterPressed);
                     }
                 }
                 else
                 {
-                    _window.Draw(ElipseOuter);
+                    _window.Draw(_elipseOuter);
                     if (!Pressed)
                     {
-                        _window.Draw(ElipseCenter);
+                        _window.Draw(_elipseCenter);
                     }
                     else
                     {
-                        _window.Draw(ElipseCenterPressed);
+                        _window.Draw(_elipseCenterPressed);
                     }
                 }
             }

@@ -11,39 +11,89 @@ namespace SfmlUI
         public TextInput(RenderWindow window, Vector2f position, float width, float height, Font font, string initialText = "")
         {
             Window = window;
-            Position = position;
-            Height = height;
-            Width = width;
-            _Font = font;
+            _position = position;
+            _height = height;
+            _cursorWidth = height / 20;
+            _width = width;
+            _font = font;
             Text = initialText;
-            _Cursor = initialText.Length;
+            _cursor = initialText.Length;
 
-            _VerticalPadding = Height / 10;
-            _HorizontalPadding = _VerticalPadding;
+            _verticalPadding = Height / 10;
+            _horizontalPadding = _verticalPadding;
+
+            _fieldColor = Color.White;
+            _textColor = Color.Black;
+            _outlineColor = new Color(194, 197, 204);
+
+            UpdateTextElement();
+            UpdateTextFieldElement();
 
             window.KeyPressed += OnPressedHandler;
             window.MouseButtonReleased += OnMouseReleasedHandler;
         }
 
         public bool IsVisible { get; set; } = true;
-        public Vector2f Position { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
+
+        private Vector2f _position { get; set; }
+        public Vector2f Position
+        {
+            get => _position;
+            set { _position = value; UpdateTextFieldElement(); UpdateTextElement(); }
+        }
+
+        private float _width { get; set; }
+        public float Width
+        {
+            get => _width;
+            set { _width = value; UpdateTextFieldElement(); UpdateTextElement(); }
+        }
+
+        private float _height { get; set; }
+        public float Height
+        {
+            get => _height;
+            set { _height = value; UpdateTextFieldElement(); UpdateTextElement(); }
+        }
 
         public string Text { get; private set; }
-        public Color FieldColor { get; set; } = Color.White;
-        public Color TextColor { get; set; } = Color.Black;
-        public Color OutlineColor { get; set; } = new Color(194, 197, 204);
 
-        private Font _Font { get; }
+        private Color _fieldColor { get; set; }
+        public Color FieldColor
+        {
+            get => _fieldColor;
+            set { _fieldColor = value; UpdateTextFieldElement(); }
+        }
 
-        private int _Cursor { get; set; }
-        private bool _IsFocused { get; set; } = false;
+        private Color _textColor { get; set; }
+        public Color TextColor
+        {
+            get => _textColor;
+            set { _textColor = value; UpdateTextElement(); }
+        }
 
-        private float _HorizontalPadding { get; }
-        private float _VerticalPadding { get; }
+        private Color _outlineColor { get; set; }
+        public Color OutlineColor
+        {
+            get => _outlineColor;
+            set { _outlineColor = value; UpdateTextFieldElement(); }
+        }
 
-        private char[] _KeyMapper { get; } = {
+        private Font _font { get; }
+
+        private int _cursor { get; set; }
+        private bool _isFocused { get; set; } = false;
+        private float _cursorWidth { get; set; }
+
+        private float _horizontalPadding { get; }
+        private float _verticalPadding { get; }
+
+        private Text _textElement { get; set; }
+        private int _textElementCursor { get; set; }
+        private RectangleShape _textFieldElement { get; set; }
+        private RectangleShape _cursorElement { get; set; }
+
+        private char[] _keyMapper { get; } = {
             'A',
             'B',
             'C',
@@ -86,111 +136,125 @@ namespace SfmlUI
         {
             if (IsVisible)
             {
-                Text text = new Text(Text, _Font, (uint)((Height - 2 * _VerticalPadding))) { Position = Position + new Vector2f(_HorizontalPadding, 0), FillColor = TextColor };
+                Window.Draw(_textFieldElement);
+                Window.Draw(_textElement);
 
-
-                var newCursor = _Cursor;
-
-                int lastLength;
-                var cursorWidth = Height / 20;
-                do
+                if (_isFocused)
                 {
-                    lastLength = text.DisplayedString.Length;
-                    if ((text.FindCharacterPos((uint)newCursor) + Position + new Vector2f(_HorizontalPadding, _VerticalPadding)).X + cursorWidth > Position.X + Width)
-                    {
-                        text.DisplayedString = text.DisplayedString.Remove(0, 1);
-                        newCursor--;
-                    }
-                }
-                while (text.DisplayedString.Length != lastLength);
-
-                while (text.GetLocalBounds().Width > Width - _HorizontalPadding && text.DisplayedString.Length > 0)
-                {
-                    text.DisplayedString = text.DisplayedString.Remove(text.DisplayedString.Length - 1);
-                }
-
-
-                RectangleShape textField = new RectangleShape()
-                {
-                    FillColor = FieldColor,
-                    Position = Position,
-                    Size = new Vector2f(Width, Height),
-                    OutlineColor = OutlineColor,
-                    OutlineThickness = _IsFocused ? _VerticalPadding : 0,
-                };
-
-                Window.Draw(textField);
-                Window.Draw(text);
-
-                if (_IsFocused)
-                {
-                    var cursor = new RectangleShape()
-                    {
-                        Position = text.FindCharacterPos((uint)newCursor) + Position + new Vector2f(_HorizontalPadding, _VerticalPadding),
-                        Size = new Vector2f(cursorWidth, Height - 2 * _VerticalPadding),
-                        FillColor = TextColor
-                    };
-
-                    Window.Draw(cursor);
+                    Window.Draw(_cursorElement);
                 }
             }
+        }
+
+        private void UpdateTextElement()
+        {
+            var text = new Text(Text, _font, (uint)((Height - 2 * _verticalPadding))) { Position = Position + new Vector2f(_horizontalPadding, 0), FillColor = TextColor };
+
+            int lastLength;
+            var newCursor = _cursor;
+
+            do
+            {
+                lastLength = text.DisplayedString.Length;
+                if ((text.FindCharacterPos((uint)newCursor) + Position + new Vector2f(_horizontalPadding, _verticalPadding)).X + _cursorWidth > Position.X + Width)
+                {
+                    text.DisplayedString = text.DisplayedString.Remove(0, 1);
+                    newCursor--;
+                }
+            }
+            while (text.DisplayedString.Length != lastLength);
+
+            while (text.GetLocalBounds().Width > Width - _horizontalPadding && text.DisplayedString.Length > 0)
+            {
+                text.DisplayedString = text.DisplayedString.Remove(text.DisplayedString.Length - 1);
+            }
+
+            _textElement = text;
+            _textElementCursor = newCursor;
+            UpdateCursorElement();
+        }
+
+        private void UpdateTextFieldElement()
+        {
+            _textFieldElement = new RectangleShape()
+            {
+                FillColor = FieldColor,
+                Position = Position,
+                Size = new Vector2f(Width, Height),
+                OutlineColor = OutlineColor,
+                OutlineThickness = _isFocused ? _verticalPadding : 0,
+            };
+        }
+
+        private void UpdateCursorElement()
+        {
+            _cursorElement = new RectangleShape()
+            {
+                Position = _textElement.FindCharacterPos((uint)_textElementCursor) + Position + new Vector2f(_horizontalPadding, _verticalPadding),
+                Size = new Vector2f(_cursorWidth, Height - 2 * _verticalPadding),
+                FillColor = TextColor
+            };
         }
 
         private void OnMouseReleasedHandler(object sender, MouseButtonEventArgs e)
         {
             var onTextField = e.X >= Position.X && e.X <= Position.X + Width && e.Y >= Position.Y && e.Y <= Position.Y + Height;
 
-            _IsFocused = onTextField;
+            _isFocused = onTextField;
+            if (_isFocused)
+            {
+                UpdateTextFieldElement();
+            }
         }
 
         private void OnPressedHandler(object sender, KeyEventArgs e)
         {
-            // System.Console.WriteLine("cursor: " + _Cursor.ToString());
-            // System.Console.WriteLine("text: " + Text);
-
-            if (_IsFocused)
+            if (_isFocused)
             {
 
                 if (e.Code == Keyboard.Key.Backspace)
                 {
-                    if (Text.Length > 0 && _Cursor > 0)
+                    if (Text.Length > 0 && _cursor > 0)
                     {
-                        Text = Text.Remove(_Cursor - 1, 1);
-                        _Cursor--;
+                        Text = Text.Remove(_cursor - 1, 1);
+                        _cursor--;
+                        UpdateTextElement();
                     }
                 }
-                else if (e.Code >= 0 && (int)e.Code < _KeyMapper.Length)
+                else if (e.Code >= 0 && (int)e.Code < _keyMapper.Length)
                 {
-                    AddToText(e.Shift ? _KeyMapper[(int)e.Code].ToString().ToUpper() : _KeyMapper[(int)e.Code].ToString().ToLower());
+                    AddToText(e.Shift ? _keyMapper[(int)e.Code].ToString().ToUpper() : _keyMapper[(int)e.Code].ToString().ToLower());
 
                 }
                 else if (e.Code == Keyboard.Key.Space)
                 {
                     AddToText(" ");
                 }
-                else if (e.Code == Keyboard.Key.Right && _Cursor <= Text.Length - 1)
+                else if (e.Code == Keyboard.Key.Right && _cursor <= Text.Length - 1)
                 {
-                    _Cursor++;
+                    _cursor++;
+                    UpdateCursorElement();
                 }
-                else if (e.Code == Keyboard.Key.Left && _Cursor > 0)
+                else if (e.Code == Keyboard.Key.Left && _cursor > 0)
                 {
-                    _Cursor--;
+                    _cursor--;
+                    UpdateCursorElement();
                 }
             }
-
-            // System.Console.WriteLine((int)e.Code);
         }
 
         public void SetText(string newText)
         {
             Text = newText;
-            _Cursor = newText.Length;
+            _cursor = newText.Length;
+            UpdateTextElement();
         }
 
         private void AddToText(string addtion)
         {
-            Text = Text.Insert(_Cursor, addtion);
-            _Cursor += addtion.Length;
+            Text = Text.Insert(_cursor, addtion);
+            _cursor += addtion.Length;
+            UpdateTextElement();
         }
     }
 }
