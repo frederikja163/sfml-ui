@@ -11,10 +11,10 @@ namespace SfmlUI
         public TextInput(RenderWindow window, Vector2f position, float width, float height, Font font, string initialText = "")
         {
             Window = window;
-            Position = position;
-            Height = height;
+            _position = position;
+            _height = height;
             _cursorWidth = height / 20;
-            Width = width;
+            _width = width;
             _font = font;
             Text = initialText;
             _cursor = initialText.Length;
@@ -22,9 +22,9 @@ namespace SfmlUI
             _verticalPadding = Height / 10;
             _horizontalPadding = _verticalPadding;
 
-            FieldColor = Color.White;
-            TextColor = Color.Black;
-            OutlineColor = new Color(194, 197, 204);
+            _fieldColor = Color.White;
+            _textColor = Color.Black;
+            _outlineColor = new Color(194, 197, 204);
 
             UpdateTextElement();
             UpdateTextFieldElement();
