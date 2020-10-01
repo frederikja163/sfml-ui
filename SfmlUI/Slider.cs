@@ -12,7 +12,7 @@ namespace SfmlUI
         {
             _window = window;
             _position = Position;
-            _handlePos = Position;
+            _handlePos = Position + new Vector2f (Width/20f,0);
             _height = Height;
             _width = Width;
             _min = Min;
@@ -110,10 +110,6 @@ namespace SfmlUI
 
         public void Draw()
         {
-            var back = new RectangleShape(new Vector2f(2000, 1000));
-            back.FillColor = new Color(255, 255, 255);
-            back.Position = new Vector2f(0, 0);
-
             var rail = new RectangleShape(new Vector2f(_width, _height));
             rail.FillColor = new Color(220, 220, 220);
             rail.Position = _position;
@@ -126,9 +122,6 @@ namespace SfmlUI
 
             if (_isVisible == true)
             {
-                _window.Draw(back);
-
-
                 _window.Draw(rail);
                 _window.Draw(handle);
             }

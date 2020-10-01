@@ -19,19 +19,22 @@ namespace SfmlUI
             _size = Size;
             Origin = new Origin(_position, _size);
             Actions();
+
+            
+            
         }
         #endregion
         #region Properties & Fields
-        private Color _innerColor = new Color(255, 0, 0);
-        public Color InnerColor
+        private Color _centerColor = new Color(255, 0, 0);
+        public Color CenterColor
         {
             get
             {
-                return _innerColor;
+                return _centerColor;
             }
             set
             {
-                _innerColor = value;
+                _centerColor = value;
             }
         }
         private Color _outerColor = new Color(100, 100, 100);
@@ -149,7 +152,7 @@ namespace SfmlUI
         }
         #endregion
         #region Actions
-        public event Action MouseHeld;
+        public event Action ButtonHeld;
         private void Actions()
         {
 
@@ -160,24 +163,24 @@ namespace SfmlUI
 
 
         }
-        public event Action MouseRealeased;
+        public event Action ButtonRealeased;
         bool Pressed;
         private void OnMouseButtonRealeased(Object? sender, MouseButtonEventArgs e)
         {
             if (Pressed)
             {
                 Pressed = false;
-                MouseRealeased?.Invoke();
+                ButtonRealeased?.Invoke();
             }
 
         }
-        public event Action MousePressed;
+        public event Action ButtonPressed;
         private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
         {
             if (!Pressed && IsInside(e.X, e.Y))
             {
                 Pressed = true;
-                MousePressed?.Invoke();
+                ButtonPressed?.Invoke();
             }
 
         }
@@ -290,14 +293,14 @@ namespace SfmlUI
 
 
             var RectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-            RectangleCenter.FillColor = _innerColor;
+            RectangleCenter.FillColor = _centerColor;
             RectangleCenter.OutlineThickness = 3;
             RectangleCenter.OutlineColor = _centerOutlineColor;
             RectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
                 Origin.TruePosition.Y + 0.05f * _size.Y);
 
             var RectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
-            RectangleCenterPressed.FillColor = _innerColor;
+            RectangleCenterPressed.FillColor = _centerColor;
             RectangleCenterPressed.OutlineThickness = 3;
             RectangleCenterPressed.OutlineColor = _centerOutlineColor;
             RectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
@@ -311,7 +314,7 @@ namespace SfmlUI
             ElipseOuter.Scale = new Vector2f(1f, _size.Y/_size.X);
 
             var ElipseCenter = new CircleShape(_size.X * 0.9f/2);
-            ElipseCenter.FillColor = _innerColor;
+            ElipseCenter.FillColor = _centerColor;
             ElipseCenter.OutlineThickness = 3;
             ElipseCenter.OutlineColor = _centerOutlineColor;
             ElipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
@@ -319,7 +322,7 @@ namespace SfmlUI
             ElipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
 
             var ElipseCenterPressed = new CircleShape(_size.X * 0.85f/2);
-            ElipseCenterPressed.FillColor = _innerColor;
+            ElipseCenterPressed.FillColor = _centerColor;
             ElipseCenterPressed.OutlineThickness = 3;
             ElipseCenterPressed.OutlineColor = _centerOutlineColor;
             ElipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
@@ -328,7 +331,7 @@ namespace SfmlUI
 
             if (Pressed)
             {
-                MouseHeld?.Invoke();
+                ButtonHeld?.Invoke();
                 if (!IsInside(MousePosition.X, MousePosition.Y))
                 {
                     Pressed = false;

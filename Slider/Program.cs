@@ -10,6 +10,7 @@ namespace Slider1
     {
         private static RenderWindow _window;
         private static Slider _slider;
+        private static Button[] _button = new Button[4];
 
         static void Main(string[] args)
         {
@@ -19,7 +20,7 @@ namespace Slider1
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
 
-
+            //_button[0] = new Button(_window, new Vector2f(200, 200), new Vector2f(200, 200));
             while (_window.IsOpen)
             {
                 _window.DispatchEvents();

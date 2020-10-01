@@ -24,7 +24,7 @@ namespace SfmlUI
         public Color BackgroundColor { get { return _box.FillColor; } set { _box.FillColor = value; } }
         public Color OutlineColor { get { return _box.OutlineColor; } set { _box.OutlineColor = value; } }
         public float OutlineThickness { get { return _box.OutlineThickness; } set { _box.OutlineThickness = value; } }
-        public Color TextColor { get { return _box.FillColor; } set { _box.FillColor = value; } }
+        public Color TextColor { get { return _text.FillColor; } set { _text.FillColor = value; } }
 
         // Konstruktør
         public TextBox(RenderWindow window, Vector2f position, float width, float height, Font font, uint fontSize)

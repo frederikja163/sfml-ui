@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Debug\netcoreapp3.1\ArialNova.ttf" />
+    <ProjectReference Include="..\SfmlUI\SfmlUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SfmlUI\SfmlUI.csproj" />
+    <None Update="ArialNova.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

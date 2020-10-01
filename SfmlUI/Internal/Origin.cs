@@ -46,6 +46,7 @@ namespace SfmlUI
         {    
             Horizontal = new HorizontalOrigin(Position.X, Size.X);
             Vertical = new VerticalOrigin(Position.Y, Size.Y);
+
         }  
     }
 }

@@ -104,11 +104,13 @@ namespace SfmlUI
                 if (!_active)
                 {
                     _active = true;
+                    _primedText = _list[0];
                 } else
                 {
                     // Selection of highlighted item
                     Text tempHolder = _list[0];
-                    int occurence = _list.IndexOf(_primedText);
+                    int occurence = 0;
+                    if (_list.IndexOf(_primedText) >= 0) { occurence = _list.IndexOf(_primedText); }
                     _list[occurence] = tempHolder;
                     _list[0] = _primedText;
                     _list[0].FillColor = _textColor;
