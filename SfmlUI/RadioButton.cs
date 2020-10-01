@@ -82,15 +82,6 @@ namespace SfmlUI
             }
         }
 
-        public void Clear()
-        {
-            var rect = new RectangleShape(new Vector2f(1000, 1000));
-            rect.FillColor = new Color(220, 220, 220);
-            rect.Position = new Vector2f(0, 0);
-
-            _window.Draw(rect);
-        }
-
         public void Draw()
         {
             for (int i = 0; i < amount; i++) { 
@@ -118,6 +109,7 @@ namespace SfmlUI
                 }
             }
         }
+
         private void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
         {
             for (int i = 0; i < amount; i++)

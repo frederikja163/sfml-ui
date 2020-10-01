@@ -9,4 +9,13 @@
     <ProjectReference Include="..\SfmlUI\SfmlUI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Arial.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -17,7 +17,7 @@ namespace Dropdown1
             Window.Closed += OnClose;
 
             // dropdown 1
-            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("C:\\Users\\burni\\Source\\Repos\\sfml-ui\\Dropdown\\bin\\Debug\\netcoreapp3.1\\ArialNova.ttf"), 30,
                     "Lorem Ipsum",
                     "Electric boogaloo",
                     "James",
@@ -34,63 +34,26 @@ namespace Dropdown1
             dropdown.HighlightColor = Color.Cyan;
             dropdown.BackgroundColor = Color.Yellow;
 
-            // dropdown 2
-            Dropdown dropdown2 = new Dropdown(Window, new Vector2f(700, 100), new Font("ArialNova.ttf"), 20,
-                    "Lorem Ipsum2",
-                    "Electric boogaloo2",
-                    "James2",
-                    "Brown fox2",
-                    "Doc2",
-                    "Docile2",
-                    "Pizza2",
-                    "Hut Hut2",
-                    "Last item2",
-                    "last last item",
-                    "last last last item",
-                    "last",
-                    "last last"
-                );
-            dropdown2.OutlineColor = Color.Yellow;
-            dropdown2.OutlineThickness = 100;
-            dropdown2.TextColor = Color.Cyan;
-            dropdown2.HighlightColor = Color.Red;
-            dropdown2.BackgroundColor = Color.Black;
+            // Button
+            Button button = new Button(Window, new Vector2f(200, 200), new Vector2f(100, 20));
+            button.CenterColor = Color.Black;
+            button.OuterColor = Color.Red;
 
-            // dropdown 3
-            Dropdown dropdown3 = new Dropdown(Window, new Vector2f(700, 400), new Font("ArialNova.ttf"), 30,
-                    "Lorem Ipsum2",
-                    "Electric boogaloo2",
-                    "James2",
-                    "Brown fox2",
-                    "Doc2",
-                    "Docile2",
-                    "Pizza2",
-                    "Hut Hut2",
-                    "Last item2",
-                    "last last item",
-                    "last last last item",
-                    "last",
-                    "last last"
-                );
+            // Checkbox
+            Checkbox checkbox = new Checkbox(Window, new Vector2f(1000, 500));
+            checkbox.FillColor = Color.Yellow;
+            checkbox.CrossColor = Color.Magenta;
 
-            // dropdown 4
-            Dropdown dropdown4 = new Dropdown(Window, new Vector2f(800, 600), new Font("ArialNova.ttf"), 40,
-                    "Lorem Ipsum2",
-                    "Electric boogaloo2",
-                    "James2",
-                    "Brown fox2",
-                    "Doc2",
-                    "Docile2",
-                    "Pizza2",
-                    "Hut Hut2",
-                    "Last item2"
-                );
-            dropdown4.OutlineColor = Color.Yellow;
-            dropdown4.OutlineThickness = 0;
-            dropdown4.TextColor = Color.Cyan;
-            dropdown4.HighlightColor = Color.Red;
-            dropdown4.BackgroundColor = Color.Black;
-            dropdown4.Position = new Vector2f(1000, 200);
+            // RadioButton
+            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, 50f, 3);
+
+            // Slider
+            Slider slider = new Slider(Window, new Vector2f(1080, 500), 200f, 50f, 0f, 100f);
+
+            // Text input
+            TextInput textinput = new TextInput(Window, new Vector2f(900, 80), 900f, 50f, new Font("ArialNova.ttf"));
+
+
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -99,11 +62,11 @@ namespace Dropdown1
                 Window.Draw(Background);
                 
                 dropdown.Draw();
-                dropdown2.Draw();
-                dropdown3.Draw();
-                dropdown4.Draw();
-                Console.Write("dropdown 1: " + dropdown.ChosenItem + "     dropdown 2: " + dropdown2.ChosenItem);
-                Console.Write("     dropdown 3: " + dropdown3.ChosenItem + "     dropdown 4: " + dropdown4.ChosenItem + "\n");
+                button.Draw();
+                checkbox.Draw();
+                radiobutton.Draw();
+                slider.Draw();
+                textinput.Draw();
 
                 Window.Display();         
             }
