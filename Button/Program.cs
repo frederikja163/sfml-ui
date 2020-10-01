@@ -10,9 +10,13 @@ namespace Button1
     class Program
     {
 
-
         private static RenderWindow _window;
-        private static Button[] _button = new Button[4];
+        private static Button _button;
+        private static Checkbox _checkbox;
+        private static Dropdown _dropdown;
+        private static RadioButton _radioButton;
+        private static Slider _slider;
+        private static TextInput _textInput;
 
         static void Main(string[] args)
         {
@@ -21,70 +25,26 @@ namespace Button1
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
             
-            _button[0] = new Button(_window, new Vector2f(200, 200), new Vector2f(200, 200));
-            _button[1] = new Button(_window, new Vector2f(500, 200), new Vector2f(400, 200));
-            _button[2] = new Button(_window, new Vector2f(200, 500), new Vector2f(200, 200));
-            _button[3] = new Button(_window, new Vector2f(500, 500), new Vector2f(400, 200));
-
-            _button[2].Shape = Button.Shapes.Elipse;
-            _button[3].Shape = Button.Shapes.Elipse;
-
-            _button[0].OuterColor = Color.Blue;
-            _button[1].OuterColor = Color.Magenta;
-            _button[2].OuterColor = Color.Red;
-            _button[3].OuterColor = Color.Yellow;
-
-            _button[0].CenterColor = Color.Cyan;
-            _button[1].CenterColor = Color.White;
-            _button[2].CenterColor = Color.Black;
-            _button[3].CenterColor = Color.Transparent;
-
-            _button[0].OuterOutlineColor = Color.Black;
-            _button[1].OuterOutlineColor = Color.Red;
-            _button[2].OuterOutlineColor = Color.Yellow;
-            _button[3].OuterOutlineColor = Color.White;
-
-            _button[0].CenterOutlineColor = Color.Transparent;
-            _button[1].CenterOutlineColor = Color.Green;
-            _button[2].CenterOutlineColor = Color.Magenta;
-            _button[3].CenterOutlineColor = Color.Blue;
-
-            _button[0].Origin.Horizontal.Left();
-            _button[1].Origin.Horizontal.Center();
-            _button[2].Origin.Horizontal.Right();
-            _button[3].Origin.Horizontal.Left();
-            
-            _button[0].Origin.Vertical.Top();
-            _button[1].Origin.Vertical.Center();
-            _button[2].Origin.Vertical.Buttom();
-            _button[3].Origin.Vertical.Buttom();
-
-            _button[0].ButtonHeld += ButtonHeld;
-            _button[1].ButtonHeld += ButtonHeld;
-            _button[2].ButtonHeld += ButtonHeld;
-            _button[3].ButtonHeld += ButtonHeld;
-
-            _button[0].ButtonPressed += ButtonPressed;
-            _button[1].ButtonPressed += ButtonPressed;
-            _button[2].ButtonPressed += ButtonPressed;
-            _button[3].ButtonPressed += ButtonPressed;
-
-            _button[0].ButtonRealeased += ButtonRealesed;
-            _button[1].ButtonRealeased += ButtonRealesed;
-            _button[2].ButtonRealeased += ButtonRealesed;
-            _button[3].ButtonRealeased += ButtonRealesed;
+            _button = new Button(_window, new Vector2f(5, 5), new Vector2f(200, 200));
+            _checkbox = new Checkbox(_window, new Vector2f(205, 205));
+            _checkbox.Height = 200;
+            _checkbox.Width = 200;
+            _checkbox.FillColor = Color.White;
+            _checkbox.CrossColor = Color.Black;
+            _button.ButtonHeld += ButtonHeld;
+            _button.ButtonPressed += ButtonPressed;
+            _button.ButtonRealeased += ButtonRealesed;
+            _button.IsVisible = false;
 
             while (_window.IsOpen)
             {
 
                 _window.DispatchEvents();
                 _window.Clear();
-                for (int i = 0; i < 4; ++i)
-                {
-                    _button[i].Draw();
-                }
+                
+                _button.Draw();
                 _window.Display();
-
+                _checkbox.Draw();
                 
 
             }
@@ -94,11 +54,19 @@ namespace Button1
         {
             Console.WriteLine("u are holding the button");
             //_button.Position = new Vector2f(_button.Position.X - 1f, _button.Position.Y -1f);
+
         }
         static private void ButtonPressed()
         {
             Console.WriteLine("u have pressed the button");
-
+            if(_button.CenterColor == Color.Red)
+            {
+                _button.CenterColor = Color.Blue;
+            }
+            else
+            {
+                _button.CenterColor = Color.Red;
+            }
         }
 
         static private void ButtonRealesed()
