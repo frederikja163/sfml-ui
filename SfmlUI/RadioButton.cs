@@ -20,8 +20,6 @@ namespace SfmlUI
 
         private int _selected { get; set; }
 
-        private int _previouslySelected { get; set; }
-
         private RenderWindow _window { get; }
 
         public bool IsVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -115,7 +113,9 @@ namespace SfmlUI
                     if (_selected == i)
                     {
                         _selected = -1;
-                    } else {
+                    }
+                    else
+                    {
                         _selected = i;
                     }
                     return;
