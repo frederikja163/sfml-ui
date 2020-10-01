@@ -233,12 +233,12 @@ namespace SfmlUI
                 else if (e.Code == Keyboard.Key.Right && _cursor <= Text.Length - 1)
                 {
                     _cursor++;
-                    UpdateCursorElement();
+                    UpdateTextElement();
                 }
                 else if (e.Code == Keyboard.Key.Left && _cursor > 0)
                 {
                     _cursor--;
-                    UpdateCursorElement();
+                    UpdateTextElement();
                 }
             }
         }
