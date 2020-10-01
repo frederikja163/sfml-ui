@@ -88,7 +88,7 @@ namespace SfmlUI
                 var radio = new CircleShape(_radius);
                 radio.FillColor = new Color(255, 255, 255);
                 radio.OutlineThickness = _radius/3;
-                radio.OutlineColor = new Color(0, 0, 0);
+                radio.OutlineColor = new Color(100, 100, 100);
                 radio.Position = _position+i*new Vector2f(0,_lineSpacing);
 
                 var radioSelected = new CircleShape(_radius/1.7f);
@@ -101,11 +101,7 @@ namespace SfmlUI
 
                 if (_selected == i)
                 {
-                    if (_previouslySelected != _selected)
-                    {
-                        _window.Draw(radioSelected);
-                    }
-                    
+                    _window.Draw(radioSelected);
                 }
             }
         }
@@ -116,8 +112,13 @@ namespace SfmlUI
             {
                 if (Math.Pow(e.X - _position.X - _radius, 2) + Math.Pow(e.Y - _position.Y * (i + 1) + i * lineSpacing - _radius, 2) <= Math.Pow(_radius, 2))
                 {
-                    _previouslySelected = _selected;
-                    _selected = i;
+                    if (_selected == i)
+                    {
+                        _selected = -1;
+                    } else {
+                        _selected = i;
+                    }
+                    return;
                 }
             }
         }
