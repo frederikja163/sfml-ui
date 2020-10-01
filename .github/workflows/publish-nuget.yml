@@ -1,6 +1,6 @@
 name: publish to nuget
 on:
-  pull_request:
+  push:
     branches:
       - release
 jobs:
