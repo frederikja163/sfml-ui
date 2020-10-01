@@ -54,7 +54,7 @@ namespace CheckboxSandkasse
 
             button2.ButtonPressed += () =>
             {
-                graphic.StartFlashing(1 * 1000);
+                graphic.StartFlashing((long) (1 + 10 * slider.Value));
             };
 
             button3.ButtonPressed += () =>
