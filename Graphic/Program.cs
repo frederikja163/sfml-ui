@@ -29,6 +29,16 @@ namespace Graphic
             checkbox.BorderThickness = 5;
             checkbox.IsChecked = true;
 
+            var radioButton = new RadioButton(Window, new Vector2f(950, 20), 14, new Vector2f(0, 40), 5);
+
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(50, 550), new Font("ArialNova.ttf"), 30,
+                    "No Blink",
+                    "Fast",
+                    "Medium",
+                    "Slow"
+                );
+            Window.MouseButtonReleased += OnMouseButtonReleased;
+
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -37,10 +47,21 @@ namespace Graphic
                 background.Draw();
                 element.Draw();
                 scaledElement.Draw();
-                checkbox.Draw();
                 scaledElement.IsVisible = checkbox.IsChecked;
+                checkbox.Draw();
+                
+                radioButton.Draw();
+                dropdown.Draw();
 
                 Window.Display();
+            }
+
+            void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+            {
+                if (dropdown.ChosenItem == "No Blink") background.StopFlashing();
+                if (dropdown.ChosenItem == "Fast") background.StartFlashing(100);
+                if (dropdown.ChosenItem == "Medium") background.StartFlashing(300);
+                if (dropdown.ChosenItem == "Slow") background.StartFlashing(600);
             }
 
             void OnKeyReleased(object sender, KeyEventArgs e)
