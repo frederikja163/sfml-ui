@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SfmlUI;
 
 namespace Graphic
 {
@@ -16,6 +17,18 @@ namespace Graphic
             element.StartFlashing(300);
             SfmlUI.Graphic scaledElement = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 250), new Vector2f(100, 200), new Vector2f(100, 100), 2f);
             Window.KeyReleased += OnKeyReleased;
+
+            Checkbox checkbox = new Checkbox(Window, new Vector2f(770, 470));
+            checkbox.Width = 50;
+            checkbox.Height = 50;
+            checkbox.CrossThickness = 5f;
+            checkbox.CrossColor = Color.Green;
+            checkbox.FillColor = Color.Black;
+            checkbox.BorderEnabled = true;
+            checkbox.BorderColor = Color.White;
+            checkbox.BorderThickness = 5;
+            checkbox.IsChecked = true;
+
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -24,6 +37,8 @@ namespace Graphic
                 background.Draw();
                 element.Draw();
                 scaledElement.Draw();
+                checkbox.Draw();
+                scaledElement.IsVisible = checkbox.IsChecked;
 
                 Window.Display();
             }
