@@ -45,12 +45,13 @@ namespace Dropdown1
             checkbox.CrossColor = Color.Magenta;
 
             // RadioButton
-            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 1000), 10f, 1f, 2);
+            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, new Vector2f(0,50f), 3);
 
             // Slider
-            Slider slider = new Slider(Window, new Vector2f(1200, 80), 100f, 50f, 0f, 100f);
-            
-            // 
+            Slider slider = new Slider(Window, new Vector2f(1080, 500), 200f, 50f, 0f, 100f);
+
+            // Text input
+            TextInput textinput = new TextInput(Window, new Vector2f(900, 80), 900f, 50f, new Font("ArialNova.ttf"));
 
 
             while (Window.IsOpen)
@@ -64,6 +65,8 @@ namespace Dropdown1
                 button.Draw();
                 checkbox.Draw();
                 radiobutton.Draw();
+                slider.Draw();
+                textinput.Draw();
 
                 Window.Display();         
             }

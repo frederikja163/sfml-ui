@@ -17,6 +17,7 @@ namespace SfmlUI
         private Shape _shape;
         private Shape _activeShape;
         private uint _fontSize = 0;
+        private Font _font;
         private List<Text> _list = new List<Text>();
         private Text _primedText;
         private Color _textColor = new Color(0, 0, 0, 255);
@@ -33,6 +34,21 @@ namespace SfmlUI
 
         // public ekstra metoder
         public string ChosenItem { get { return _list[0].DisplayedString; } }
+        public string[] List { 
+            get 
+            {
+                string[] tempList = new string[_list.Count()-1];
+                for (int i=0; i<_list.Count(); i++)
+                {
+                    tempList[i] = _list[i].DisplayedString;
+                }
+                return tempList;
+            } 
+            set 
+            { 
+                ChangeList(value); 
+            } 
+        }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -50,6 +66,7 @@ namespace SfmlUI
                 if (_list[i].GetLocalBounds().Width > maxWidth) { maxWidth = _list[i].GetLocalBounds().Width; }
             }
             _window = window;
+            _font = font;
             _isVisible = true;
             _position = position;
             _size = new Vector2f(maxWidth + fontSize, fontSize + 0.2f * fontSize);
@@ -104,11 +121,13 @@ namespace SfmlUI
                 if (!_active)
                 {
                     _active = true;
+                    _primedText = _list[0];
                 } else
                 {
                     // Selection of highlighted item
                     Text tempHolder = _list[0];
-                    int occurence = _list.IndexOf(_primedText);
+                    int occurence = 0;
+                    if (_list.IndexOf(_primedText) >= 0) { occurence = _list.IndexOf(_primedText); }
                     _list[occurence] = tempHolder;
                     _list[0] = _primedText;
                     _list[0].FillColor = _textColor;
@@ -203,5 +222,92 @@ namespace SfmlUI
                 _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
             }
         }
+
+        // Methods for making changes to the list
+        private void ChangeList(params string[] list) // Change the overall content of the dropdown
+        {
+            float maxWidth = 0;
+            if (list.Count() > _list.Count())
+            {
+                int overflow = list.Count() - _list.Count();
+                for (int i=0; i<overflow; i++)
+                {
+                    _list.Add(_list[0]);
+                }
+                for (int i=0; i<_list.Count(); i++)
+                {
+                    _list[i].DisplayedString = list[i];
+                    if (_list[i].GetGlobalBounds().Width > maxWidth)
+                    {
+                        maxWidth = _list[i].GetGlobalBounds().Width;
+                    }
+                }
+            } else if (list.Count() < _list.Count())
+            {
+                int overflow = _list.Count() - list.Count();
+                for (int i = 0; i < overflow; i++)
+                {
+                    _list.Remove(_list[i]);
+                }
+                for (int i = 0; i < _list.Count(); i++)
+                {
+                    _list[i].DisplayedString = list[i];
+                    if (_list[i].GetGlobalBounds().Width > maxWidth)
+                    {
+                        maxWidth = _list[i].GetGlobalBounds().Width;
+                    }
+                }
+            } else
+            {
+                for (int i = 0; i < _list.Count(); i++)
+                {
+                    _list[i].DisplayedString = list[i];
+                    if (_list[i].GetGlobalBounds().Width > maxWidth)
+                    {
+                        maxWidth = _list[i].GetGlobalBounds().Width;
+                    }
+                }
+            }
+            // Generate new _shape
+            Shape tempHolder = _shape;
+            _shape = new RectangleShape(new Vector2f(maxWidth + _fontSize, _fontSize + 0.2f * _fontSize));
+            _shape.Position = tempHolder.Position;
+            _shape.OutlineThickness = tempHolder.OutlineThickness;
+            _shape.OutlineColor = tempHolder.OutlineColor;
+            _shape.FillColor = tempHolder.FillColor;
+
+            // Generate new _activeShape
+            tempHolder = _activeShape;
+            _activeShape = new RectangleShape(new Vector2f(maxWidth + _fontSize, list.Count() * _fontSize + 0.2f * _fontSize));
+            _activeShape.Position = tempHolder.Position;
+            _activeShape.OutlineThickness = tempHolder.OutlineThickness;
+            _activeShape.OutlineColor = tempHolder.OutlineColor;
+            _activeShape.FillColor = tempHolder.FillColor;
+        }
+        public void AddItem(string item) // Add new item to the dropdown
+        {
+            _list.Add(new Text(item, _font, _fontSize));
+        }
+        public void RemoveItem(string item) // Remove item from dropdown
+        {
+            for (int i=0; i<_list.Count(); i++)
+            {
+                if (_list[i].DisplayedString == item)
+                {
+                    _list.RemoveAt(i);
+                }
+            }
+        }
+        public void ReplaceItem(string item, string replacement)
+        {
+            for (int i = 0; i < _list.Count(); i++)
+            {
+                if (_list[i].DisplayedString == item)
+                {
+                    _list[i].DisplayedString = replacement;
+                }
+            }
+        }
+
     }
 }
