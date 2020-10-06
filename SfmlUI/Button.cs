@@ -168,6 +168,7 @@ namespace SfmlUI
             {
                 _position = value;
                 Origin.Position = value;
+
                 _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
                 _rectangleCenter.FillColor = _centerColor;
                 _rectangleCenter.OutlineThickness = 3;
