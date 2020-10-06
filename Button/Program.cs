@@ -4,6 +4,7 @@ using SFML.Window;
 using SFML.System;
 using SfmlUI;
 
+
 namespace Button1
 {
 
@@ -34,11 +35,11 @@ namespace Button1
             //_button.ButtonHeld += ButtonHeld;
             //_button.ButtonPressed += ButtonPressed;
             //_button.ButtonRealeased += ButtonRealesed;
-            //_slider[0] = new Slider(_window, new Vector2f(5, 205), 800, 195, 0, 255);
+            //_slider[0] = new Slider(_window, new Vector2f(5, 205), 800, 195, 20, 255);
             //_slider[1] = new Slider(_window, new Vector2f(5, 405), 800, 195, 0, 255);
             //slider[2] = new Slider(_window, new Vector2f(5, 605), 800, 195, 0, 255);
             //_slider[3] = new Slider(_window, new Vector2f(5, 805), 800, 195, 0, 255);
-            _radioButton = new RadioButton(_window, new Vector2f(200, 200), 30, new Vector2f(100, 100), 4);
+            //_radioButton = new RadioButton(_window, new Vector2f(200, 200), 30, new Vector2f(100, 100), 4);
            
             
             while (_window.IsOpen)
@@ -51,9 +52,10 @@ namespace Button1
                 //_slider[2].Draw();
                 //_slider[3].Draw();
                 //_button.Draw();
-                _radioButton.Draw();
-                _window.Display();
+                //_radioButton.Draw();
                 //_checkbox.Draw();
+                _window.Display();
+               
                 
 
                 
