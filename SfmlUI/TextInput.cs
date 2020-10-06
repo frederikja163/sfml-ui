@@ -1,3 +1,4 @@
+using System;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -34,6 +35,8 @@ namespace SfmlUI
         }
 
         public bool IsVisible { get; set; } = true;
+
+        public event EventHandler<string> OnChange;
 
         private Vector2f _position { get; set; }
         public Vector2f Position
@@ -218,6 +221,7 @@ namespace SfmlUI
                     {
                         Text = Text.Remove(_cursor - 1, 1);
                         _cursor--;
+                        EmitOnChange();
                         UpdateTextElement();
                     }
                 }
@@ -247,6 +251,7 @@ namespace SfmlUI
         {
             Text = newText;
             _cursor = newText.Length;
+            EmitOnChange();
             UpdateTextElement();
         }
 
@@ -254,7 +259,18 @@ namespace SfmlUI
         {
             Text = Text.Insert(_cursor, addtion);
             _cursor += addtion.Length;
+            EmitOnChange();
             UpdateTextElement();
         }
+
+        private void EmitOnChange()
+        {
+            var handler = OnChange;
+            if (handler != null)
+            {
+                handler(this, Text);
+            }
+        }
     }
+
 }
