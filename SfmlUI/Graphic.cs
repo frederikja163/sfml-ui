@@ -62,11 +62,11 @@ namespace SfmlUI
             {
                 _size = size;
             }
-            Origin = new Origin(_position, _size);
+            Origin = new Origin(_position, _size * scale);
             // Creating the sprite to be shown in the Window
             _sprite = new Sprite(_graphFile, new IntRect((int)_pictPos.X, (int)_pictPos.Y, (int)(_size.X), (int)(_size.Y)));
             _sprite.Scale = new Vector2f(scale, scale);
- //           _sprite.Position = Origin.Position;
+            _sprite.Position = Origin.TruePosition;
             // Starting the timer tom implement Blink behavior
             _watch.Start();
             _time = _watch.ElapsedMilliseconds;
@@ -89,8 +89,7 @@ namespace SfmlUI
         {
             get
             {
-                //               return Origin.Position;
-                return _position;
+                return Origin.TruePosition;
             }
         }
         public float Width
@@ -120,10 +119,18 @@ namespace SfmlUI
             _isFlashing = false;
         }
 
+        public void Fade (float magnitude) 
+        {
+            if (magnitude < 0.0) magnitude = 0.0f;
+            if (magnitude > 1.0) magnitude = 1.0f;
+            Byte _fade = (Byte) (magnitude * 255.0);
+            _sprite.Color = new Color(255, 255, 255, _fade);
+        }
         // Draw method that implements the displaying of the picture, handling visibility and blinking
         public void Draw()
         {
             if (_isVisible) {
+                _sprite.Position = Origin.TruePosition;
                 if (_isFlashing)
                 {
                     if (_watch.ElapsedMilliseconds - _time > _flashTime)

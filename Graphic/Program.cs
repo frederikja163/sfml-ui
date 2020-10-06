@@ -10,15 +10,18 @@ namespace Graphic
     {
         static void Main(string[] args)
         {
+            
             RenderWindow Window = new RenderWindow(new VideoMode(1024, 768), "Graphic test", Styles.Titlebar | Styles.Close);
             Window.Closed += OnClose;
             SfmlUI.Graphic background = new SfmlUI.Graphic(Window, "background.png", new Vector2f(20, 20));
             SfmlUI.Graphic element = new SfmlUI.Graphic(Window, "background.png", new Vector2f(820, 100), new Vector2f(100, 100), new Vector2f(100, 100));
             element.StartFlashing(300);
-            SfmlUI.Graphic scaledElement = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 250), new Vector2f(100, 200), new Vector2f(100, 100), 2f);
+            SfmlUI.Graphic scaledElement = new SfmlUI.Graphic(Window, "background.png", new Vector2f(870, 250), new Vector2f(100, 200), new Vector2f(100, 100), 2f);
+            scaledElement.Origin.Horizontal.Center();
             SfmlUI.Graphic element2 = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 600), new Vector2f(500, 100), new Vector2f(100, 100));
             element2.Origin.Horizontal.Center();
             element2.Origin.Vertical.Center();
+            element2.Fade(0.7f);
             Window.KeyReleased += OnKeyReleased;
 
             Checkbox checkbox = new Checkbox(Window, new Vector2f(770, 470));
@@ -42,6 +45,8 @@ namespace Graphic
                 );
             Window.MouseButtonReleased += OnMouseButtonReleased;
 
+            int _lastRadio = -2;
+
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -49,12 +54,34 @@ namespace Graphic
                 Window.Clear();
                 background.Draw();
                 element.Draw();
-                element2.Draw();
                 scaledElement.Draw();
                 scaledElement.IsVisible = checkbox.IsChecked;
                 checkbox.Draw();
                 
                 radioButton.Draw();
+                if (radioButton._selected != _lastRadio)
+                {
+                    _lastRadio = radioButton._selected;
+                    switch(_lastRadio)
+                    {
+                        case 0:
+                            element2.StopFlashing();
+                            break;
+                        case 1:
+                            element2.StartFlashing(1000);
+                            break;
+                        case 2:
+                            element2.StartFlashing(600);
+                            break;
+                        case 3:
+                            element2.StartFlashing(300);
+                            break;
+                        case 4:
+                            element2.StartFlashing(100);
+                            break;
+                    }
+                }
+                element2.Draw();
                 dropdown.Draw();
 
                 Window.Display();
