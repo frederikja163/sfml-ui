@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SfmlUI;
 
 namespace Graphic
 {
@@ -15,7 +16,32 @@ namespace Graphic
             SfmlUI.Graphic element = new SfmlUI.Graphic(Window, "background.png", new Vector2f(820, 100), new Vector2f(100, 100), new Vector2f(100, 100));
             element.StartFlashing(300);
             SfmlUI.Graphic scaledElement = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 250), new Vector2f(100, 200), new Vector2f(100, 100), 2f);
+            SfmlUI.Graphic element2 = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 600), new Vector2f(500, 100), new Vector2f(100, 100));
+            element2.Origin.Horizontal.Center();
+            element2.Origin.Vertical.Center();
             Window.KeyReleased += OnKeyReleased;
+
+            Checkbox checkbox = new Checkbox(Window, new Vector2f(770, 470));
+            checkbox.Width = 50;
+            checkbox.Height = 50;
+            checkbox.CrossThickness = 5f;
+            checkbox.CrossColor = Color.Green;
+            checkbox.FillColor = Color.Black;
+            checkbox.BorderEnabled = true;
+            checkbox.BorderColor = Color.White;
+            checkbox.BorderThickness = 5;
+            checkbox.IsChecked = true;
+
+            var radioButton = new RadioButton(Window, new Vector2f(950, 20), 14, new Vector2f(0, 40), 5);
+
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(50, 550), new Font("ArialNova.ttf"), 30,
+                    "No Blink",
+                    "Fast",
+                    "Medium",
+                    "Slow"
+                );
+            Window.MouseButtonReleased += OnMouseButtonReleased;
+
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
@@ -23,9 +49,23 @@ namespace Graphic
                 Window.Clear();
                 background.Draw();
                 element.Draw();
+                element2.Draw();
                 scaledElement.Draw();
+                scaledElement.IsVisible = checkbox.IsChecked;
+                checkbox.Draw();
+                
+                radioButton.Draw();
+                dropdown.Draw();
 
                 Window.Display();
+            }
+
+            void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+            {
+                if (dropdown.ChosenItem == "No Blink") background.StopFlashing();
+                if (dropdown.ChosenItem == "Fast") background.StartFlashing(100);
+                if (dropdown.ChosenItem == "Medium") background.StartFlashing(300);
+                if (dropdown.ChosenItem == "Slow") background.StartFlashing(600);
             }
 
             void OnKeyReleased(object sender, KeyEventArgs e)

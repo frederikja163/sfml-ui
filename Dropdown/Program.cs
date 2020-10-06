@@ -45,7 +45,7 @@ namespace Dropdown1
             checkbox.CrossColor = Color.Magenta;
 
             // RadioButton
-            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, 50f, 3);
+            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, new Vector2f(0,50f), 3);
 
             // Slider
             Slider slider = new Slider(Window, new Vector2f(1080, 500), 200f, 50f, 0f, 100f);
