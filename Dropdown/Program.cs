@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
 using SfmlUI;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Dropdown1
 {
@@ -17,7 +18,7 @@ namespace Dropdown1
             Window.Closed += OnClose;
 
             // dropdown 1
-            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("C:\\Users\\burni\\Source\\Repos\\sfml-ui\\Dropdown\\bin\\Debug\\netcoreapp3.1\\ArialNova.ttf"), 30,
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
                     "Lorem Ipsum",
                     "Electric boogaloo",
                     "James",
@@ -38,6 +39,12 @@ namespace Dropdown1
             Button button = new Button(Window, new Vector2f(200, 200), new Vector2f(100, 20));
             button.CenterColor = Color.Black;
             button.OuterColor = Color.Red;
+            button.ButtonPressed += buttonPress;
+
+            void buttonPress()
+            {
+                dropdown.AddItem("last time i was here i was just a kid");
+            }
 
             // Checkbox
             Checkbox checkbox = new Checkbox(Window, new Vector2f(1000, 500));

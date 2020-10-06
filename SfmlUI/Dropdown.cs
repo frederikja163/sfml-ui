@@ -287,6 +287,7 @@ namespace SfmlUI
         public void AddItem(string item) // Add new item to the dropdown
         {
             _list.Add(new Text(item, _font, _fontSize));
+            CallibrateBox();
         }
         public void RemoveItem(string item) // Remove item from dropdown
         {
@@ -297,6 +298,7 @@ namespace SfmlUI
                     _list.RemoveAt(i);
                 }
             }
+            CallibrateBox();
         }
         public void ReplaceItem(string item, string replacement)
         {
@@ -307,7 +309,33 @@ namespace SfmlUI
                     _list[i].DisplayedString = replacement;
                 }
             }
+            CallibrateBox();
         }
+        private void CallibrateBox()
+        {
+            float maxWidth = 0;
+            foreach (Text text in _list)
+            {
+                if (text.GetGlobalBounds().Width > maxWidth) { maxWidth = text.GetGlobalBounds().Width; }
+            }
+            Shape tempHolder = _activeShape;
+            _activeShape = new RectangleShape(new Vector2f(maxWidth + _fontSize, _list.Count() * _fontSize + 0.2f * _fontSize));
+            _activeShape.Position = tempHolder.Position;
+            _activeShape.OutlineThickness = tempHolder.OutlineThickness;
+            _activeShape.OutlineColor = tempHolder.OutlineColor;
+            _activeShape.FillColor = tempHolder.FillColor;
 
+            tempHolder = _shape;
+            _shape = new RectangleShape(new Vector2f(maxWidth + _fontSize, _fontSize + 0.2f * _fontSize));
+            _shape.Position = tempHolder.Position;
+            _shape.OutlineThickness = tempHolder.OutlineThickness;
+            _shape.OutlineColor = tempHolder.OutlineColor;
+            _shape.FillColor = tempHolder.FillColor;
+
+            for (int i = 0; i < _list.Count(); i++)
+            {
+                _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+            }
+        }
     }
 }
