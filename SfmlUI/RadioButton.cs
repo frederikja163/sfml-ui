@@ -107,10 +107,11 @@ namespace SfmlUI
 
         private void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
         {
+           
             for (int i = 0; i < amount; i++)
             {
-                if (Math.Pow(e.X - _position.X * (i + 1) + i * _lineSpacing.X - _radius, 2) + 
-                    Math.Pow(e.Y - _position.Y * (i + 1) + i * _lineSpacing.Y - _radius, 2) <=
+                if (Math.Pow(e.X - (_position.X + i * lineSpacing.X + _radius), 2) + 
+                    Math.Pow(e.Y - (_position.Y + i * lineSpacing.Y + _radius), 2) <=
                     Math.Pow(_radius, 2))
                 {
                     if (_selected == i)
