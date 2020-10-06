@@ -7,6 +7,8 @@ namespace SfmlUI
 {
     public class Graphic : IUiElement
     {
+        public Origin Origin;
+
         // Properties that can be read and som of then set by property interface
         private readonly Vector2f _position;
         private Vector2f _size;
@@ -60,10 +62,11 @@ namespace SfmlUI
             {
                 _size = size;
             }
+            Origin = new Origin(_position, _size);
             // Creating the sprite to be shown in the Window
             _sprite = new Sprite(_graphFile, new IntRect((int)_pictPos.X, (int)_pictPos.Y, (int)(_size.X), (int)(_size.Y)));
             _sprite.Scale = new Vector2f(scale, scale);
-            _sprite.Position = position;
+ //           _sprite.Position = Origin.Position;
             // Starting the timer tom implement Blink behavior
             _watch.Start();
             _time = _watch.ElapsedMilliseconds;
@@ -86,6 +89,7 @@ namespace SfmlUI
         {
             get
             {
+                //               return Origin.Position;
                 return _position;
             }
         }
@@ -100,7 +104,7 @@ namespace SfmlUI
         {
             get
             {
-                return _size.Y * _sprite.Scale.X;
+                return _size.Y * _sprite.Scale.Y;
             }
         }
 
