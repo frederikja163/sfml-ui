@@ -129,7 +129,7 @@ namespace Graphic
                 Window.Display();
             }
 
-            void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+            void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
             {
                 if (dropdown.ChosenItem == "No Blink") background.StopFlashing();
                 if (dropdown.ChosenItem == "Fast") background.StartFlashing(100);
