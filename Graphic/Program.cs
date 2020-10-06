@@ -16,6 +16,9 @@ namespace Graphic
             SfmlUI.Graphic element = new SfmlUI.Graphic(Window, "background.png", new Vector2f(820, 100), new Vector2f(100, 100), new Vector2f(100, 100));
             element.StartFlashing(300);
             SfmlUI.Graphic scaledElement = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 250), new Vector2f(100, 200), new Vector2f(100, 100), 2f);
+            SfmlUI.Graphic element2 = new SfmlUI.Graphic(Window, "background.png", new Vector2f(770, 600), new Vector2f(500, 100), new Vector2f(100, 100));
+            element2.Origin.Horizontal.Center();
+            element2.Origin.Vertical.Center();
             Window.KeyReleased += OnKeyReleased;
 
             Checkbox checkbox = new Checkbox(Window, new Vector2f(770, 470));
@@ -46,6 +49,7 @@ namespace Graphic
                 Window.Clear();
                 background.Draw();
                 element.Draw();
+                element2.Draw();
                 scaledElement.Draw();
                 scaledElement.IsVisible = checkbox.IsChecked;
                 checkbox.Draw();

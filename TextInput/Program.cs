@@ -36,6 +36,8 @@ namespace TextInputSandbox
             System.Console.WriteLine("And printing it to the console:");
             System.Console.WriteLine(textInput3.Text);
 
+            textInput3.OnChange += (_, str) => System.Console.WriteLine($"OnChangeHandler called with \"{str}\"!");
+
 
             while (window.IsOpen)
             {
