@@ -5,20 +5,20 @@ using System;
 using SfmlUI;
 
 
-namespace RadioButtonSandbox //Magnus
+namespace RadioButtonSandbox
 {
     class Program
     {
         private static RenderWindow _window;
 
-        private TextBox Text8;
+        private static TextBox Text8;
 
         static void Main(string[] args)
         {
             _window = new RenderWindow(new VideoMode(1000, 1000), "RadioButton");
 
             //RadioButton(RenderWindow = _window, startingPosition, globalRadius, lineSpacing, radioAmount)
-            var radioButton = new RadioButton(_window, new Vector2f(100,100), 30, new Vector2f(0,100), 5);
+            RadioButton radioButton = new RadioButton(_window, new Vector2f(100,100), 30, new Vector2f(0,100), 5);
 
             //TextBox(_window, position, ?, font, fontSize
             TextBox text1 = new TextBox(_window, new Vector2f(190, 115), 200f, 200f, new Font("Arial.ttf"), 30);
@@ -57,7 +57,7 @@ namespace RadioButtonSandbox //Magnus
             text6.TextColor = Color.White;
 
             //Slider(_window, position, length, height, min-value, max-value)
-            var slider = new Slider(_window, new Vector2f(500, 100), 400f, 50f, 0f, 100f);
+            Slider slider = new Slider(_window, new Vector2f(500, 100), 400f, 50f, 0f, 100f);
 
             TextBox text7 = new TextBox(_window, new Vector2f(600, 50), 200f, 200f, new Font("Arial.ttf"), 30);
             text7.BackgroundColor = new Color(0, 0, 0, 0);
@@ -65,16 +65,67 @@ namespace RadioButtonSandbox //Magnus
             text7.TextColor = Color.White;
 
             //Button(_window, position, size)
-            var button = new Button(_window, new Vector2f(600, 200), new Vector2f(200, 200));
+            Button button = new Button(_window, new Vector2f(500, 200), new Vector2f(200, 200));
             button.Shape = Button.Shapes.Elipse;
 
-            button.ButtonHeld += buttonHeld;
+            button.ButtonPressed += buttonPressed;
+            button.ButtonReleased += buttonReleased;
 
-            TextBox Text8 = new TextBox(_window, new Vector2f(600, 425), 200f, 200f, new Font("Arial.ttf"), 30);
+            Text8 = new TextBox(_window, new Vector2f(750, 275), 200f, 200f, new Font("Arial.ttf"), 30);
             Text8.BackgroundColor = new Color(0, 0, 0, 0);
             Text8.OutlineColor = new Color(0, 0, 160);
             Text8.TextColor = Color.White;
-            
+            Text8.Output("Not pressed");
+
+            //Checkbox(_window, position)
+            Checkbox checkbox = new Checkbox(_window, new Vector2f(500, 450));
+            checkbox.Width = 50;
+            checkbox.Height = 50;
+            checkbox.CrossThickness = 5f;
+            checkbox.FillColor = new Color(255, 255, 255);
+            checkbox.CrossColor = new Color(100, 100, 100);
+
+            TextBox text9 = new TextBox(_window, new Vector2f(575, 455), 200f, 200f, new Font("Arial.ttf"), 30);
+            text9.BackgroundColor = new Color(0, 0, 0, 0);
+            text9.OutlineColor = new Color(0, 0, 160);
+            text9.TextColor = Color.White;
+
+            //Dropdown(_window, position, font, fontSize)
+            Dropdown dropdown = new Dropdown(_window, new Vector2f(100, 700), new Font("Arial.ttf"), 30,
+                "Lorem Ipsum",
+                "Electric boogaloo",
+                "James",
+                "Brown fox",
+                "Doc",
+                "Docile",
+                "Pizza",
+                "Hut Hut",
+                "Last item"
+            );
+            dropdown.OutlineColor = new Color(100, 100, 100);
+            dropdown.OutlineThickness = 50;
+            dropdown.TextColor = new Color(255, 255, 255);
+            dropdown.HighlightColor = new Color(255, 0, 0); ;
+            dropdown.BackgroundColor = new Color(100, 100, 100);
+
+            TextBox text10 = new TextBox(_window, new Vector2f(100, 775), 200f, 200f, new Font("Arial.ttf"), 30);
+            text10.BackgroundColor = new Color(0, 0, 0, 0);
+            text10.OutlineColor = new Color(0, 0, 160);
+            text10.TextColor = Color.White;
+
+            //TextInput(_window, position, width, height, font)
+            TextInput textInput = new TextInput(_window, new Vector2f(500, 550), 400f, 50f, new Font("Arial.ttf"));
+            textInput.OutlineColor = new Color(100, 100, 100);
+            textInput.TextColor = new Color(0, 0, 0);
+
+            TextBox text11 = new TextBox(_window, new Vector2f(500, 625), 200f, 200f, new Font("Arial.ttf"), 30);
+            text11.BackgroundColor = new Color(0, 0, 0, 0);
+            text11.OutlineColor = new Color(0, 0, 160);
+            text11.TextColor = Color.White;
+
+            //Graphic(_window, "name.filetype", position)
+            Graphic graphic = new Graphic(_window, "image.jpg", new Vector2f (500, 700));
+
             _window.Closed += WindowClosed;
 
             _window.SetFramerateLimit(60);
@@ -106,18 +157,41 @@ namespace RadioButtonSandbox //Magnus
                 text7.Draw();
 
                 button.Draw();
-                Text8.Output("test");
                 Text8.Draw();
+
+                checkbox.Draw();
+                if (checkbox.IsChecked == true)
+                {
+                    text9.Output("Checked");
+                }
+                else
+                {
+                    text9.Output("Unchecked");
+                }
+                text9.Draw();
+
+                text10.Output("Selected: " + dropdown.ChosenItem);
+                text10.Draw();
+                dropdown.Draw();
+
+                textInput.Draw();
+                text11.Output("Input: " + textInput.Text);
+                text11.Draw();
+
+                graphic.Draw();
 
                 _window.Display();
             }
 
-            
         }
-        private static void buttonHeld()
+        private static void buttonPressed()
         {
-            //Text8.Output("Pressed");
-            //???
+            Text8.Output("Pressed");
+        }
+
+        private static void buttonReleased()
+        {
+            Text8.Output("Not pressed");
         }
 
         private static void WindowClosed(object sender, EventArgs e)
