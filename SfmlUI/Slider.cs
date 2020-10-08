@@ -12,7 +12,7 @@ namespace SfmlUI
         {
             _window = window;
             _position = Position;
-            _handlePos = Position + new Vector2f (Width/20f,0);
+            _handlePos = Position /*+ new Vector2f (Width/20f,0)*/;
             _height = Height;
             _width = Width;
             _min = Min;
@@ -100,11 +100,28 @@ namespace SfmlUI
             }
         }
         private bool _clicked;
+
+        private float _sMax;
+
+        private float Smax
+        {
+            get
+            {
+                return _sMax;
+            }
+            set
+            {
+                _sMax = _width - (_width / 20f);
+            }
+        }
+
+            
+
         public float Value
         {
             get
             {
-                return ((_handlePos.X - Position.X - (_width / 20)) / _width * 22.22f / 20f) * _max + _min;
+                return ((_handlePos.X - Position.X - (_width / 20))/(_width-(_width/10f))) * _max + _min;
             }
         }
 
@@ -138,12 +155,14 @@ namespace SfmlUI
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(mousePos.X, _position.Y);
+                Console.WriteLine(Value);
                 return true;
             }
             else if (mousePos.X >= _position.X && mousePos.X <= _position.X + hwidth &&
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(_position.X + hwidth, _position.Y);
+                Console.WriteLine(Value);
                 return true;
             }
 
@@ -151,6 +170,7 @@ namespace SfmlUI
                 mousePos.Y >= _position.Y && mousePos.Y <= _position.Y + _height)
             {
                 _handlePos = new Vector2f(_position.X + _width - hwidth, _position.Y);
+                Console.WriteLine(Value);
                 return true;
             }
             return false;
