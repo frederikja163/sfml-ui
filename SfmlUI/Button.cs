@@ -252,13 +252,13 @@ namespace SfmlUI
         private void Actions()
         {
 
-            _window.MouseButtonReleased += OnMouseButtonRealeased;
+            _window.MouseButtonReleased += OnMouseButtonReleased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
             _window.MouseMoved += OnMouseMoved;
         }
         public event Action ButtonReleased;
         bool Pressed;
-        private void OnMouseButtonRealeased(Object? sender, MouseButtonEventArgs e)
+        private void OnMouseButtonReleased(Object? sender, MouseButtonEventArgs e)
         {
             if (Pressed)
             {
