@@ -204,10 +204,7 @@ namespace SfmlUI
             var onTextField = e.X >= Position.X && e.X <= Position.X + Width && e.Y >= Position.Y && e.Y <= Position.Y + Height;
 
             _isFocused = onTextField;
-            if (_isFocused)
-            {
-                UpdateTextFieldElement();
-            }
+            UpdateTextFieldElement();
         }
 
         private void OnPressedHandler(object sender, KeyEventArgs e)
