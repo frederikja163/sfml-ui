@@ -116,6 +116,7 @@ namespace SfmlUI
                 _outerOutlineColor = value;
                 _rectangleOuter.OutlineColor = _outerColor;
                 _elipseOuter.OutlineColor = _outerColor;
+                
             }
         }
         private Color _centerOutlineColor = new Color(0, 0, 0);
@@ -129,7 +130,9 @@ namespace SfmlUI
             {
                 _centerOutlineColor = value;
                 _rectangleCenter.OutlineColor = _centerOutlineColor;
-                _elipseOuter.OutlineColor = _centerOutlineColor;
+                _elipseCenter.OutlineColor = _centerOutlineColor;
+                _rectangleCenterPressed.OutlineColor = _centerOutlineColor;
+                _elipseCenterPressed.OutlineColor = _centerOutlineColor;
             }
         }
         private RenderWindow _window;
@@ -253,14 +256,14 @@ namespace SfmlUI
             _window.MouseButtonPressed += OnMouseButtonPressed;
             _window.MouseMoved += OnMouseMoved;
         }
-        public event Action ButtonRealeased;
+        public event Action ButtonReleased;
         bool Pressed;
         private void OnMouseButtonRealeased(Object? sender, MouseButtonEventArgs e)
         {
             if (Pressed)
             {
                 Pressed = false;
-                ButtonRealeased?.Invoke();
+                ButtonReleased?.Invoke();
             }
 
         }
@@ -284,10 +287,7 @@ namespace SfmlUI
         {
             if (Shapes.Rectangle == _shape)
             {
-                if (ex <= Size.X + Origin.TruePosition.X &&
-                    ex >= Origin.TruePosition.X &&
-                    ey <= Size.Y + Origin.TruePosition.Y &&
-                    ey >= Origin.TruePosition.Y)
+                if (_rectangleOuter.GetGlobalBounds().Contains(ex, ey))
                 {
                     return true;
                 }

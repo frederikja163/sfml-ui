@@ -26,13 +26,15 @@ namespace Button1
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
             
-            //_button = new Button(_window, new Vector2f(5, 5), new Vector2f(195, 195));
+            _button = new Button(_window, new Vector2f(5, 5), new Vector2f(195, 195));
             //_checkbox = new Checkbox(_window, new Vector2f(205, 205));
             //_checkbox.Height = 200;
             //_checkbox.Width = 200;
             //_checkbox.FillColor = Color.White;
             //_checkbox.CrossColor = Color.Black;
             //_button.ButtonHeld += ButtonHeld;
+            _button.Origin.Horizontal.Center();
+            _button.Origin.Vertical.Center();
             //_button.ButtonPressed += ButtonPressed;
             //_button.ButtonRealeased += ButtonRealesed;
             //_slider[0] = new Slider(_window, new Vector2f(5, 205), 800, 195, 20, 255);
@@ -40,8 +42,8 @@ namespace Button1
             //slider[2] = new Slider(_window, new Vector2f(5, 605), 800, 195, 0, 255);
             //_slider[3] = new Slider(_window, new Vector2f(5, 805), 800, 195, 0, 255);
             //_radioButton = new RadioButton(_window, new Vector2f(200, 200), 30, new Vector2f(100, 100), 4);
-           
-            
+
+
             while (_window.IsOpen)
             {
                 //_button.CenterColor = new Color((byte) _slider[0].Value, (byte)_slider[1].Value, (byte)_slider[2].Value, (byte)_slider[3].Value);
@@ -51,7 +53,7 @@ namespace Button1
                 //_slider[1].Draw();
                 //_slider[2].Draw();
                 //_slider[3].Draw();
-                //_button.Draw();
+                _button.Draw();
                 //_radioButton.Draw();
                 //_checkbox.Draw();
                 _window.Display();
