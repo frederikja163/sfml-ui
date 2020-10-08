@@ -20,12 +20,28 @@ namespace Slider1
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
 
-            //_button[0] = new Button(_window, new Vector2f(200, 200), new Vector2f(200, 200));
+            _button[0] = new Button(_window, new Vector2f(200, 200), new Vector2f(200, 200));
+
+            //_button[0].IsVisible = false;
+
+            _button[0].OuterColor = Color.Blue;
+
+            _button[0].CenterColor = Color.Cyan;
+
+            _button[0].OuterOutlineColor = Color.Black;
+
+            _button[0].CenterOutlineColor = Color.Transparent;
+
+            _button[0].Origin.Horizontal.Left();
+
+            _button[0].Origin.Vertical.Top();
+
             while (_window.IsOpen)
             {
                 _window.DispatchEvents();
                 _window.Clear();
 
+                _button[0].Draw();
                 _slider.Draw();
                 _window.Display();
             }

@@ -18,7 +18,7 @@ namespace SfmlUI
             _window.MouseButtonReleased += OnMouseButtonReleased;
         }
 
-        public int _selected { get; set; }
+        public int _selected { get; private set; }
 
         private RenderWindow _window { get; }
 
