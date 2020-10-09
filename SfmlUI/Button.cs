@@ -7,7 +7,98 @@ namespace SfmlUI
 {
     public class Button : IUiElement
     {
-        #region Constructer
+        #region Constructers
+        public Button(RenderWindow window)
+        {
+            _window = window;
+            Origin = new Origin(_position, _size);
+            UpdateShapes();
+            Actions();
+        }
+
+        public Button(RenderWindow window, Vector2f position)
+        {
+            _window = window;
+            _position = position;
+            Origin = new Origin(_position, _size);
+            UpdateShapes();
+            Actions();
+        }
+
+        public Button(RenderWindow window, Vector2f position, Vector2f size)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            Origin = new Origin(_position, _size);
+
+            UpdateShapes();
+            Actions();
+        }
+
+        public Button(RenderWindow window, Vector2f position, Vector2f size, bool isVisible)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            _isVisible = isVisible;
+            Origin = new Origin(_position, _size);
+            UpdateShapes();
+            Actions();
+        }
+
+        public Button(RenderWindow window, Vector2f position, Vector2f size, Color centerColor, Color outerColor)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            _centerColor = centerColor;
+            _outerColor = outerColor;
+            Origin = new Origin(_position, _size);
+            UpdateShapes();
+            Actions();
+        }
+        
+        public Button(RenderWindow window, Vector2f position, Vector2f size,Shapes shape)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            _shape = shape;
+            Origin = new Origin(_position, _size);
+
+            UpdateShapes();
+            Actions();
+        }
+        
+        public Button(RenderWindow window, Vector2f position, Vector2f size,Shapes shape, bool isVisible)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            _shape = shape;
+            _isVisible = isVisible;
+            Origin = new Origin(_position, _size);
+
+            UpdateShapes();
+            Actions();
+        }
+
+        public Button(RenderWindow window, Vector2f position, Vector2f size, Shapes shape, Color centerColor, Color outerColor)
+        {
+            _window = window;
+            _position = position;
+            _size = size;
+            _shape = shape;
+            _centerColor = centerColor;
+            _outerColor = outerColor;
+            Origin = new Origin(_position, _size);
+
+            UpdateShapes();
+            Actions();
+        }
+        #endregion
+        #region Properties & Fields
         public Origin Origin;
         private RectangleShape _rectangleOuter;
         private RectangleShape _rectangleCenter;
@@ -15,133 +106,50 @@ namespace SfmlUI
         private CircleShape _elipseOuter;
         private CircleShape _elipseCenter;
         private CircleShape _elipseCenterPressed;
-
-
-        public Button(RenderWindow Window, Vector2f Position, Vector2f Size)
-        {
-            _window = Window;
-            _position = Position;
-            _size = Size;
-            Origin = new Origin(_position, _size);
-
-            _rectangleOuter = new RectangleShape(_size);
-            _rectangleOuter.FillColor = _outerColor;
-            _rectangleOuter.OutlineThickness = 1;
-            _rectangleOuter.OutlineColor = _outerOutlineColor;
-            _rectangleOuter.Position = Origin.TruePosition;
-            
-            _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-            _rectangleCenter.FillColor = _centerColor;
-            _rectangleCenter.OutlineThickness = 3;
-            _rectangleCenter.OutlineColor = _centerOutlineColor;
-            _rectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                Origin.TruePosition.Y + 0.05f * _size.Y);
-
-            _rectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
-            _rectangleCenterPressed.FillColor = _centerColor;
-            _rectangleCenterPressed.OutlineThickness = 3;
-            _rectangleCenterPressed.OutlineColor = _centerOutlineColor;
-            _rectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-                Origin.TruePosition.Y + 0.075f * _size.Y);
-            
-
-            _elipseOuter = new CircleShape(_size.X / 2);
-            _elipseOuter.FillColor = _outerColor;
-            _elipseOuter.OutlineThickness = 1;
-            _elipseOuter.OutlineColor = _outerOutlineColor;
-            _elipseOuter.Position = Origin.TruePosition;
-            _elipseOuter.Scale = new Vector2f(1f, _size.Y / _size.X);
-            
-
-            _elipseCenter = new CircleShape(_size.X * 0.9f / 2);
-            _elipseCenter.FillColor = _centerColor;
-            _elipseCenter.OutlineThickness = 3;
-            _elipseCenter.OutlineColor = _centerOutlineColor;
-            _elipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                Origin.TruePosition.Y + 0.05f * _size.Y);
-            _elipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
-            
-
-            _elipseCenterPressed = new CircleShape(_size.X * 0.85f / 2);
-            _elipseCenterPressed.FillColor = _centerColor;
-            _elipseCenterPressed.OutlineThickness = 3;
-            _elipseCenterPressed.OutlineColor = _centerOutlineColor;
-            _elipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-            Origin.TruePosition.Y + 0.075f * _size.Y);
-            _elipseCenterPressed.Scale = new Vector2f(1f, _size.Y / _size.X);
-
-            Actions();
-        }
-        #endregion
-        #region Properties & Fields
         private Color _centerColor = new Color(255, 0, 0);
         public Color CenterColor
         {
-            get
-            {
-                return _centerColor;
-            }
+            get => _centerColor;
             set
             {
                 _centerColor = value;
-                _rectangleCenter.FillColor = _centerColor;
-                _rectangleCenterPressed.FillColor = _centerColor;
-                _elipseCenter.FillColor = _centerColor;
-                _elipseCenterPressed.FillColor = _centerColor;
+                UpdateShapes();
             }
         }
         private Color _outerColor = new Color(100, 100, 100);
         public Color OuterColor
         {
-            get
-            {
-                return _outerColor;
-            }
+            get => _outerColor;
             set
             {
                 _outerColor = value;
-                _rectangleOuter.FillColor = _outerColor;
-                _elipseOuter.FillColor = _outerColor;
+                UpdateShapes();
             }
         }
-        private Color _outerOutlineColor = new Color(0, 0, 0);
+        private Color _outerOutlineColor = new Color(0, 0, 0, 0);
         public Color OuterOutlineColor
         {
-            get
-            {
-                return _outerOutlineColor;
-            }
+            get => _outerOutlineColor;
             set
             {
                 _outerOutlineColor = value;
-                _rectangleOuter.OutlineColor = _outerColor;
-                _elipseOuter.OutlineColor = _outerColor;
-                
+                UpdateShapes();
             }
         }
-        private Color _centerOutlineColor = new Color(0, 0, 0);
+        private Color _centerOutlineColor = new Color(0, 0, 0, 0);
         public Color CenterOutlineColor
         {
-            get
-            {
-                return _centerOutlineColor;
-            }
+            get => _centerOutlineColor;
             set
             {
                 _centerOutlineColor = value;
-                _rectangleCenter.OutlineColor = _centerOutlineColor;
-                _elipseCenter.OutlineColor = _centerOutlineColor;
-                _rectangleCenterPressed.OutlineColor = _centerOutlineColor;
-                _elipseCenterPressed.OutlineColor = _centerOutlineColor;
+                UpdateShapes();
             }
         }
         private RenderWindow _window;
         public RenderWindow Window
         {
-            get
-            {
-                return _window;
-            }
+            get => _window;
             set
             {
                 _window = value;
@@ -150,11 +158,7 @@ namespace SfmlUI
         private bool _isVisible = true;
         public bool IsVisible
         {
-            get
-            {
-                return _isVisible;
-
-            }
+            get => _isVisible;
             set
             {
                 _isVisible = value;
@@ -163,72 +167,29 @@ namespace SfmlUI
         private Vector2f _position;
         public Vector2f Position
         {
-            get
-            {
-                return _position;
-            }
+            get => _position;
             set
             {
                 _position = value;
                 Origin.Position = value;
-
-                _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-                _rectangleCenter.FillColor = _centerColor;
-                _rectangleCenter.OutlineThickness = 3;
-                _rectangleCenter.OutlineColor = _centerOutlineColor;
-                _rectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                    Origin.TruePosition.Y + 0.05f * _size.Y);
-                _elipseOuter.Position = Origin.TruePosition;
-                _elipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                    Origin.TruePosition.Y + 0.05f * _size.Y);
-                _elipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-               Origin.TruePosition.Y + 0.075f * _size.Y);
+                UpdateShapes();
             }
         }
 
         private Vector2f _size;
         public Vector2f Size
         {
-            get
-            {
-                return _size;
-            }
+            get => _size;
             set
             {
                 _size = value;
                 Origin.Size = new Vector2f(value.X, value.Y);
-
-                _rectangleOuter = new RectangleShape(_size);
-
-                _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-                _rectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                    Origin.TruePosition.Y + 0.05f * _size.Y);
-
-                _rectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
-                _rectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-                    Origin.TruePosition.Y + 0.075f * _size.Y);
-
-                _elipseOuter = new CircleShape(_size.X / 2);
-                _elipseOuter.Scale = new Vector2f(1f, _size.Y / _size.X);
-
-                _elipseCenter = new CircleShape(_size.X * 0.9f / 2);
-                _elipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                    Origin.TruePosition.Y + 0.05f * _size.Y);
-                _elipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
-
-                _elipseCenterPressed = new CircleShape(_size.X * 0.85f / 2);
-                _elipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-               Origin.TruePosition.Y + 0.075f * _size.Y);
-                _elipseCenterPressed.Scale = new Vector2f(1f, _size.Y / _size.X);
+                UpdateShapes();
             }
         }
         public float Height
         {
-            get
-            {
-                return _size.X;
-
-            }
+            get => _size.X;
             set
             {
                 _size.X = value;
@@ -236,87 +197,14 @@ namespace SfmlUI
         }
         public float Width
         {
-            get
-            {
-                return _size.Y;
-
-            }
+            get => _size.Y;
             set
             {
                 _size.Y = value;
+
             }
         }
-        #endregion
-        #region Actions
-        public event Action ButtonHeld;
-        private void Actions()
-        {
-
-            _window.MouseButtonReleased += OnMouseButtonReleased;
-            _window.MouseButtonPressed += OnMouseButtonPressed;
-            _window.MouseMoved += OnMouseMoved;
-        }
-        public event Action ButtonReleased;
-        bool Pressed;
-        private void OnMouseButtonReleased(Object? sender, MouseButtonEventArgs e)
-        {
-            if (Pressed)
-            {
-                Pressed = false;
-                ButtonReleased?.Invoke();
-            }
-
-        }
-        public event Action ButtonPressed;
-        private void OnMouseButtonPressed(Object? sender, MouseButtonEventArgs e)
-        {
-            if (!Pressed && IsInside(e.X, e.Y))
-            {
-                Pressed = true;
-                ButtonPressed?.Invoke();
-            }
-
-        }
-        private Vector2f MousePosition;
-        private void OnMouseMoved(Object? sender, MouseMoveEventArgs e)
-        {
-            MousePosition.X = e.X;
-            MousePosition.Y = e.Y;
-        }
-        public bool IsInside(float ex, float ey)
-        {
-            if (Shapes.Rectangle == _shape)
-            {
-                if (_rectangleOuter.GetGlobalBounds().Contains(ex, ey))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }   
-            else
-            {
-                
-                if (MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) + 
-                    MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
-                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) + 
-                    MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <=
-                    Radius)    
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        #endregion
-        #region Draw
-        public enum Shapes
+         public enum Shapes
         {
             Rectangle = 0,
             Elipse = 1
@@ -379,52 +267,142 @@ namespace SfmlUI
                 }
             }
         }
-       
-        public void Draw()
+        #endregion
+        #region Actions
+        public event Action ButtonHeld;
+        private void Actions()
         {
+
+            _window.MouseButtonReleased += OnMouseButtonReleased;
+            _window.MouseButtonPressed += OnMouseButtonPressed;
+            _window.MouseMoved += OnMouseMoved;
+        }
+        public event Action ButtonReleased;
+        private bool Pressed { get; set; }
+        private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
+        {
+            if (Pressed)
+            {
+                Pressed = false;
+                ButtonReleased?.Invoke();
+            }
+
+        }
+        public event Action ButtonPressed;
+        private void OnMouseButtonPressed(object sender, MouseButtonEventArgs e)
+        {
+            if (!Pressed && IsInside(e.X, e.Y))
+            {
+                Pressed = true;
+                ButtonPressed?.Invoke();
+            }
+
+        }
+        private Vector2f _mousePosition;
+        private void OnMouseMoved(object sender, MouseMoveEventArgs e)
+        {
+            _mousePosition.X = e.X;
+            _mousePosition.Y = e.Y;
+        }
+        public bool IsInside(float ex, float ey)
+        {
+            if (Shapes.Rectangle == _shape)
+            {
+                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
+            }   
+            else
+            {
+
+                return 
+                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) + 
+                                  MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
+                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) +
+                               MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <= 
+                    Radius;
+            }
+        }
+
+        #endregion
+        #region Draw
+       
+
+        private void UpdateShapes()
+        {
+            _rectangleOuter = new RectangleShape(_size);
+            _rectangleOuter.FillColor = _outerColor;
+            _rectangleOuter.OutlineThickness = 1;
+            _rectangleOuter.OutlineColor = _outerOutlineColor;
+            _rectangleOuter.Position = Origin.TruePosition;
+            
+            _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
+            _rectangleCenter.FillColor = _centerColor;
+            _rectangleCenter.OutlineThickness = 3;
+            _rectangleCenter.OutlineColor = _centerOutlineColor;
+            _rectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                Origin.TruePosition.Y + 0.05f * _size.Y);
+
+            _rectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
+            _rectangleCenterPressed.FillColor = _centerColor;
+            _rectangleCenterPressed.OutlineThickness = 3;
+            _rectangleCenterPressed.OutlineColor = _centerOutlineColor;
+            _rectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                Origin.TruePosition.Y + 0.075f * _size.Y);
             
 
+            _elipseOuter = new CircleShape(_size.X / 2);
+            _elipseOuter.FillColor = _outerColor;
+            _elipseOuter.OutlineThickness = 1;
+            _elipseOuter.OutlineColor = _outerOutlineColor;
+            _elipseOuter.Position = Origin.TruePosition;
+            _elipseOuter.Scale = new Vector2f(1f, _size.Y / _size.X);
+            
+
+            _elipseCenter = new CircleShape(_size.X * 0.9f / 2);
+            _elipseCenter.FillColor = _centerColor;
+            _elipseCenter.OutlineThickness = 3;
+            _elipseCenter.OutlineColor = _centerOutlineColor;
+            _elipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                Origin.TruePosition.Y + 0.05f * _size.Y);
+            _elipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
+            
+
+            _elipseCenterPressed = new CircleShape(_size.X * 0.85f / 2);
+            _elipseCenterPressed.FillColor = _centerColor;
+            _elipseCenterPressed.OutlineThickness = 3;
+            _elipseCenterPressed.OutlineColor = _centerOutlineColor;
+            _elipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+            Origin.TruePosition.Y + 0.075f * _size.Y);
+            _elipseCenterPressed.Scale = new Vector2f(1f, _size.Y / _size.X);
+
+        }
+        public void Draw()
+        {
             if (Pressed)
             {
                 ButtonHeld?.Invoke();
-                if (!IsInside(MousePosition.X, MousePosition.Y))
+                if (!IsInside(_mousePosition.X, _mousePosition.Y))
                 {
                     Pressed = false;
                 }
             }
             
-
-            if (_isVisible == true)
+            if (_isVisible)
             {
                 if (_shape == Shapes.Rectangle)
                 {
                     _window.Draw(_rectangleOuter);
-                    if (!Pressed)
-                    {
-                        _window.Draw(_rectangleCenter);
-                    }
-                    else
-                    {
-                        _window.Draw(_rectangleCenterPressed);
-                    }
+                    _window.Draw(Pressed ? _rectangleCenterPressed : _rectangleCenter);
                 }
                 else
                 {
                     _window.Draw(_elipseOuter);
-                    if (!Pressed)
-                    {
-                        _window.Draw(_elipseCenter);
-                    }
-                    else
-                    {
-                        _window.Draw(_elipseCenterPressed);
-                    }
+                    _window.Draw(Pressed ? _elipseCenterPressed : _elipseCenter);
                 }
             }
         }
+        #endregion
     }
 
 }
-#endregion
 
 
