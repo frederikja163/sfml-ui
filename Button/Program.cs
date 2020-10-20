@@ -5,7 +5,7 @@ using SFML.System;
 using SfmlUI;
 
 
-namespace Button1
+namespace ButtonSandbox
 {
 
     class Program
@@ -26,7 +26,7 @@ namespace Button1
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
 
-            _button = new Button(_window, new Vector2f(100, 100), new Vector2f(200,200), Button.Shapes.Elipse, Color.Black, Color.Blue);
+            _button = new Button(_window, new Vector2f(_window.Size.X/2, _window.Size.Y/2), new Vector2f(200,200), Button.Shapes.Elipse, Color.Black, Color.Blue);
             //_checkbox = new Checkbox(_window, new Vector2f(205, 205));
             //_checkbox.Height = 200;
             //_checkbox.Width = 200;
@@ -36,7 +36,7 @@ namespace Button1
             //_button.Size = new Vector2f(200,200);
             
             _button.Origin.Horizontal.Center();
-            _button.Origin.Vertical.Center();
+            //_button.Origin.Vertical.Center();
             _button.ButtonHeld += ButtonHeld;
             _button.ButtonPressed += ButtonPressed;
             _button.ButtonReleased += ButtonRelesed;
@@ -45,7 +45,7 @@ namespace Button1
             //slider[2] = new Slider(_window, new Vector2f(5, 605), 800, 195, 0, 255);
             //_slider[3] = new Slider(_window, new Vector2f(5, 805), 800, 195, 0, 255);
             //_radioButton = new RadioButton(_window, new Vector2f(200, 200), 30, new Vector2f(100, 100), 4);
-            _button.Position = _button.Position;
+            //_button.Position = _button.Position;
 
             while (_window.IsOpen)
             {
@@ -60,11 +60,6 @@ namespace Button1
                 //_radioButton.Draw();
                 //_checkbox.Draw();
                 _window.Display();
-               
-                
-
-                
-
             }
         }
 
@@ -72,12 +67,10 @@ namespace Button1
         {
             Console.WriteLine("u are holding the button");
             _button.Position = new Vector2f(_button.Position.X + 1f, _button.Position.Y + 1f);
-
         }
         static private void ButtonPressed()
         {
             Console.WriteLine("u have pressed the button");
-            
         }
 
         static private void ButtonRelesed()
@@ -85,7 +78,6 @@ namespace Button1
             //_button.Position = new Vector2f(_window.Size.X / 2, _window.Size.Y / 2);
 
             Console.WriteLine("u have released the button");
-            
         }
 
         private static void WindowClosed(object sender, EventArgs e)

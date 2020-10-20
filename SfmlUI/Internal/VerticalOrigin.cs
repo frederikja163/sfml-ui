@@ -1,29 +1,17 @@
 ﻿
 
+using System;
+
 namespace SfmlUI
 {
     public class VerticalOrigin
     {
-        internal float Size
-        {
-            get;
-            set;
-        }
-        internal float Position
-        {
-            get;
-            set;
-        }
+        internal float Size { get; set; }
+        internal float Position { get; set; }
         internal float TruePosition
         {
-            get
-            {
-                return Position + _displacement;
-            }
-            private set
-            {
-
-            }
+            get => Position + _displacement;
+            private set{}
         }
         private float _displacement;
         internal VerticalOrigin(float Position, float Size)
@@ -34,14 +22,18 @@ namespace SfmlUI
         public void Top()
         {
             _displacement = 0;
+            OnOriginChanged?.Invoke();
         }
         public void Center()
         {
             _displacement = -Size / 2;
+            OnOriginChanged.Invoke();
         }
         public void Buttom()
         {
             _displacement = -Size;
+            OnOriginChanged?.Invoke();
         }
+        internal Action OnOriginChanged;
     }
 }

@@ -267,6 +267,23 @@ namespace SfmlUI
                 }
             }
         }
+        public bool IsInside(float ex, float ey)
+        {
+            if (Shapes.Rectangle == _shape)
+            {
+                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
+            }   
+            else
+            {
+
+                return 
+                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) + 
+                               MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
+                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) +
+                               MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <= 
+                    Radius;
+            }
+        }
         #endregion
         #region Actions
         public event Action ButtonHeld;
@@ -276,6 +293,8 @@ namespace SfmlUI
             _window.MouseButtonReleased += OnMouseButtonReleased;
             _window.MouseButtonPressed += OnMouseButtonPressed;
             _window.MouseMoved += OnMouseMoved;
+            
+            Origin.OnOriginChanged += UpdateShapes;
         }
         public event Action ButtonReleased;
         private bool Pressed { get; set; }
@@ -304,24 +323,6 @@ namespace SfmlUI
             _mousePosition.X = e.X;
             _mousePosition.Y = e.Y;
         }
-        public bool IsInside(float ex, float ey)
-        {
-            if (Shapes.Rectangle == _shape)
-            {
-                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
-            }   
-            else
-            {
-
-                return 
-                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) + 
-                                  MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
-                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) +
-                               MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <= 
-                    Radius;
-            }
-        }
-
         #endregion
         #region Draw
        
