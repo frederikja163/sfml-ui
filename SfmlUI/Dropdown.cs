@@ -182,8 +182,8 @@ namespace SfmlUI
         // Customization methods
         private void setFontColor(Color color)
         {
-            foreach (Text item in _list) { item.FillColor = color; item.Color = color; }
             _textColor = color;
+            foreach (Text item in _list) { item.FillColor = color; }
         }
 
         private void setBackgroundColor(Color color)
@@ -287,6 +287,7 @@ namespace SfmlUI
         public void AddItem(string item) // Add new item to the dropdown
         {
             _list.Add(new Text(item, _font, _fontSize));
+            _list[_list.Count - 1].FillColor = _textColor;
             CallibrateBox();
         }
         public void RemoveItem(string item) // Remove item from dropdown

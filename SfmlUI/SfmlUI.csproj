@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>netcoreapp3.1</TargetFramework>
-	  <Version>1.0.0-pre.8</Version>
+	  <Version>1.0.0-pre.9</Version>
 	  <Authors>Programming B 2020-2021</Authors>
 	  <Company>UCHolstebro HTX</Company>
 	  <PackageTags>HTX</PackageTags>
