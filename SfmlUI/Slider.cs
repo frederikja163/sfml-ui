@@ -102,11 +102,28 @@ namespace SfmlUI
             }
         }
         private bool _clicked;
+
+        private float _sMax;
+
+        private float Smax
+        {
+            get
+            {
+                return _sMax;
+            }
+            set
+            {
+                _sMax = _width - (_width / 20f);
+            }
+        }
+
+            
+
         public float Value
         {
             get
             {
-                return ((_handlePos.X - Position.X - (_width / 20)) / _width * 22.22f / 20f) * _max + _min;
+                return ((_handlePos.X - Position.X - (_width / 20))/(_width-(_width/10f))) * _max + _min;
             }
         }
 

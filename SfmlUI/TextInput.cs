@@ -1,3 +1,4 @@
+using System;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -11,10 +12,10 @@ namespace SfmlUI
         public TextInput(RenderWindow window, Vector2f position, float width, float height, Font font, string initialText = "")
         {
             Window = window;
-            Position = position;
-            Height = height;
+            _position = position;
+            _height = height;
             _cursorWidth = height / 20;
-            Width = width;
+            _width = width;
             _font = font;
             Text = initialText;
             _cursor = initialText.Length;
@@ -22,9 +23,9 @@ namespace SfmlUI
             _verticalPadding = Height / 10;
             _horizontalPadding = _verticalPadding;
 
-            FieldColor = Color.White;
-            TextColor = Color.Black;
-            OutlineColor = new Color(194, 197, 204);
+            _fieldColor = Color.White;
+            _textColor = Color.Black;
+            _outlineColor = new Color(194, 197, 204);
 
             UpdateTextElement();
             UpdateTextFieldElement();
@@ -34,6 +35,8 @@ namespace SfmlUI
         }
 
         public bool IsVisible { get; set; } = true;
+
+        public event EventHandler<string> OnChange;
 
         private Vector2f _position { get; set; }
         public Vector2f Position
@@ -201,10 +204,7 @@ namespace SfmlUI
             var onTextField = e.X >= Position.X && e.X <= Position.X + Width && e.Y >= Position.Y && e.Y <= Position.Y + Height;
 
             _isFocused = onTextField;
-            if (_isFocused)
-            {
-                UpdateTextFieldElement();
-            }
+            UpdateTextFieldElement();
         }
 
         private void OnPressedHandler(object sender, KeyEventArgs e)
@@ -218,6 +218,7 @@ namespace SfmlUI
                     {
                         Text = Text.Remove(_cursor - 1, 1);
                         _cursor--;
+                        EmitOnChange();
                         UpdateTextElement();
                     }
                 }
@@ -233,12 +234,12 @@ namespace SfmlUI
                 else if (e.Code == Keyboard.Key.Right && _cursor <= Text.Length - 1)
                 {
                     _cursor++;
-                    UpdateCursorElement();
+                    UpdateTextElement();
                 }
                 else if (e.Code == Keyboard.Key.Left && _cursor > 0)
                 {
                     _cursor--;
-                    UpdateCursorElement();
+                    UpdateTextElement();
                 }
             }
         }
@@ -247,6 +248,7 @@ namespace SfmlUI
         {
             Text = newText;
             _cursor = newText.Length;
+            EmitOnChange();
             UpdateTextElement();
         }
 
@@ -254,7 +256,18 @@ namespace SfmlUI
         {
             Text = Text.Insert(_cursor, addtion);
             _cursor += addtion.Length;
+            EmitOnChange();
             UpdateTextElement();
         }
+
+        private void EmitOnChange()
+        {
+            var handler = OnChange;
+            if (handler != null)
+            {
+                handler(this, Text);
+            }
+        }
     }
+
 }

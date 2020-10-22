@@ -7,6 +7,8 @@ namespace SfmlUI
 {
     public class Graphic : IUiElement
     {
+        public Origin Origin;
+
         // Properties that can be read and som of then set by property interface
         private readonly Vector2f _position;
         private Vector2f _size;
@@ -21,6 +23,9 @@ namespace SfmlUI
         private long _flashTime = 1000;
         private Boolean _flashOn = false;
         private Boolean _isFlashing = false;
+        private float _angle = 0;
+        private float _angleRotation = 0;
+        private long _rotationTime;
 
         // Four different constructors, to set up an instance of the class with different properties
         public Graphic(RenderWindow window, string filename, Vector2f position) :
@@ -60,10 +65,13 @@ namespace SfmlUI
             {
                 _size = size;
             }
+            var _offset = new Vector2f(_size.X * scale / 2, _size.Y * scale / 2);
+            Origin = new Origin(_position + _offset, _size * scale);
             // Creating the sprite to be shown in the Window
             _sprite = new Sprite(_graphFile, new IntRect((int)_pictPos.X, (int)_pictPos.Y, (int)(_size.X), (int)(_size.Y)));
             _sprite.Scale = new Vector2f(scale, scale);
-            _sprite.Position = position;
+            _sprite.Position = Origin.TruePosition;
+            _sprite.Origin = _offset / scale;
             // Starting the timer tom implement Blink behavior
             _watch.Start();
             _time = _watch.ElapsedMilliseconds;
@@ -86,7 +94,7 @@ namespace SfmlUI
         {
             get
             {
-                return _position;
+                return Origin.TruePosition;
             }
         }
         public float Width
@@ -100,7 +108,7 @@ namespace SfmlUI
         {
             get
             {
-                return _size.Y * _sprite.Scale.X;
+                return _size.Y * _sprite.Scale.Y;
             }
         }
 
@@ -116,10 +124,41 @@ namespace SfmlUI
             _isFlashing = false;
         }
 
+        public void Fade (float magnitude) 
+        {
+            if (magnitude < 0.0) magnitude = 0.0f;
+            if (magnitude > 1.0) magnitude = 1.0f;
+            Byte _fade = (Byte) (magnitude * 255.0);
+            _sprite.Color = new Color(255, 255, 255, _fade);
+        }
+
+        public void Color (Byte R, Byte G, Byte B)
+        {
+            _sprite.Color = new Color(R, G, B);
+        }
+
+        public void Rotate (float angle)
+        {
+            _angle = angle;
+            _angleRotation = 0.0f;
+        }
+
+        public void Rotation (float rotationAngle)
+        {
+            if (_angleRotation > 0.0f)
+            {
+                _angle = _angle + (_watch.ElapsedMilliseconds - _rotationTime) * _angleRotation / 1000.0f;
+            }
+            _angleRotation = rotationAngle;
+            _rotationTime = _watch.ElapsedMilliseconds;
+        }
+
         // Draw method that implements the displaying of the picture, handling visibility and blinking
         public void Draw()
         {
             if (_isVisible) {
+                _sprite.Position = Origin.TruePosition;
+                _sprite.Rotation = _angle + (_watch.ElapsedMilliseconds - _rotationTime) * _angleRotation / 1000.0f;
                 if (_isFlashing)
                 {
                     if (_watch.ElapsedMilliseconds - _time > _flashTime)

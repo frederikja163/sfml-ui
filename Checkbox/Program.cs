@@ -54,7 +54,7 @@ namespace CheckboxSandkasse
 
             button2.ButtonPressed += () =>
             {
-                graphic.StartFlashing(1 * 1000);
+                graphic.StartFlashing((long) (1 + 10 * slider.Value));
             };
 
             button3.ButtonPressed += () =>
@@ -62,7 +62,7 @@ namespace CheckboxSandkasse
                 graphic.StopFlashing();
             };
             
-            RadioButton radioButton = new RadioButton(window, textInput.Position + new Vector2f(textInput.Width + 25, 0), 50, 157, 3);
+            RadioButton radioButton = new RadioButton(window, textInput.Position + new Vector2f(textInput.Width + 25, 0), 50, new Vector2f(0,157), 3);
             
             while (window.IsOpen)
             {

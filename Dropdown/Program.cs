@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
 using SfmlUI;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Dropdown1
 {
@@ -17,7 +18,7 @@ namespace Dropdown1
             Window.Closed += OnClose;
 
             // dropdown 1
-            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("C:\\Users\\burni\\Source\\Repos\\sfml-ui\\Dropdown\\bin\\Debug\\netcoreapp3.1\\ArialNova.ttf"), 30,
+            Dropdown dropdown = new Dropdown(Window, new Vector2f(200, 150), new Font("ArialNova.ttf"), 30,
                     "Lorem Ipsum",
                     "Electric boogaloo",
                     "James",
@@ -33,11 +34,18 @@ namespace Dropdown1
             dropdown.TextColor = Color.Blue;
             dropdown.HighlightColor = Color.Cyan;
             dropdown.BackgroundColor = Color.Yellow;
+            dropdown.FontSize = 200;
 
             // Button
             Button button = new Button(Window, new Vector2f(200, 200), new Vector2f(100, 20));
             button.CenterColor = Color.Black;
             button.OuterColor = Color.Red;
+            button.ButtonPressed += buttonPress;
+
+            void buttonPress()
+            {
+                dropdown.AddItem("last time i was here i was just a kid");
+            }
 
             // Checkbox
             Checkbox checkbox = new Checkbox(Window, new Vector2f(1000, 500));
@@ -45,7 +53,7 @@ namespace Dropdown1
             checkbox.CrossColor = Color.Magenta;
 
             // RadioButton
-            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, 50f, 3);
+            RadioButton radiobutton = new RadioButton(Window, new Vector2f(500, 700), 10f, new Vector2f(0,50f), 3);
 
             // Slider
             Slider slider = new Slider(Window, new Vector2f(1080, 500), 200f, 50f, 0f, 100f);
