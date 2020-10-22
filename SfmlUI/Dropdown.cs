@@ -182,7 +182,7 @@ namespace SfmlUI
         // Customization methods
         private void setFontColor(Color color)
         {
-            foreach (Text item in _list) { item.FillColor = color; }
+            foreach (Text item in _list) { item.FillColor = color; item.Color = color; }
             _textColor = color;
         }
 
