@@ -22,6 +22,9 @@ namespace SfmlUI
         private Text _primedText;
         private Color _textColor = new Color(0, 0, 0, 255);
         private Color _highlightColor = new Color(100, 100, 100, 100);
+        private Color _fillColor;
+        private Color _outlineColor;
+        private float _outlineThickness;
 
         // nedarvede metoder
         public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
@@ -49,6 +52,7 @@ namespace SfmlUI
                 ChangeList(value); 
             } 
         }
+        public RenderWindow RenderWindow { get { return _window; } set { _window = value; } }
 
         // konstruktøren
         public Dropdown(RenderWindow window, Vector2f position, Font font, uint fontSize, params string[] textList)
@@ -180,6 +184,34 @@ namespace SfmlUI
         }
 
         // Customization methods
+        private void changeFontSize(uint size)
+        {
+            _fontSize = size;
+            foreach (Text item in _list)
+            {
+                item.CharacterSize = size;
+            }
+            float maxWidth = 0;
+            for (int i = 0; i < _list.Count; i++)
+            {
+                _list[i].Position = new Vector2f(_position.X + _fontSize * 0.5f, _position.Y + _fontSize * i);
+                _list[i].FillColor = _textColor;
+                if (_list[i].GetLocalBounds().Width > maxWidth) { maxWidth = _list[i].GetLocalBounds().Width; }
+            }
+            _size = new Vector2f(maxWidth + _fontSize, _fontSize + 0.2f * _fontSize);
+            _shape = new RectangleShape(new Vector2f(maxWidth + _fontSize, _fontSize + 0.2f * _fontSize));
+            _shape.Scale = new Vector2f(1, 1);
+            _shape.FillColor = _fillColor;
+            _shape.OutlineColor = _outlineColor;
+            _shape.OutlineThickness = _outlineThickness;
+            _shape.Position = _position + new Vector2f(_outlineThickness, _outlineThickness);
+            _activeShape = new RectangleShape(new Vector2f(maxWidth + _fontSize, _list.Count() * _fontSize + 0.2f * _fontSize));
+            _activeShape.Scale = new Vector2f(1, 1);
+            _activeShape.FillColor = _fillColor;
+            _activeShape.OutlineColor = _outlineColor;
+            _activeShape.OutlineThickness = _outlineThickness;
+            _activeShape.Position = _position + new Vector2f(_outlineThickness, _outlineThickness);
+        }
         private void setFontColor(Color color)
         {
             _textColor = color;
@@ -190,26 +222,30 @@ namespace SfmlUI
         {
             _shape.FillColor = color;
             _activeShape.FillColor = color;
+            _fillColor = color;
         }
 
         private void setOutlineColor(Color color)
         {
             _shape.OutlineColor = color;
             _activeShape.OutlineColor = color;
+            _outlineColor = color;
         }
 
         private void setOutlineThickness(float percent)
         {
             _shape.OutlineThickness = 2 * (percent / 100);
             _activeShape.OutlineThickness = 2 * (percent / 100);
+            _outlineThickness = 2 * (percent / 100);
         }
 
         // public customization methods
         public Color TextColor { get { return _textColor; } set { setFontColor(value); } }
-        public Color BackgroundColor { get { return _shape.FillColor; } set { setBackgroundColor(value); } }
-        public Color OutlineColor { get { return _shape.OutlineColor; } set { setOutlineColor(value); } }
-        public float OutlineThickness { get { return _shape.OutlineThickness; } set { setOutlineThickness(value); } }
+        public Color BackgroundColor { get { return _fillColor; } set { setBackgroundColor(value); } }
+        public Color OutlineColor { get { return _outlineColor; } set { setOutlineColor(value); } }
+        public float OutlineThickness { get { return _outlineThickness; } set { setOutlineThickness(value); } }
         public Color HighlightColor { get { return _highlightColor; } set { _highlightColor = value; } }
+        public uint FontSize { get { return _list[0].CharacterSize; } set { changeFontSize(value); } }
 
         // private positioning method
         private void setPosition(Vector2f pos)
