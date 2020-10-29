@@ -150,19 +150,13 @@ namespace SfmlUI
         public RenderWindow Window
         {
             get => _window;
-            set
-            {
-                _window = value;
-            }
+            set => _window = value;
         }
         private bool _isVisible = true;
         public bool IsVisible
         {
             get => _isVisible;
-            set
-            {
-                _isVisible = value;
-            }
+            set => _isVisible = value;
         }
         private Vector2f _position;
         public Vector2f Position
@@ -190,19 +184,12 @@ namespace SfmlUI
         public float Height
         {
             get => _size.X;
-            set
-            {
-                _size.X = value;
-            }
+            set => _size.X = value;
         }
         public float Width
         {
             get => _size.Y;
-            set
-            {
-                _size.Y = value;
-
-            }
+            set => _size.Y = value;
         }
          public enum Shapes
         {
@@ -212,14 +199,8 @@ namespace SfmlUI
         private Shapes _shape;
         public Shapes Shape
         {
-            get
-            {
-                return _shape;
-            }
-            set
-            {
-                _shape = value;
-            }
+            get => _shape;
+            set => _shape = value;
         }
         private Vector2f Focalpoint1
         {
@@ -227,13 +208,15 @@ namespace SfmlUI
             {
                 if ((_size.X >= _size.Y))
                 {
-                    return new Vector2f(-MathF.Sqrt(MathF.Pow(_size.X / 2f, 2) - MathF.Pow(_size.Y / 2f, 2)) + Origin.TruePosition.X + _size.X/2f, 
-                        Origin.TruePosition.Y + _size.Y/2f);
+                    return new Vector2f(
+                        -MathF.Sqrt(MathF.Pow(_size.X / 2f, 2) - MathF.Pow(_size.Y / 2f, 2)) + Origin.TruePosition.X +
+                        _size.X / 2f, Origin.TruePosition.Y + _size.Y / 2f);
                 }
                 else
                 {
-                    return new Vector2f(Origin.TruePosition.X + _size.X/2f,
-                        -MathF.Sqrt(MathF.Pow(_size.Y / 2f, 2) - MathF.Pow(_size.X / 2f, 2)) + Origin.TruePosition.Y + _size.Y/2f);
+                    return new Vector2f(Origin.TruePosition.X + _size.X / 2f,
+                        -MathF.Sqrt(MathF.Pow(_size.Y / 2f, 2) - MathF.Pow(_size.X / 2f, 2)) + Origin.TruePosition.Y +
+                        _size.Y / 2f);
                 }
             }
         }
@@ -243,47 +226,53 @@ namespace SfmlUI
             {
                 if ((_size.X >= _size.Y))
                 {
-                    return new Vector2f(MathF.Sqrt(MathF.Pow(_size.X / 2f, 2) - MathF.Pow(_size.Y / 2f, 2)) + Origin.TruePosition.X + _size.X/2f,
-                        Origin.TruePosition.Y + _size.Y/2f);
+                    return new Vector2f(
+                        MathF.Sqrt(MathF.Pow(_size.X / 2f, 2) - MathF.Pow(_size.Y / 2f, 2)) + Origin.TruePosition.X +
+                        _size.X / 2f, Origin.TruePosition.Y + _size.Y / 2f);
                 }
                 else
                 {
-                    return new Vector2f(Origin.TruePosition.X + _size.X/2f,
-                        MathF.Sqrt(MathF.Pow(_size.Y / 2f, 2) - MathF.Pow(_size.X / 2f, 2)) + Origin.TruePosition.Y + _size.Y/2f);
+                    return new Vector2f(Origin.TruePosition.X + _size.X / 2f,
+                        MathF.Sqrt(MathF.Pow(_size.Y / 2f, 2) - MathF.Pow(_size.X / 2f, 2)) + Origin.TruePosition.Y +
+                        _size.Y / 2f);
                 }
             }
         }
-        private float Radius
-        {
-            get
-            {
-                if (_size.X >= _size.Y)
-                {
-                    return MathF.Abs(Origin.TruePosition.X + Size.X - Focalpoint1.X + Origin.TruePosition.X + Size.X - Focalpoint2.X);
-                }
-                else
-                {
-                    return MathF.Abs(Origin.TruePosition.Y + Size.Y - Focalpoint1.Y + Origin.TruePosition.Y + Size.Y - Focalpoint2.Y);
-                }
-            }
-        }
+        private float Radius =>
+            _size.X >= _size.Y
+                ? MathF.Abs(Origin.TruePosition.X + Size.X - Focalpoint1.X + Origin.TruePosition.X + Size.X -
+                            Focalpoint2.X)
+                : MathF.Abs(Origin.TruePosition.Y + Size.Y - Focalpoint1.Y + Origin.TruePosition.Y + Size.Y -
+                            Focalpoint2.Y);
+
         public bool IsInside(float ex, float ey)
         {
-            if (Shapes.Rectangle == _shape)
-            {
-                return _rectangleOuter.GetGlobalBounds().Contains(ex, ey);
-            }   
-            else
-            {
-
-                return 
-                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) + 
-                               MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
-                    MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) +
-                               MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <= 
-                    Radius;
-            }
+            return Shapes.Rectangle == _shape
+                ? _rectangleOuter.GetGlobalBounds().Contains(ex, ey)
+                : MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint1.X), 2) +
+                             MathF.Pow(MathF.Abs(ey - Focalpoint1.Y), 2)) +
+                  MathF.Sqrt(MathF.Pow(MathF.Abs(ex - Focalpoint2.X), 2) +
+                             MathF.Pow(MathF.Abs(ey - Focalpoint2.Y), 2)) <=
+                  Radius;
         }
+
+        private bool _active = true;
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+                if (!value) return;
+                if (!Pressed || _mouseOverButton)
+                {
+                    OnMovedOf?.Invoke();
+                }
+                Pressed = false;
+            } 
+        }
+
+        private bool _mouseOverButton;
         #endregion
         #region Actions
         public event Action ButtonHeld;
@@ -300,28 +289,36 @@ namespace SfmlUI
         private bool Pressed { get; set; }
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            if (Pressed)
-            {
-                Pressed = false;
-                ButtonReleased?.Invoke();
-            }
-
+            if (!Pressed || !Active) return;
+            Pressed = false;
+            ButtonReleased?.Invoke();
         }
         public event Action ButtonPressed;
         private void OnMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            if (!Pressed && IsInside(e.X, e.Y))
-            {
-                Pressed = true;
-                ButtonPressed?.Invoke();
-            }
+            if (Pressed || !IsInside(e.X, e.Y) || !Active) return;
+            Pressed = true;
+            ButtonPressed?.Invoke();
 
         }
         private Vector2f _mousePosition;
+        public event Action OnHover;
+        public event Action OnMovedOf;
         private void OnMouseMoved(object sender, MouseMoveEventArgs e)
         {
             _mousePosition.X = e.X;
             _mousePosition.Y = e.Y;
+            if (!_active) return;
+            if (!_mouseOverButton && IsInside(e.X, e.Y))
+            {
+                _mouseOverButton = true;
+                OnHover?.Invoke();
+            }
+            else if (_mouseOverButton && !IsInside(e.X, e.Y))
+            {
+                _mouseOverButton = false;
+                OnMovedOf?.Invoke();
+            }
         }
         #endregion
         #region Draw
@@ -329,56 +326,64 @@ namespace SfmlUI
 
         private void UpdateShapes()
         {
-            _rectangleOuter = new RectangleShape(_size);
-            _rectangleOuter.FillColor = _outerColor;
-            _rectangleOuter.OutlineThickness = 1;
-            _rectangleOuter.OutlineColor = _outerOutlineColor;
-            _rectangleOuter.Position = Origin.TruePosition;
+            _rectangleOuter = new RectangleShape(_size)
+            {
+                FillColor = _outerColor,
+                OutlineThickness = 1,
+                OutlineColor = _outerOutlineColor,
+                Position = Origin.TruePosition
+            };
+
+            _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f))
+            {
+                FillColor = _centerColor,
+                OutlineThickness = 3,
+                OutlineColor = _centerOutlineColor,
+                Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                    Origin.TruePosition.Y + 0.05f * _size.Y)
+            };
+
+            _rectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f))
+            {
+                FillColor = _centerColor,
+                OutlineThickness = 3,
+                OutlineColor = _centerOutlineColor,
+                Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                    Origin.TruePosition.Y + 0.075f * _size.Y)
+            };
             
-            _rectangleCenter = new RectangleShape(new Vector2f(_size.X * 0.9f, _size.Y * 0.9f));
-            _rectangleCenter.FillColor = _centerColor;
-            _rectangleCenter.OutlineThickness = 3;
-            _rectangleCenter.OutlineColor = _centerOutlineColor;
-            _rectangleCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                Origin.TruePosition.Y + 0.05f * _size.Y);
-
-            _rectangleCenterPressed = new RectangleShape(new Vector2f(_size.X * 0.85f, _size.Y * 0.85f));
-            _rectangleCenterPressed.FillColor = _centerColor;
-            _rectangleCenterPressed.OutlineThickness = 3;
-            _rectangleCenterPressed.OutlineColor = _centerOutlineColor;
-            _rectangleCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-                Origin.TruePosition.Y + 0.075f * _size.Y);
+            _elipseOuter = new CircleShape(_size.X / 2)
+            {
+                FillColor = _outerColor,
+                OutlineThickness = 1,
+                OutlineColor = _outerOutlineColor,
+                Position = Origin.TruePosition,
+                Scale = new Vector2f(1f, _size.Y / _size.X)
+            };
             
-
-            _elipseOuter = new CircleShape(_size.X / 2);
-            _elipseOuter.FillColor = _outerColor;
-            _elipseOuter.OutlineThickness = 1;
-            _elipseOuter.OutlineColor = _outerOutlineColor;
-            _elipseOuter.Position = Origin.TruePosition;
-            _elipseOuter.Scale = new Vector2f(1f, _size.Y / _size.X);
+            _elipseCenter = new CircleShape(_size.X * 0.9f / 2)
+            {
+                FillColor = _centerColor,
+                OutlineThickness = 3,
+                OutlineColor = _centerOutlineColor,
+                Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
+                    Origin.TruePosition.Y + 0.05f * _size.Y),
+                Scale = new Vector2f(1f, _size.Y / _size.X)
+            };
             
-
-            _elipseCenter = new CircleShape(_size.X * 0.9f / 2);
-            _elipseCenter.FillColor = _centerColor;
-            _elipseCenter.OutlineThickness = 3;
-            _elipseCenter.OutlineColor = _centerOutlineColor;
-            _elipseCenter.Position = new Vector2f(Origin.TruePosition.X + 0.05f * _size.X,
-                Origin.TruePosition.Y + 0.05f * _size.Y);
-            _elipseCenter.Scale = new Vector2f(1f, _size.Y / _size.X);
-            
-
-            _elipseCenterPressed = new CircleShape(_size.X * 0.85f / 2);
-            _elipseCenterPressed.FillColor = _centerColor;
-            _elipseCenterPressed.OutlineThickness = 3;
-            _elipseCenterPressed.OutlineColor = _centerOutlineColor;
-            _elipseCenterPressed.Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
-            Origin.TruePosition.Y + 0.075f * _size.Y);
-            _elipseCenterPressed.Scale = new Vector2f(1f, _size.Y / _size.X);
-
+            _elipseCenterPressed = new CircleShape(_size.X * 0.85f / 2)
+            {
+                FillColor = _centerColor,
+                OutlineThickness = 3,
+                OutlineColor = _centerOutlineColor,
+                Position = new Vector2f(Origin.TruePosition.X + 0.075f * _size.X,
+                    Origin.TruePosition.Y + 0.075f * _size.Y),
+                Scale = new Vector2f(1f, _size.Y / _size.X)
+            };
         }
         public void Draw()
         {
-            if (Pressed)
+            if (Pressed && _active)
             {
                 ButtonHeld?.Invoke();
                 if (!IsInside(_mousePosition.X, _mousePosition.Y))
@@ -386,19 +391,17 @@ namespace SfmlUI
                     Pressed = false;
                 }
             }
-            
-            if (_isVisible)
+
+            if (!_isVisible) return;
+            if (_shape == Shapes.Rectangle)
             {
-                if (_shape == Shapes.Rectangle)
-                {
-                    _window.Draw(_rectangleOuter);
-                    _window.Draw(Pressed ? _rectangleCenterPressed : _rectangleCenter);
-                }
-                else
-                {
-                    _window.Draw(_elipseOuter);
-                    _window.Draw(Pressed ? _elipseCenterPressed : _elipseCenter);
-                }
+                _window.Draw(_rectangleOuter);
+                _window.Draw(Pressed && _active ? _rectangleCenterPressed : _rectangleCenter);
+            }
+            else
+            {
+                _window.Draw(_elipseOuter);
+                _window.Draw(Pressed && _active ? _elipseCenterPressed : _elipseCenter);
             }
         }
         #endregion
