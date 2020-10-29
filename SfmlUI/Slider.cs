@@ -23,6 +23,8 @@ namespace SfmlUI
             _window.MouseButtonReleased += OnMouseButtonReleased;
         }
 
+        public event Action<Slider> OnValueChanged;
+
 
         private bool _isVisible;
         public bool IsVisible
@@ -146,6 +148,10 @@ namespace SfmlUI
         private void OnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
         {
             _clicked = UpdateHandle(new Vector2f(e.X, e.Y));
+            if (_clicked && OnValueChanged != null)
+            {
+                OnValueChanged.Invoke(this);
+            }
         }
 
         private bool UpdateHandle(Vector2f mousePos)
@@ -178,9 +184,12 @@ namespace SfmlUI
             if (!_clicked)
             {
                 return;
-
             }
             UpdateHandle(new Vector2f(e.X, _position.Y));
+            if (OnValueChanged != null)
+            {
+                OnValueChanged.Invoke(this);
+            }
         }
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {

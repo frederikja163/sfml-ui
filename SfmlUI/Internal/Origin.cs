@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using System;
+using SFML.System;
 
 
 namespace SfmlUI
@@ -46,7 +47,15 @@ namespace SfmlUI
         {    
             Horizontal = new HorizontalOrigin(Position.X, Size.X);
             Vertical = new VerticalOrigin(Position.Y, Size.Y);
+            Horizontal.OnOriginChanged += onOriginChanged;
+            Vertical.OnOriginChanged += onOriginChanged;
+        }
 
-        }  
+        internal Action OnOriginChanged;
+
+        private void onOriginChanged()
+        {
+            OnOriginChanged?.Invoke();
+        }
     }
 }

@@ -34,6 +34,7 @@ namespace Dropdown1
             dropdown.TextColor = Color.Blue;
             dropdown.HighlightColor = Color.Cyan;
             dropdown.BackgroundColor = Color.Yellow;
+            dropdown.FontSize = 200;
 
             // Button
             Button button = new Button(Window, new Vector2f(200, 200), new Vector2f(100, 20));
