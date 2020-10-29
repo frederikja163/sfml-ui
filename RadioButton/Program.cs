@@ -71,7 +71,7 @@ namespace RadioButtonSandbox
             button.ButtonPressed += buttonPressed;
             button.ButtonReleased += buttonReleased;
 
-            Text8 = new TextBox(_window, new Vector2f(750, 275), 200f, 200f, new Font("Arial.ttf"), 30);
+            Text8 = new TextBox(_window, new Vector2f(730, 275), 200f, 200f, new Font("Arial.ttf"), 30);
             Text8.BackgroundColor = new Color(0, 0, 0, 0);
             Text8.OutlineColor = new Color(0, 0, 160);
             Text8.TextColor = Color.White;
@@ -98,9 +98,7 @@ namespace RadioButtonSandbox
                 "Brown fox",
                 "Doc",
                 "Docile",
-                "Pizza",
-                "Hut Hut",
-                "Last item"
+                "Pizza"
             );
             dropdown.OutlineColor = new Color(100, 100, 100);
             dropdown.OutlineThickness = 50;
