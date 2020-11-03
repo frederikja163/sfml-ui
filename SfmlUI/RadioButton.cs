@@ -7,14 +7,14 @@ namespace SfmlUI
 {
     public class RadioButton : IUiElement
     {
-        public RadioButton(RenderWindow window, Vector2f position, float radius, Vector2f lineSpacing, int amount)
+        public RadioButton(RenderWindow window, Vector2f position, float radius, Vector2f lineSpacing, int amount, int selected = -1)
         {
             _window = window;
             _position = position;
             _radius = radius;
             _lineSpacing = lineSpacing;
             _amount = amount;
-            _selected = -1;
+            _selected = selected;
             _window.MouseButtonReleased += OnMouseButtonReleased;
         }
 

@@ -40,7 +40,7 @@ namespace Graphic
             checkbox.BorderThickness = 5;
             checkbox.IsChecked = true;
 
-            var radioButton = new RadioButton(Window, new Vector2f(950, 500), 14, new Vector2f(0, 40), 5);
+            var radioButton = new RadioButton(Window, new Vector2f(950, 500), 14, new Vector2f(0, 40), 5, 3);
             var radioButton2 = new RadioButton(Window, new Vector2f(720, 550), 14, new Vector2f(0, 40), 5);
 
             Dropdown dropdown = new Dropdown(Window, new Vector2f(50, 550), new Font("ArialNova.ttf"), 30,
