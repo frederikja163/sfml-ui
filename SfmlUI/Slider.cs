@@ -117,13 +117,17 @@ namespace SfmlUI
             }
         }
 
-            
 
         public float Value
         {
             get
             {
                 return ((_handlePos.X - Position.X - (_width / 20))/(_width-(_width/10f))) * _max + _min;
+            }
+            set
+            {
+                var val = MathF.Min(_max, MathF.Max(_min, value));
+                _handlePos.X = (20 * _max * _position.X + _max * _width - 18 * _min * _width + 18 * val * _width) / (20 * _max);
             }
         }
 

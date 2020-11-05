@@ -16,6 +16,7 @@ namespace Slider1
         {
             _window = new RenderWindow(VideoMode.DesktopMode, "Test Slider");
             _slider = new Slider(_window, new Vector2f(_window.Size.X/2f,_window.Size.Y/2f),400f,50f,0f,1f);
+            _slider.Value = 0.0f;
             _window.Closed += WindowClosed;
             _window.SetFramerateLimit(60);
             _window.SetVerticalSyncEnabled(true);
@@ -43,6 +44,7 @@ namespace Slider1
 
                 _button[0].Draw();
                 _slider.Draw();
+                _slider.Value += 0.01f;
                 _window.Display();
             }
         }
